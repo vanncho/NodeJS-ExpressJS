@@ -1,0 +1,34 @@
+{{#if hotel}}
+    <div>
+        <p>{{hotel.title}}</p>
+        <p>{{hotel.location}}</p>
+        <img src="{{hotel.imageUrl}}" alt="hotel image">
+        <p>{{hotel.description}}</p>
+    </div>
+    <br>
+    {{#if currentUser}}
+        <form action="/hotel/details/{{hotel._id}}" method="post">
+            <textarea name="comment" placeholder="Add comment..."></textarea>
+            <br>
+            <input type="submit" value="Add Comment">
+        </form>
+    {{/if}}
+    <br>
+    <br>
+    <div>
+        <p>Comments:</p>
+        <br>
+        {{#if isAdmin}}
+            {{#each comments}}
+                <p>{{this.text}}</p>
+                <small>{{this.user}}</small>
+                <a href="/comment/delete?commentId={{this.id}}&hotelId={{this.hotelId}}">DELETE</a>
+            {{/each}}
+        {{else}}
+            {{#each comments}}
+                <p>{{this.text}}</p>
+                <small>{{this.user}}</small>
+            {{/each}}
+        {{/if}}
+    </div>
+{{/if}}
