@@ -1,0 +1,15 @@
+{{#if hotels}}
+    {{#each hotels}}
+        <div>
+            <p>{{this.title}}</p>
+            <p>{{this.location}}</p>
+            <a href="/hotel/details/{{this._id}}">
+                <img src="{{this.imageUrl}}" alt="hotel image">
+            </a>
+            <p>{{this.description}}</p>
+        </div>
+        <br>
+    {{/each}}
+{{else}}
+    <h1>No hotels available.</h1>
+{{/if}}

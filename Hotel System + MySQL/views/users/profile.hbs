@@ -1,0 +1,10 @@
+<div>
+    <p>User: {{user.username}}</p>
+    <br>
+    <div>
+        <p>Comments: </p>
+        {{#each comments}}
+            <p>{{this.text}}</p>
+        {{/each}}
+    </div>
+</div>
