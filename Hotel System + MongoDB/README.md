@@ -1,1 +1,3 @@
-# express-demo-server
+# Hotel System
+
+Hotel System + MongoDB + Mongoose
