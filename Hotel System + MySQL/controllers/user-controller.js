@@ -11,12 +11,11 @@ module.exports = {
 
         res.render('users/register');
     },
-    registerPost: async (req, res) => {
+    registerPost: (req, res) => {
 
         const reqUser = req.body;
         const salt = encryption.generateSalt();
-        const hashedPass =
-            encryption.generateHashedPassword(salt, reqUser.password);
+        const hashedPass = encryption.generateHashedPassword(salt, reqUser.password);
 
         try {
 
@@ -24,14 +23,27 @@ module.exports = {
                 throw new Error('Password must not be empty or contains spaces!');
             }
 
-            const user = await User.create({
+            // const user = await User.create({
+            //
+            //     username: reqUser.username,
+            //     hashedPass,
+            //     salt,
+            //     firstName: reqUser.firstName,
+            //     lastName: reqUser.lastName,
+            //     roles: []
+            // });
+
+            const user = User.build({
 
                 username: reqUser.username,
-                hashedPass,
-                salt,
+                hashed_pass: hashedPass,
+                salt: salt,
                 firstName: reqUser.firstName,
-                lastName: reqUser.lastName,
-                roles: []
+                lastName: reqUser.lastName
+            });
+
+            user.save().then((data) => {
+                console.log(data);
             });
 
             req.logIn(user, (err, user) => {
@@ -75,17 +87,17 @@ module.exports = {
         //         });
 
         //User.findAll({where: {id: 1}}).then(users => {
-        User.findAll().then((users) => {
-
-            console.log(users.length);
-
-            for (let user of users) {
-                console.log(user.dataValues);
-            }
-
-        }).catch(err => {
-            console.log(err);
-        });
+        // User.findAll().then((users) => {
+        //
+        //     console.log(users.length);
+        //
+        //     for (let user of users) {
+        //         console.log(user.dataValues);
+        //     }
+        //
+        // }).catch(err => {
+        //     console.log(err);
+        // });
     },
     loginPost: async (req, res) => {
 
@@ -93,7 +105,7 @@ module.exports = {
 
         try {
 
-            const user = await User.findOne({ username: reqUser.username });
+            const user = await User.findOne({where: { username: reqUser.username }});
 
             if (!user) {
 
@@ -101,11 +113,11 @@ module.exports = {
                 return;
             }
 
-            if (!user.authenticate(reqUser.password)) {
-
-                errorHandler('Invalid user data');
-                return;
-            }
+            // if (!dbConnection.authenticate(reqUser.password)) {
+            //
+            //     errorHandler('Invalid user data');
+            //     return;
+            // }
 
             req.logIn(user, (err, user) => {
 

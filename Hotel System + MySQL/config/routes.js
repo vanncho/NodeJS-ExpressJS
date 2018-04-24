@@ -10,13 +10,13 @@ module.exports = app => {
     //app.get('/profile/:username', restrictedPages.isAuthed, controllers.user.profileGet);
     //app.post('/profile/', restrictedPages.isAuthed, controllers.user.profilePost);
 
-    //app.get('/register', controllers.user.registerGet);
-    //app.post('/register', controllers.user.registerPost);
+    app.get('/register', controllers.user.registerGet);
+    app.post('/register', controllers.user.registerPost);
 
     //app.post('/logout', controllers.user.logout);
 
     app.get('/login', controllers.user.loginGet);
-    //app.post('/login', controllers.user.loginPost);
+    app.post('/login', controllers.user.loginPost);
 
     //app.get('/hotel/add', restrictedPages.isAuthed, controllers.hotel.addGet);
     //app.post('/hotel/add', restrictedPages.isAuthed, controllers.hotel.addPost);

@@ -7,6 +7,8 @@ const app = require('express')();
 require('./config/express')(app);
 
 require('./config/routes')(app);
-//require('./config/passport')();
+require('./config/passport')();
 //app.listen(config.port);
-app.listen(3000);
+app.listen(3000, () => {
+    console.log('Server started at port 3000 ...');
+});
