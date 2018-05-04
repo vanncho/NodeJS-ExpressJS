@@ -23,16 +23,6 @@ module.exports = {
                 throw new Error('Password must not be empty or contains spaces!');
             }
 
-            // const user = await User.create({
-            //
-            //     username: reqUser.username,
-            //     hashedPass,
-            //     salt,
-            //     firstName: reqUser.firstName,
-            //     lastName: reqUser.lastName,
-            //     roles: []
-            // });
-
             const user = User.build({
 
                 username: reqUser.username,
@@ -42,19 +32,18 @@ module.exports = {
                 lastName: reqUser.lastName
             });
 
-            user.save().then((data) => {
-                console.log(data);
-            });
+            user.save().then((savedUser) => {
 
-            req.logIn(user, (err, user) => {
+                req.logIn(savedUser, (err, user) => {
 
-                if (err) {
-                    res.locals.globalError = err;
-                    res.render('users/register', user);
+                    if (err) {
+                        res.locals.globalError = err;
+                        res.render('users/register', user);
 
-                } else {
-                    res.redirect('/');
-                }
+                    } else {
+                        res.redirect('/');
+                    }
+                });
             });
 
         } catch (e) {
