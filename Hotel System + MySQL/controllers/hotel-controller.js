@@ -2,44 +2,37 @@
 //const User = require('../models/User');
 const dbConnection = require('../config/database').connectDB();
 const Hotel = require('../models/Hotel')(dbConnection);
+const Comment = require('../models/Comment')(dbConnection);
 
 module.exports = {
 
     addGet: (req, res) => {
 
         res.render('hotel/add');
-
     },
     addPost: (req, res) => {
 
         let formData = req.body;
 
-        let hotel = {
+        const hotel = Hotel.build({
             title: formData.title,
             description: formData.description,
             location: formData.location,
-            imageUrl: formData.imageUrl,
-            dateAdded: Date.now()
-        };
+            image_url: formData.image_url,
+            date_added: Date.now()
+        });
 
-        // Hotel.create(hotel).then(() => {
-        //
-        //     res.redirect('/');
-        // }).catch((err) => {
-        //     console.log(err);
-        //     return;
-        // });
+        hotel.save().then((savedHotel) => {
+
+            res.redirect('/');
+
+        }).catch((err) => {
+            console.log(err);
+            return;
+        });
+
     },
     listHotels: (req, res) => {
-
-        // Hotel.find({}).sort({dateAdded: -1}).then((hotels) => {
-        //
-        //     res.render('hotel/list', {hotels});
-        //
-        // }).catch((err) => {
-        //     console.log(err);
-        //     return;
-        // });
 
         Hotel.findAll({order: [['date_added', 'DESC']]}).then((hotels) => {
 
@@ -58,69 +51,69 @@ module.exports = {
 
         let hotelId = req.params.hotelId;
 
-        let user = req.user;
+        let user = req.user.dataValues;
         let isAdmin = false;
 
         if (user) {
-            isAdmin = user.isAdmin;
+            isAdmin = user.is_admin;
         }
 
-        // Hotel.findById(hotelId).then((hotel) => {
-        //
-        //     let commensIds = hotel.comments;
-        //     let comments = [];
-        //
-        //     for (let comId of commensIds) {
-        //
-        //         Comment.findById(comId).then((foundComment) => {
-        //
-        //             let commentText = foundComment.text;
-        //             let commentId = foundComment._id;
-        //
-        //             // User.findById(foundComment.user).then((foundUser) => {
-        //             //
-        //             //     comments.push({text: commentText, id: commentId, hotelId: hotel._id, user: foundUser.username});
-        //             // });
-        //         });
-        //     }
-        //
-        //     res.render('hotel/details', {hotel, comments, isAdmin});
-        //
-        // }).catch((err) => {
-        //     console.log(err);
-        //     return;
-        // });
+        Hotel.findById(hotelId).then((hotel) => {
+
+            //let commensIds = hotel.comments;
+            let comments = [];
+
+            // for (let comId of commensIds) {
+            //
+            //     Comment.findById(comId).then((foundComment) => {
+            //
+            //         let commentText = foundComment.text;
+            //         let commentId = foundComment._id;
+            //
+            //         // User.findById(foundComment.user).then((foundUser) => {
+            //         //
+            //         //     comments.push({text: commentText, id: commentId, hotelId: hotel._id, user: foundUser.username});
+            //         // });
+            //     });
+            // }
+
+            res.render('hotel/details', {hotel, comments, isAdmin});
+
+        }).catch((err) => {
+            console.log(err);
+            return;
+        });
     },
     detailsPost: (req, res) => {
 
-        let userId = req.user._id;
+        let userId = req.user.dataValues.id;
         let hotelId = req.params.hotelId;
-        let comment = req.body.comment;
+        let commentText = req.body.comment;
 
-        // Hotel.findById(hotelId).then((hotel) => {
-        //
-        //     let commentObj = {
-        //         text: comment,
-        //         user: userId,
-        //         hotel: hotelId
-        //     };
-        //
-        //     Comment.create(commentObj).then((com) => {
-        //
-        //         if (!hotel.comments) {
-        //             hotel.comments = [];
-        //         }
-        //
-        //         hotel.comments.push(com._id);
-        //         hotel.save().then(() => {
-        //
-        //
-        //         });
-        //     })
-        // }).catch((err) => {
-        //     console.log(err);
-        //     return;
-        // });
+        Hotel.findById(hotelId).then((hotel) => {
+
+            const comment = Comment.build({
+                text: commentText,
+                user_id: userId,
+                hotel_id: hotelId
+            });
+
+            comment.save().then((savedComment) => {
+
+                // if (!hotel.comments) {
+                //     hotel.comments = [];
+                // }
+                //
+                // hotel.comments.push(savedComment.id);
+                // hotel.save().then(() => {
+                //
+                //
+                // });
+            })
+        }).catch((err) => {
+            console.log(err);
+            return;
+        });
 
         res.redirect(`/hotel/details/${hotelId}`);
     }

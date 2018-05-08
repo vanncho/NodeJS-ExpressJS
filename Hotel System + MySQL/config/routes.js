@@ -18,13 +18,13 @@ module.exports = app => {
     app.get('/login', controllers.user.loginGet);
     app.post('/login', controllers.user.loginPost);
 
-    //app.get('/hotel/add', restrictedPages.isAuthed, controllers.hotel.addGet);
-    //app.post('/hotel/add', restrictedPages.isAuthed, controllers.hotel.addPost);
+    app.get('/hotel/add', restrictedPages.isAuthed, controllers.hotel.addGet);
+    app.post('/hotel/add', restrictedPages.isAuthed, controllers.hotel.addPost);
 
     app.get('/hotel/list', controllers.hotel.listHotels);
 
-    //app.get('/hotel/details/:hotelId', controllers.hotel.detailsGet);
-    //app.post('/hotel/details/:hotelId', restrictedPages.isAuthed, controllers.hotel.detailsPost);
+    app.get('/hotel/details/:hotelId', controllers.hotel.detailsGet);
+    app.post('/hotel/details/:hotelId', restrictedPages.isAuthed, controllers.hotel.detailsPost);
 
     //app.get('/comment/delete', controllers.comment.delete);
 

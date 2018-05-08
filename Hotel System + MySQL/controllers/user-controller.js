@@ -24,7 +24,6 @@ module.exports = {
             }
 
             const user = User.build({
-
                 username: reqUser.username,
                 hashed_pass: hashedPass,
                 salt: salt,
