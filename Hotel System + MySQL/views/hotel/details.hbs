@@ -2,12 +2,12 @@
     <div>
         <p>{{hotel.title}}</p>
         <p>{{hotel.location}}</p>
-        <img src="{{hotel.imageUrl}}" alt="hotel image">
+        <img src="{{hotel.image_url}}" alt="hotel image">
         <p>{{hotel.description}}</p>
     </div>
     <br>
     {{#if currentUser}}
-        <form action="/hotel/details/{{hotel._id}}" method="post">
+        <form action="/hotel/details/{{hotel.id}}" method="post">
             <textarea name="comment" placeholder="Add comment..."></textarea>
             <br>
             <input type="submit" value="Add Comment">
