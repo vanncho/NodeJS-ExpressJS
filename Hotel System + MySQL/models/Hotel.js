@@ -16,7 +16,7 @@ const Sequelize = require('sequelize');
 
 module.exports = dbConnection => {
 
-    return dbConnection.define('hotels', {
+    let Hotel = dbConnection.define('hotels', {
         id: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -44,6 +44,13 @@ module.exports = dbConnection => {
             allowNull: false
         }
     }, {
-        timestamps: false // resolve the - SequelizeDatabaseError: Unknown column 'createdAt' in 'field list'
+        timestamps: false, // resolve the - SequelizeDatabaseError: Unknown column 'createdAt' in 'field list'
+        // classMethods: {
+        //     associate: function(models){
+        //         Hotel.hasMany(models.Comment);
+        //     }
+        // }
     });
+
+    return Hotel;
 };
