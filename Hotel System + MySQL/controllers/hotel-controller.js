@@ -1,8 +1,6 @@
-//const Comment = require('../models/Comment');
-//const User = require('../models/User');
-const dbConnection = require('../config/database').connectDB();
-const Hotel = require('../models/Hotel')(dbConnection);
-const Comment = require('../models/Comment')(dbConnection);
+const Comment = require('../models/').Comment;
+const Hotel = require('../models/').Hotel;
+const adminId = require('../config/roles').adminRoleId;
 
 module.exports = {
 
@@ -22,7 +20,7 @@ module.exports = {
             date_added: Date.now()
         });
 
-        hotel.save().then((savedHotel) => {
+        hotel.save().then(() => {
 
             res.redirect('/');
 
@@ -38,10 +36,6 @@ module.exports = {
 
             res.render('hotel/list', {hotels});
 
-            for (let hotel of hotels) {
-                console.log(hotel.dataValues);
-            }
-
         }).catch((err) => {
             console.log(err);
             return;
@@ -50,32 +44,31 @@ module.exports = {
     detailsGet: (req, res) => {
 
         let hotelId = req.params.hotelId;
-
-        let user = req.user.dataValues;
+        let user = req.user;
         let isAdmin = false;
 
         if (user) {
-            isAdmin = user.is_admin;
+
+            let userRolesArray = user.dataValues.roles;
+
+            for(let role of userRolesArray) {
+
+                if (adminId === role.dataValues.id) {
+                    isAdmin = true;
+                    break;
+                }
+            }
         }
 
-        Hotel.findById(hotelId).then((hotel) => {
+        Hotel.findById(hotelId, {
+            include:[
+                {
+                    model: Comment,
+                    as: 'comments'
+                }]
+        }).then((hotel) => {
 
-            //let commensIds = hotel.comments;
-            let comments = [];
-
-            // for (let comId of commensIds) {
-            //
-            //     Comment.findById(comId).then((foundComment) => {
-            //
-            //         let commentText = foundComment.text;
-            //         let commentId = foundComment._id;
-            //
-            //         // User.findById(foundComment.user).then((foundUser) => {
-            //         //
-            //         //     comments.push({text: commentText, id: commentId, hotelId: hotel._id, user: foundUser.username});
-            //         // });
-            //     });
-            // }
+            let comments = hotel.dataValues.comments;
 
             res.render('hotel/details', {hotel, comments, isAdmin});
 
@@ -87,29 +80,21 @@ module.exports = {
     detailsPost: (req, res) => {
 
         let userId = req.user.dataValues.id;
+        let username = req.user.dataValues.username;
         let hotelId = req.params.hotelId;
         let commentText = req.body.comment;
 
-        Hotel.findById(hotelId).then((hotel) => {
+        Hotel.findById(hotelId).then(() => {
 
             const comment = Comment.build({
                 text: commentText,
-                user_id: userId,
-                hotel_id: hotelId
+                userId: userId,
+                username: username,
+                hotelId: hotelId
             });
 
-            comment.save().then((savedComment) => {
-
-                // if (!hotel.comments) {
-                //     hotel.comments = [];
-                // }
-                //
-                // hotel.comments.push(savedComment.id);
-                // hotel.save().then(() => {
-                //
-                //
-                // });
-            })
+            comment.save().then(() => {
+            });
         }).catch((err) => {
             console.log(err);
             return;

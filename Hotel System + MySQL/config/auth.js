@@ -1,6 +1,8 @@
+const adminId = require('../config/roles').adminRoleId;
+
 module.exports = {
 
-    isAuthed: (req, res, next) => {
+    isAuthen: (req, res, next) => {
 
         if (req.isAuthenticated()) {
 
@@ -10,9 +12,20 @@ module.exports = {
             res.redirect('/login');
         }
     },
-    hasRole: (role) => (req, res, next) => {
+    hasRole: () => (req, res, next) => {
 
-        if (req.isAuthenticated() && req.user.roles.indexOf(role) > -1) {
+        let isAdmin = false;
+        let userRolesArray = req.user.dataValues.roles;
+
+        for(let role of userRolesArray) {
+
+            if (adminId === role.dataValues.id) {
+                isAdmin = true;
+                break;
+            }
+        }
+
+        if (req.isAuthenticated() && isAdmin) {
 
             next();
         } else {

@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalPassport = require('passport-local');
-const dbConnection = require('../config/database').connectDB();
-const User = require('../models/User')(dbConnection);
+const User = require('../models').User;
+const Role = require('../models').Role;
 
 module.exports = () => {
     passport.use(new LocalPassport((username, password, done) => {
@@ -20,7 +20,13 @@ module.exports = () => {
 
     passport.deserializeUser((id, done) => {
 
-        User.findById(id).then(user => {
+        User.findById(id, {
+            include:[
+                {
+                    model: Role,
+                    through: { attributes: ['role'] }
+                }]
+        }).then(user => {
             if (!user) return done(null, false);
             return done(null, user);
         });

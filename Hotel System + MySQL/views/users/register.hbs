@@ -1,15 +1,25 @@
-<form action="/register" method="POST">
-    <label for="name">Username:</label>
-    <input type="text" name="username"><br>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-sm-offset-0 col-md-6 col-md-offset-4 col-lg-6 col-lg-offset-12">
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input class="form-control" type="text" id="username" name="username" value="{{inputUsername}}"><br>
 
-    <label for="name">Password:</label>
-    <input type="password" name="password"><br>
+                <label for="password">Password:</label>
+                <input class="form-control {{inputError}}" type="password" id="password" name="password"><br>
 
-    <label for="name">First name:</label>
-    <input type="text" name="firstName"><br>
+                <label for="rePassword">Repeat password:</label>
+                <input class="form-control {{inputError}}" type="password" id="rePassword" name="rePassword"><br>
 
-    <label for="name">Last name:</label>
-    <input type="text" name="lastName"><br>
+                <label for="firstName">First name:</label>
+                <input class="form-control" type="text" id="firstName" name="firstName" value="{{inputFirstName}}"><br>
 
-    <input type="submit" value="Register">
-</form>
+                <label for="lastName">Last name:</label>
+                <input class="form-control" type="text" id="lastName" name="lastName" value="{{inputLastName}}"><br>
+            </div>
+            <div class="form-group">
+                <input  class="btn btn-success" type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+</div>

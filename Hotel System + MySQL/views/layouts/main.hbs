@@ -3,43 +3,74 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hotel System</title>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link href="/css/site.css" type="text/css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <ul class="menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/hotel/list">Hotels</a></li>
-                {{#if currentUser}}
-                    <li><a href="/hotel/add">Add Hotel</a></li>
-                <li>
-                    <form id="logout-form" action="/logout" method="post"></form>
-                    <a href="javascript:document.getElementById('logout-form').submit()">Logout</a>
+<div class="container">
+
+    <nav class="navbar navbar-expand-sm" id="navigation">
+
+        <a class="navbar-brand" href="/">Hotel System</a>
+
+        <div class="navbar-collapse collapse justify-content-between" >
+            <ul class="navbar-nav mr-aut">
+                <li class="nav-item">
+                    <a class="nav-link" href="/hotel/list">Hotels</a>
                 </li>
-                    <li>[ {{currentUser.username}} ]</li>
-                    <form action="/profile" method="post">
-                        <input type="text" name="username" placeholder="search for user">
-                        <input type="submit" value="Search">
-                    </form>
-                {{else}}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
+                {{#if currentUser}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hotel/add">Add Hotel</a>
+                    </li>
                 {{/if}}
             </ul>
-        </header>
-        <main>
-            {{#if globalError}}
-            <span>{{globalError}}</span>
-            {{/if}}
-            {{#if data}}
-                <h2 class="error">{{data.error}}</h2>
-            {{/if}}
-            {{{body}}}
-        </main>
-    </div>
+
+            <ul class="navbar-nav">
+                {{#if currentUser}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            [ {{currentUser.username}} ]
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <ul>
+                                <li class="nav-item remstyle">
+                                    <a class="nav-link" href="/profile/{{currentUser.id}}">My profile</a>
+                                </li>
+                                <li class="nav-item remstyle">
+                                    <form id="logout-form" action="/logout" method="post"></form>
+                                    <a class="nav-link" href="javascript:document.getElementById('logout-form').submit()">Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                {{/if}}
+            </ul>
+
+        </div>
+    </nav>
+
+    <main>
+        {{#if globalError}}
+            <span class="error-red">{{globalError}}</span>
+        {{/if}}
+        {{#if data}}
+            <h2 class="error">{{data.error}}</h2>
+        {{/if}}
+        {{{body}}}
+    </main>
+</div>
 </body>
 
 </html>

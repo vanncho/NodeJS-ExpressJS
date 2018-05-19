@@ -2,7 +2,7 @@
     <div>
         <p>{{hotel.title}}</p>
         <p>{{hotel.location}}</p>
-        <img src="{{hotel.image_url}}" alt="hotel image">
+        <img class="hotel-image-list" src="{{hotel.image_url}}" alt="hotel image">
         <p>{{hotel.description}}</p>
     </div>
     <br>
@@ -21,13 +21,13 @@
         {{#if isAdmin}}
             {{#each comments}}
                 <p>{{this.text}}</p>
-                <small>{{this.user}}</small>
+                <small>{{this.username}}</small>
                 <a href="/comment/delete?commentId={{this.id}}&hotelId={{this.hotelId}}">DELETE</a>
             {{/each}}
         {{else}}
             {{#each comments}}
                 <p>{{this.text}}</p>
-                <small>{{this.user}}</small>
+                <small>{{this.username}}</small>
             {{/each}}
         {{/if}}
     </div>

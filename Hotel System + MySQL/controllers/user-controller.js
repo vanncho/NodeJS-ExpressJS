@@ -1,55 +1,105 @@
 const encryption = require('../util/encryption');
-const dbConnection = require('../config/database').connectDB();
-const User = require('../models/User')(dbConnection);
 
-//const Comment = require('../models/Comment');
-//const Hotel = require('../models/Hotel');
+const User = require('../models').User;
+const Role = require('../models').Role;
+const Comment = require('../models/').Comment;
+const adminId = require('../config/roles').adminRoleId;
+const userId = require('../config/roles').userRoleId;
 
 module.exports = {
 
     registerGet: (req, res) => {
 
+        Role.count().then((rows) => {
+
+            if (rows === 0) {
+                const roleAdmin = Role.build({
+                    role: 'ADMIN'
+                });
+                const roleUser = Role.build({
+                    role: 'USER'
+                });
+
+                roleAdmin.save().then().catch(e => {
+                    console.log(e);
+                });
+
+                roleUser.save().then().catch(e => {
+                    console.log(e);
+                });
+            }
+        });
+
         res.render('users/register');
     },
     registerPost: (req, res) => {
 
+        let inputError = 'inputError';
+        let inputUsername;
+        let inputFirstName;
+        let inputLastName;
         const reqUser = req.body;
-        const salt = encryption.generateSalt();
-        const hashedPass = encryption.generateHashedPassword(salt, reqUser.password);
 
         try {
+
+            inputUsername = reqUser.username;
+            inputFirstName = reqUser.firstName;
+            inputLastName = reqUser.lastName;
 
             if (reqUser.password === '' || reqUser.password.match(/(\s)/)) {
                 throw new Error('Password must not be empty or contains spaces!');
             }
 
-            const user = User.build({
-                username: reqUser.username,
-                hashed_pass: hashedPass,
-                salt: salt,
-                firstName: reqUser.firstName,
-                lastName: reqUser.lastName
-            });
+            if (reqUser.password !== reqUser.rePassword) {
+                throw new Error('Password and repeat password do not match!');
+            }
 
-            user.save().then((savedUser) => {
+            encryption.generateHashedPassword(reqUser.password).then((hashedPass) => {
 
-                req.logIn(savedUser, (err, user) => {
-
-                    if (err) {
-                        res.locals.globalError = err;
-                        res.render('users/register', user);
-
-                    } else {
-                        res.redirect('/');
-                    }
+                const user = User.build({
+                    username: reqUser.username,
+                    password: hashedPass,
+                    firstName: reqUser.firstName,
+                    lastName: reqUser.lastName
                 });
+
+                User.count().then((count) => {
+
+                    let setRoleId = userId;
+
+                    if (count === 0) {
+                        setRoleId = adminId;
+                    }
+
+                    Role.findById(setRoleId).then(role => {
+
+                        user.save().then((savedUser) => {
+
+                            savedUser.setRoles(role, {save: false});
+
+                            req.logIn(savedUser, (err, user) => {
+
+                                if (err) {
+                                    res.locals.globalError = err;
+                                    res.render('users/register', user);
+
+                                } else {
+                                    res.redirect('/');
+                                }
+                            });
+                        });
+                    });
+                });
+
+            }).catch((err) => {
+                console.log(err);
             });
 
         } catch (e) {
 
             console.log(e);
             res.locals.globalError = e;
-            res.render('users/register');
+            res.render('users/register', {inputError, inputUsername, inputFirstName, inputLastName});
         }
     },
     logout: (req, res) => {
@@ -60,32 +110,6 @@ module.exports = {
     loginGet: (req, res) => {
 
         res.render('users/login');
-
-        // TEST
-        // dbConnection.query('SELECT * FROM users', { model: User }).then(users => {
-        //
-        //             console.log(users.length);
-        //
-        //             for (let user of users) {
-        //                 console.log(user.dataValues);
-        //             }
-        //
-        //         }).catch(err => {
-        //             console.log(err);
-        //         });
-
-        //User.findAll({where: {id: 1}}).then(users => {
-        // User.findAll().then((users) => {
-        //
-        //     console.log(users.length);
-        //
-        //     for (let user of users) {
-        //         console.log(user.dataValues);
-        //     }
-        //
-        // }).catch(err => {
-        //     console.log(err);
-        // });
     },
     loginPost: async (req, res) => {
 
@@ -97,24 +121,28 @@ module.exports = {
 
             if (!user) {
 
-                errorHandler('Invalid user data');
+                errorHandler('No user found!');
                 return;
             }
 
-            // if (!dbConnection.authenticate(reqUser.password)) {
-            //
-            //     errorHandler('Invalid user data');
-            //     return;
-            // }
+            encryption.verifyLoginPassword(reqUser.password, user.dataValues.password).then((verified) => {
 
-            req.logIn(user, (err, user) => {
+                if (verified) {
+                    req.logIn(user, (err, user) => {
 
-                if (err) {
-                    errorHandler(err);
+                        if (err) {
+                            errorHandler(err);
+                        } else {
+                            res.redirect('/');
+                        }
+                    });
                 } else {
-                    res.redirect('/');
+                    errorHandler('Invalid username or password!');
                 }
+            }).catch((err) => {
+                console.log(err);
             });
+
         } catch (e) {
             errorHandler(e);
         }
@@ -127,35 +155,16 @@ module.exports = {
     },
     profileGet: (req, res) => {
 
-        let username = req.params.username;
+        let userId = req.params.id;
 
-        User.findOne({username: username}).then((user) => {
+        User.findById(userId).then((foundUser) => {
 
-            let comments = [];
+            let username = foundUser.dataValues.username;
 
-            Comment.find({user: user._id}).then((foundComments) => {
+            Comment.findAll({where: {userId: userId}}).then((foundComments) => {
 
-                for (let comment of foundComments) {
-                    comments.push(comment);
-                }
-
-                // HOTELS NOT SHOWING DUE DB IMPLEMENTATION ISSUE
-
-                res.render('users/profile', {user, comments});
+                res.render('users/profile', {username, foundComments});
             });
-        });
-    },
-    profilePost: (req, res) => {
-
-        let username = req.body.username;
-
-        User.findOne({username: username}).then((user) => {
-
-            if (!user) {
-                return res.redirect(`/?error=User "${username}" not exist.`);
-            }
-
-            res.redirect(`profile/${username}`);
         });
     }
 };

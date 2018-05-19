@@ -1,7 +1,14 @@
 module.exports = {
     development: {
         port: process.env.PORT || 3000,
-        dbPath: 'mongodb://localhost:27017/hotel_system'
+        database: {
+            host: 'localhost',
+            databaseName: 'hotelsystem',
+            databaseLogin: 'root',
+            databasePass: '1234',
+            databaseDialect: 'mysql',
+            databasePort: 3306
+        }
     },
     production: {}
 };

@@ -1,4 +1,4 @@
-const Comment = require('../models/Comment');
+const Comment = require('../models/').Comment;
 
 module.exports = {
 
@@ -7,9 +7,13 @@ module.exports = {
         let commentId = req.query.commentId;
         let hotelId = req.query.hotelId;
 
-        Comment.remove({_id: commentId}).then(() =>{
-        });
+        Comment.destroy({where: {id: commentId}}).then(() => {
 
-        res.redirect(`/hotel/details/${hotelId}`);
+            res.redirect(`/hotel/details/${hotelId}`);
+
+        }).catch((err) => {
+            console.log(err);
+            return;
+        });
     }
 };

@@ -1,56 +1,39 @@
-// const mongoose = require('mongoose');
-//
-// const hotelSchema = new mongoose.Schema({
-//
-//     title: { type: mongoose.Schema.Types.String, required: true, unique: true },
-//     description: { type: mongoose.Schema.Types.String, required: true },
-//     location: { type: mongoose.Schema.Types.String, required: true },
-//     imageUrl: { type: mongoose.Schema.Types.String, required: true },
-//     dateAdded: { type: mongoose.Schema.Types.Date, required: true},
-//     comments: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Comment' } ]
-// });
-//
-// const Hotel = mongoose.model('Hotel', hotelSchema);
+module.exports = (sequelize, DataTypes) => {
 
-const Sequelize = require('sequelize');
-
-module.exports = dbConnection => {
-
-    let Hotel = dbConnection.define('hotels', {
+    let Hotel = sequelize.define('hotels', {
         id: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
         title: {
-            type: Sequelize.STRING,
-            allowNull: true
+            type: DataTypes.STRING,
+            allowNull: false
         },
         description: {
-            type: Sequelize.STRING,
-            allowNull: true
+            type: DataTypes.STRING,
+            allowNull: false
         },
         location: {
-            type: Sequelize.STRING,
-            allowNull: true
+            type: DataTypes.STRING,
+            allowNull: false
         },
         image_url: {
-            type: Sequelize.STRING,
-            allowNull: true
+            type: DataTypes.STRING,
+            allowNull: false
         },
         date_added: {
-            type: Sequelize.DATEONLY,
+            type: DataTypes.DATEONLY,
             allowNull: false
         }
     }, {
         timestamps: false, // resolve the - SequelizeDatabaseError: Unknown column 'createdAt' in 'field list'
-        // classMethods: {
-        //     associate: function(models){
-        //         Hotel.hasMany(models.Comment);
-        //     }
-        // }
     });
+
+    Hotel.associate = function(models) {
+        models.Hotel.hasMany(models.Comment);
+    };
 
     return Hotel;
 };

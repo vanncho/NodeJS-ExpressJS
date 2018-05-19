@@ -3,25 +3,28 @@
     margin: 0
 }
 
-header {
-    margin-bottom: 2em;
-}
-
-.container {
-    padding-left: 25%
-}
-
-.menu {
-    list-style-type: none;
+#navigation {
     padding-left: 0;
 }
 
-.menu li {
-    display: inline-block
+#navigation > div > ul.navbar-nav.mr-aut > li > a {
+    color: red;
+    text-transform: uppercase;
 }
 
-.menu li:after {
-    content: "\00a0";
+#navigation > div > ul.navbar-nav.mr-aut > li > a:hover {
+    color: blue;
+    text-transform: uppercase;
+}
+
+#navigation > div > ul.navbar-nav > li > a {
+    color: black;
+    text-transform: lowercase;
+}
+
+#navigation > div > ul.navbar-nav > li > a:hover {
+    color: red;
+    text-transform: lowercase;
 }
 
 .message {
@@ -36,6 +39,30 @@ header {
 .error {
     background: darkred;
 }
+
+.error-red {
+    font-weight: bold;
+    color: red;
+}
+
+.inputError {
+    border-color: red;
+}
+
 .success {
     background: darkgreen;
+}
+
+.hotel-image-list {
+    width: 350px;
+    height: 250px;
+}
+
+.home-heading {
+    text-align: center;
+}
+
+.remstyle {
+    list-style-type: none;
+    padding-left: 10px;
 }

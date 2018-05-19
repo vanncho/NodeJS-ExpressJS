@@ -11,7 +11,7 @@ module.exports = {
         }
 
         res.render('home/index', {data});
-        
+
     },
     about: (req, res) => {
 
