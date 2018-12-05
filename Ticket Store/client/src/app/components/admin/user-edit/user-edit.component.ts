@@ -79,7 +79,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
       this.user['firstName'],
       this.user['lastName'],
       this.user['email'],
-      'ROLE_' + this.currentUserRole,
+      this.currentUserRole,
       this.user['accountLocked']
     );
 

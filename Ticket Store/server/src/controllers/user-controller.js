@@ -144,6 +144,20 @@ module.exports = {
 
             res.status(200).send({ data: user, errors: [] });
         });
+    },
+    editUser: (req, res) => {
+
+        // TODO: update role !
+        const userUpdate = {
+            first_name: req.body.firstName,
+            last_name: req.body.lastName,
+            email: req.body.email
+        };
+
+        User.update(userUpdate, { where: { id: req.body.id }}).then(rows => {
+
+            res.status(200).send({ errors: [] });
+        });
     }
 };
 

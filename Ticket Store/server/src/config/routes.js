@@ -10,6 +10,7 @@ module.exports = (app, sessionChecker) => {
     // ADMIN
     app.get('/api/allUsers', controllers.userController.getAllUsers);
     app.get('/api/edit/:id', controllers.userController.getUserById);
+    app.post('/api/edit', controllers.userController.editUser);
 
     // Roles
     app.get('/api/allRoles', controllers.roleController.getRoles);
