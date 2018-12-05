@@ -1,0 +1,32 @@
+.headText {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+form>div>span>input {
+    width: 30%;
+    float: right;
+}
+
+#showform {
+    display: inline;
+}
+
+#searchBtn {
+    float: right;
+    padding-right: 5px;
+}
+
+.adminUsersAction {
+    display: inline-block;
+}
+
+table.table-striped.table-hover {
+    margin-top: 10px;
+}
+
+#searchCategoryBtn,
+#addCategoryBtn,
+form {
+    display: inline;
+}

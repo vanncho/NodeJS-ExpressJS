@@ -1,0 +1,132 @@
+[2018-12-03T11:00:39.799] [WARN] errors - Email format is not valid!
+[2018-12-03T11:04:05.106] [WARN] register - Email format is not valid!
+[2018-12-03T11:05:02.022] [WARN] register - Email format is not valid! - van_cho@abv
+[2018-12-03T11:05:33.301] [WARN] register - Email format is not valid! - [van_cho@abv]
+[2018-12-03T11:09:44.516] [WARN] register - Email format is not valid! - [van_cho@abv]
+[2018-12-03T11:50:31.841] [WARN] register - Email format is not valid! - [pesho]
+[2018-12-03T11:56:44.616] [WARN] register - Email format is not valid! - [pesho]
+[2018-12-03T13:12:29.789] [WARN] register - Email format is not valid! - [pesho]
+[2018-12-03T13:18:28.701] [WARN] register - Email format is not valid! - [pesho]
+[2018-12-03T13:20:19.771] [WARN] register - Email format is not valid! - [pesho]
+[2018-12-03T13:21:54.085] [WARN] register - Email format is not valid! - [pesho]
+[2018-12-03T13:50:51.920] [WARN] register - Email format is not valid! - [van_cho@abv]
+[2018-12-03T14:01:11.710] [WARN] register - Email format is not valid! - [van_cho@abv]
+[2018-12-03T14:01:29.846] [WARN] register - Email format is not valid! - [van_cho@abv]
+[2018-12-03T14:02:11.207] [WARN] register - Email format is not valid! - [van_cho@abv]
+[2018-12-03T14:04:17.802] [WARN] register - Email format is not valid! - [van_cho@abv]
+[2018-12-03T14:04:50.720] [ERROR] register - { SequelizeValidationError: notNull Violation: user.email cannot be null
+    at Promise.all.then (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\sequelize\lib\instance-validator.js:74:15)
+    at tryCatcher (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\util.js:16:23)
+    at Promise._settlePromiseFromHandler (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:512:31)
+    at Promise._settlePromise (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:569:18)
+    at Promise._settlePromise0 (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:614:10)
+    at Promise._settlePromises (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:694:18)
+    at Promise._fulfill (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:638:18)
+    at PromiseArray._resolve (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise_array.js:126:19)
+    at PromiseArray._promiseFulfilled (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise_array.js:144:14)
+    at Promise._settlePromise (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:574:26)
+    at Promise._settlePromise0 (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:614:10)
+    at Promise._settlePromises (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\promise.js:694:18)
+    at _drainQueueStep (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\async.js:138:12)
+    at _drainQueue (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\async.js:131:9)
+    at Async._drainQueues (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\async.js:147:5)
+    at Immediate.Async.drainQueues (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\bluebird\js\release\async.js:17:14)
+    at runCallback (timers.js:789:20)
+    at tryOnImmediate (timers.js:751:5)
+    at processImmediate [as _immediateCallback] (timers.js:722:5)
+  name: 'SequelizeValidationError',
+  errors: 
+   [ ValidationErrorItem {
+       message: 'user.email cannot be null',
+       type: 'notNull Violation',
+       path: 'email',
+       value: null,
+       origin: 'CORE',
+       instance: [Object],
+       validatorKey: 'is_null',
+       validatorName: null,
+       validatorArgs: [] } ] }
+[2018-12-03T14:18:57.309] [WARN] user-controller - Email format is not valid! - [van_cho@abv]
+[2018-12-03T14:18:57.323] [WARN] user-controller - Incorrect last name. - [Ivanov]
+[2018-12-03T14:19:22.590] [WARN] user-controller - Email format is not valid! - [van_cho@abv]
+[2018-12-03T14:19:22.591] [WARN] user-controller - Incorrect last name. - [Ivanov]
+[2018-12-03T14:20:49.346] [WARN] user-controller - Incorrect first name. - [Ivan]
+[2018-12-03T14:20:49.359] [WARN] user-controller - Incorrect last name. - [Ivanov]
+[2018-12-03T14:22:07.365] [WARN] user-controller - Incorrect first name. - [Ivan]
+[2018-12-03T14:22:07.366] [WARN] user-controller - Incorrect last name. - [Ivanov]
+[2018-12-03T14:23:08.604] [WARN] user-controller - Incorrect first name. - [Ivan]
+[2018-12-03T14:23:08.605] [WARN] user-controller - Incorrect last name. - [Ivanov]
+[2018-12-03T14:23:35.602] [ERROR] user-controller - { SequelizeUniqueConstraintError: Validation error
+    at Query.formatError (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\sequelize\lib\dialects\mysql\query.js:226:16)
+    at Query.handler [as onResult] (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\sequelize\lib\dialects\mysql\query.js:68:23)
+    at Query.execute (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\commands\command.js:30:14)
+    at Connection.handlePacket (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:455:32)
+    at PacketParser.onPacket (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:73:18)
+    at PacketParser.executeStart (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\packet_parser.js:75:16)
+    at Socket.<anonymous> (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:80:31)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at addChunk (_stream_readable.js:263:12)
+    at readableAddChunk (_stream_readable.js:250:11)
+    at Socket.Readable.push (_stream_readable.js:208:10)
+    at TCP.onread (net.js:594:20)
+  name: 'SequelizeUniqueConstraintError',
+  errors: 
+   [ ValidationErrorItem {
+       message: 'email must be unique',
+       type: 'unique violation',
+       path: 'email',
+       value: 'van_cho@abv.bg',
+       origin: 'DB',
+       instance: [Object],
+       validatorKey: 'not_unique',
+       validatorName: null,
+       validatorArgs: [] } ],
+  fields: { email: 'van_cho@abv.bg' },
+  parent: 
+   { Error: Duplicate entry 'van_cho@abv.bg' for key 'email'
+    at Packet.asError (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\packets\packet.js:684:17)
+    at Query.execute (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\commands\command.js:28:26)
+    at Connection.handlePacket (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:455:32)
+    at PacketParser.onPacket (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:73:18)
+    at PacketParser.executeStart (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\packet_parser.js:75:16)
+    at Socket.<anonymous> (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:80:31)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at addChunk (_stream_readable.js:263:12)
+    at readableAddChunk (_stream_readable.js:250:11)
+    at Socket.Readable.push (_stream_readable.js:208:10)
+    at TCP.onread (net.js:594:20)
+     code: 'ER_DUP_ENTRY',
+     errno: 1062,
+     sqlState: '23000',
+     sqlMessage: 'Duplicate entry \'van_cho@abv.bg\' for key \'email\'',
+     sql: 'INSERT INTO `users` (`id`,`email`,`username`,`password`,`first_name`,`last_name`,`account_non_expired`,`account_non_locked`,`credentials_non_expired`) VALUES (DEFAULT,\'van_cho@abv.bg\',\'vancho\',\'$2b$10$/8dQKP6JODLkwrNFJMHFOe.4Bo1cTg3evdP5kjX17b8jIUA8DM9Be\',\'Ivan\',\'Ivanov\',true,true,true);' },
+  original: 
+   { Error: Duplicate entry 'van_cho@abv.bg' for key 'email'
+    at Packet.asError (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\packets\packet.js:684:17)
+    at Query.execute (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\commands\command.js:28:26)
+    at Connection.handlePacket (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:455:32)
+    at PacketParser.onPacket (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:73:18)
+    at PacketParser.executeStart (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\packet_parser.js:75:16)
+    at Socket.<anonymous> (C:\Users\Ivan\Desktop\Ticket Store\server\node_modules\mysql2\lib\connection.js:80:31)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at addChunk (_stream_readable.js:263:12)
+    at readableAddChunk (_stream_readable.js:250:11)
+    at Socket.Readable.push (_stream_readable.js:208:10)
+    at TCP.onread (net.js:594:20)
+     code: 'ER_DUP_ENTRY',
+     errno: 1062,
+     sqlState: '23000',
+     sqlMessage: 'Duplicate entry \'van_cho@abv.bg\' for key \'email\'',
+     sql: 'INSERT INTO `users` (`id`,`email`,`username`,`password`,`first_name`,`last_name`,`account_non_expired`,`account_non_locked`,`credentials_non_expired`) VALUES (DEFAULT,\'van_cho@abv.bg\',\'vancho\',\'$2b$10$/8dQKP6JODLkwrNFJMHFOe.4Bo1cTg3evdP5kjX17b8jIUA8DM9Be\',\'Ivan\',\'Ivanov\',true,true,true);' },
+  sql: 'INSERT INTO `users` (`id`,`email`,`username`,`password`,`first_name`,`last_name`,`account_non_expired`,`account_non_locked`,`credentials_non_expired`) VALUES (DEFAULT,\'van_cho@abv.bg\',\'vancho\',\'$2b$10$/8dQKP6JODLkwrNFJMHFOe.4Bo1cTg3evdP5kjX17b8jIUA8DM9Be\',\'Ivan\',\'Ivanov\',true,true,true);' }
+[2018-12-03T14:32:27.448] [WARN] user-controller - Email format is not valid! - [vancho]
+[2018-12-03T14:33:53.671] [WARN] user-controller - Email format is not valid! - [vancho]
+[2018-12-03T14:34:29.502] [WARN] user-controller - Email format is not valid! - [vancho]
+[2018-12-03T14:34:49.845] [WARN] user-controller - Email format is not valid! - [vancho]
+[2018-12-03T14:37:35.433] [WARN] user-controller - Email format is not valid! - [vancho]
+[2018-12-03T14:40:45.121] [WARN] user-controller - Email format is not valid! - [vancho]
+[2018-12-03T14:41:29.357] [WARN] user-controller - Email format is not valid! - [vancho]
+[2018-12-03T14:42:14.432] [WARN] user-controller - Email format is not valid! - [vancho]

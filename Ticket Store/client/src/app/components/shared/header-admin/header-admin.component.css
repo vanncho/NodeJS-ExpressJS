@@ -1,0 +1,16 @@
+.navbar.navbar-default {
+    border-color: black;
+}
+
+.container-fluid {
+    background-color: #cccccc;
+}
+
+.fas.fa-home {
+    font-size: 15px;
+    color: black;
+}
+
+header>nav>div>ul>li>a {
+    color: black;
+}

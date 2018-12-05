@@ -1,0 +1,23 @@
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" [routerLink]="['/user/home']" (click)="showUserMenu()">Ticket Store</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a class="nav-link" [routerLink]="['/admin/home']"><i class="fas fa-home"></i></a></li>
+                <li><a class="dropdown-toggle" data-toggle="dropdown" [routerLink]="['admin/users']">User Management</a></li>
+                <li><a class="dropdown-toggle" data-toggle="dropdown" [routerLink]="['admin/events']">Event Management</a></li>
+                <li><a class="dropdown-toggle" data-toggle="dropdown" [routerLink]="['admin/categories']">Category Management</a></li>
+            </ul>
+            <ul class=" nav navbar-nav navbar-right ">
+                <li *ngIf="showHideNavigation() ">
+                    <a class="nav-link " [routerLink]="[ '/logout'] ">Logout</a>
+                </li>
+                <li id="show-user-names " *ngIf="showHideNavigation() ">
+                    <a>Welcome, {{username}}!</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,9 @@
+.container-fluid {
+    background-color: gray;
+}
+
+#adminWelcome {
+    text-align: center;
+    font-size: 150px;
+    color: #e2e2e2;
+}

@@ -1,0 +1,40 @@
+<header>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" [routerLink]="['user/home']">Ticket Store</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a [routerLink]="['/home']">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">Events
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a [routerLink]="['/events']">All Events</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#/search"><span class="glyphicon glyphicon-search"></span> Search</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="!showHideNavigation()">
+                    <a [routerLink]="['/register']"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                </li>
+                <li *ngIf="!showHideNavigation()">
+                    <a [routerLink]="['/login']"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                </li>
+                <li *ngIf="isAdmin()">
+                    <a [routerLink]="['/admin/home']" (click)="getAdminPannel()">Admin Panel</a>
+                </li>
+                <li *ngIf="showHideNavigation()">
+                    <a class="nav-link" [routerLink]="['/logout']">Logout</a>
+                </li>
+                <li id="show-user-names" *ngIf="showHideNavigation()">
+                    <a>Welcome, {{username}}!</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

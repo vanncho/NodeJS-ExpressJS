@@ -1,0 +1,51 @@
+.headText {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+form>div>span>input {
+    width: 30%;
+    float: right;
+}
+
+#showform {
+    display: inline;
+}
+
+#searchBtn {
+    float: right;
+    padding-right: 5px;
+}
+
+#searchEventBtn,
+#addEventBtn,
+form {
+    display: inline;
+}
+
+table {
+    margin-top: 10px;
+}
+
+#btnsAction {
+    width: 270px;
+}
+
+.glyphicon.glyphicon-eye-open {
+    border: 1px solid darkgray;
+    border-radius: 15%;
+    background-color: lightgray;
+    padding: 5px;
+}
+
+.glyphicon.glyphicon-eye-open:hover {
+    cursor: pointer;
+}
+
+.hiddenRow {
+    display: none;
+}
+
+.showedRow {
+    display: contents;
+}

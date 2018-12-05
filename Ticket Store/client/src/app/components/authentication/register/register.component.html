@@ -1,0 +1,59 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 col-xs-6 jumbotron" id="modif-jumbotron">
+
+            <form [formGroup]="rForm" (ngSubmit)="register()">
+                <h2 class="glyphicon glyphicon-log-in"> User registration</h2>
+                <br>
+                <br>
+
+                <div class="form-group col-md-12">
+                    <label for="username" class="form-control-label">Username</label>
+                    <input formControlName="username" class="form-control" type="text">
+                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['username'].valid && rForm.controls['username'].touched">Incorrect username.</div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="password" class="form-control-label">Password</label>
+                    <input formControlName="password" class="form-control" type="password">
+                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['password'].valid && rForm.controls['password'].touched">Password can't be less than 3 symbols long and can only contains letters and digits.</div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="confirmPassword" class="form-control-label">Repeat Password</label>
+                    <input formControlName="confirmPassword" class="form-control" type="password">
+                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['confirmPassword'].valid && rForm.controls['confirmPassword'].touched">Confirm password can't be less than 3 symbols long and can only contains letters and digits.</div>
+
+                    <div class="alert" [@alertAnim] *ngIf="rForm.controls['password'].value != rForm.controls['confirmPassword'].value && rForm.controls['confirmPassword'].value != '' ">
+                        Confirm password does not match password!
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="firstName" class="form-control-label">First Name</label>
+                    <input formControlName="firstName" class="form-control" type="text">
+                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['firstName'].valid && rForm.controls['firstName'].touched">Incorrect first name.</div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="lastName" class="form-control-label">Last Name</label>
+                    <input formControlName="lastName" class="form-control" type="text">
+                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['lastName'].valid && rForm.controls['lastName'].touched">Incorrect last name.</div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="email" class="form-control-label">Email</label>
+                    <input formControlName="email" class="form-control" type="email">
+                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['email'].valid && rForm.controls['email'].touched">Incorrect email address.</div>
+                </div>
+
+                <div class="control-group">
+                    <input type="submit" class="btn btn-default" id="regBtn" value="Register" [disabled]="!rForm.valid">
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>

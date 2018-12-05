@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-xs-8">
+            <div class="form-group row">
+                <h2 class="display-3">Edit User</h2>
+            </div>
+            <br>
+            <form (ngSubmit)="updateUser()" id="userEditForm" #editUserForm="ngForm">
+
+                <div class="form-group row required">
+                    <label class="form-control-label" for="username">Username</label>
+                    <input class="form-control" pattern="^[a-zA-Z0-9]+$" name="username" required="required" [(ngModel)]="user.username" [ngModelOptions]="{standalone: true}" #username="ngModel" />
+                    <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
+                        Incorrect username.
+                    </div>
+                </div>
+                <div class="form-group row required">
+                    <label class="form-control-label" for="firstName">First Name</label>
+                    <input id="firstName" pattern="^([A-Z]+[a-z]+)$" name="firstName" class="form-control" required="required" [(ngModel)]="user.firstName" [ngModelOptions]="{standalone: true}" #firstName="ngModel" />
+                    <div [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger">
+                        Incorrect first name.
+                    </div>
+                </div>
+                <div class="form-group row required">
+                    <label class="form-control-label" for="lastName">Last Name</label>
+                    <input id="lastName" pattern="^([A-Z]+[a-z]+)$" name="lastName" class="form-control" required="required" [(ngModel)]="user.lastName" [ngModelOptions]="{standalone: true}" #lastName="ngModel" />
+                    <div [hidden]="lastName.valid || lastName.pristine" class="alert alert-danger">
+                        Incorrect last name.
+                    </div>
+                </div>
+                <div class="form-group row required">
+                    <label class="form-control-label" for="email">Email</label>
+                    <input id="email" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control" required="required" name="email" placeholder="email" [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" #email="ngModel" />
+                    <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+                        Incorrect email address.
+                    </div>
+                </div>
+                <div class="form-group row required">
+                    <label for="role">Change Role To:</label>
+                    <select [compareWith]="compareRoles" class="form-control" [(ngModel)]="currentUserRole" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let role of user.roles" [ngValue]="role.role">{{role.role}}</option>
+                    </select>
+                </div>
+                <br>
+                <br>
+                <div class="form-group row">
+                    <input type="submit" class="btn btn-default" value="Edit" />
+                    <a class="btn btn-default" [routerLink]="['/admin/users']">Cancel</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

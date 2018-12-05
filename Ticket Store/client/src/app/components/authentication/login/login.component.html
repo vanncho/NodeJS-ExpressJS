@@ -1,0 +1,37 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 col-xs-6">
+            <div class="jumbotron" id="modif-jumbotron">
+                <form [formGroup]="lForm" (ngSubmit)="login()">
+                    <h2 class="glyphicon glyphicon-log-in"> User login</h2>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <label for="username" class="form-control-label">Username</label>
+                        <input formControlName="username" class="form-control" type="text">
+                        <div class="alert" [@alertAnim] *ngIf="!lForm.controls['username'].valid && lForm.controls['username'].touched">Incorrect username.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-control-label">Password</label>
+                        <input formControlName="password" class="form-control" type="password">
+                        <div class="alert" [@alertAnim] *ngIf="!lForm.controls['password'].valid && lForm.controls['password'].touched">Password can't be less than 3 symbols long and can only contains letters and digits.</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" class="btn btn-default" value="Login" [disabled]="!lForm.valid" />
+                            <span id="regSpan" class="nav navbar-nav navbar-right">
+                            <span id="regSpanText">Don't have an account? </span>
+                            <a [routerLink]="['/register']">
+                                <span class="nav-item glyphicon glyphicon-user"></span> Register</a>
+                            </span>
+                        </div>
+                    </div>
+                </form> <a class="btn btn-primary" id="fbBtn" href="#/loginF">Login with Facebook</a>
+            </div>
+        </div>
+    </div>
+
+</div>

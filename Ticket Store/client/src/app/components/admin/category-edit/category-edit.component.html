@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-xs-8">
+            <div class="form-group row">
+                <h2 class="display-3">Edit Category</h2>
+            </div>
+            <br>
+            <form (ngSubmit)="editCategory()" method="post">
+
+                <div class="form-group row required">
+                    <label class="form-control-label" for="name">Category Name</label>
+                    <input id="name" pattern="^([A-Za-z]+(\s)*[A-Za-z]*)$" name="name" class="form-control" [(ngModel)]="category.name" [ngModelOptions]="{standalone: true}" #name="ngModel" required="required" />
+                    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                        Incorrect category name.
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group row">
+                    <input type="submit" class="btn btn-default" value="Edit" />
+                    <a class="btn btn-default" [routerLink]="['/admin/categories']">Cancel</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

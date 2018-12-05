@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-sm-8 col-xs-8">
+            <div class="form-group row">
+                <h2 class="display-3">Add Ticket</h2>
+            </div>
+            <br>
+            <div *ngIf="!price; else forminfo">
+                <form [formGroup]="rForm" (ngSubmit)="addTicket()">
+
+                    <div class="form-group row required">
+                        <label class="form-control-label" for="priceCategory">Price Category</label>
+                        <input formControlName="priceCategory" class="form-control" type="text">
+                        <div class="alert" [@alertAnim] *ngIf="!rForm.controls['priceCategory'].valid && rForm.controls['priceCategory'].touched">Required! Minimal length of 3 characters.</div>
+                    </div>
+
+                    <div class="form-group row required">
+                        <label class="form-control-label" for="price">Price</label>
+                        <input formControlName="price" class="form-control" type="number">
+                        <div class="alert" [@alertAnim] *ngIf="!rForm.controls['price'].valid && rForm.controls['price'].touched">Required! Price must be greater than 0.</div>
+                    </div>
+
+                    <div class="form-group row required">
+                        <label class="form-control-label" for="ticketsCount">Tickets Count</label>
+                        <input formControlName="ticketsCount" class="form-control" type="number">
+                        <div class="alert" [@alertAnim] *ngIf="!rForm.controls['ticketsCount'].valid && rForm.controls['ticketsCount'].touched">Required! Ticket count must be greater than 0.</div>
+                    </div>
+
+                    <br>
+                    <br>
+                    <div class="form-group row">
+                        <input type="submit" class="btn btn-default" value="Add" [disabled]="rForm.invalid">
+                        <a class="btn btn-default" [routerLink]="['/admin/events']">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
