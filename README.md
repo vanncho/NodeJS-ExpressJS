@@ -10,7 +10,7 @@ NodeJS and ExpressJS projects
 # 3. Messenger
 - Server: ExpressJS + + MongoDB + Mongoose + Pug (View Templating engine)
 
-# 4. Ticket Store
+# 4. Ticket Store - still in progress...
 - Server: ExpressJS + MySQL + Sequelize ORM Framework
 - Client: Angular
 - This project is with original Java with Spring Boot Server rewritten to Node.JS Server with Express.JS.
