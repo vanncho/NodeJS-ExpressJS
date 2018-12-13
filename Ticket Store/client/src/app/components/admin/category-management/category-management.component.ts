@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/view/category.model';
@@ -21,8 +21,10 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   constructor(private categoryService: CategoryService,
               private router: Router,
-              private toastr: ToastsManager, vcr: ViewContainerRef) {
-    this.toastr.setRootViewContainerRef(vcr);
+              private toastr: ToastrService,
+              // vcr: ViewContainerRef
+              ) {
+    // this.toastr.setRootViewContainerRef(vcr);
     this.searchedCategory = '';
   }
 

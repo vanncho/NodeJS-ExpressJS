@@ -7,11 +7,13 @@ module.exports = (app, sessionChecker) => {
     app.post('/api/login', controllers.userController.userLogin);
     app.get('/api/logout', controllers.userController.userLogout);
 
-    // ADMIN
-    app.get('/api/allUsers', controllers.userController.getAllUsers);
-    app.get('/api/edit/:id', controllers.userController.getUserById);
-    app.post('/api/edit', controllers.userController.editUser);
+    // ADMIN - USER
+    app.get('/api/allUsers', sessionChecker, controllers.userController.getAllUsers);
+    app.post('/api/allUsers', sessionChecker, controllers.userController.getAllUsers);
+    app.get('/api/edit/:id', sessionChecker, controllers.userController.getUserById);
+    app.post('/api/edit', sessionChecker, controllers.userController.editUser);
+    app.post('/api/lockUnlock', sessionChecker, controllers.userController.lockUnlockUser);
 
-    // Roles
-    app.get('/api/allRoles', controllers.roleController.getRoles);
+    // ADMIN - ROLE
+    app.get('/api/allRoles', sessionChecker, controllers.roleController.getRoles);
 }

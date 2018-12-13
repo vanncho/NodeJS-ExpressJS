@@ -3,6 +3,7 @@ const log4js = require('log4js');
 
 const User = require('../models/').User;
 const Role = require('../models/').Role;
+// const UserRole = require('../models/').UserRole;
 
 const adminId = require('../config/roles').adminRoleId;
 const userId = require('../config/roles').userRoleId;
@@ -35,6 +36,9 @@ module.exports = {
                     account_non_locked: req.body.account_non_locked,
                     credentials_non_expired: req.body.credentials_non_expired
                 });
+                // }, {
+                //     include: [{ model: Role, as: 'role'}]
+                // });
     
                 User.count().then((count) => {
 
@@ -48,7 +52,7 @@ module.exports = {
 
                         user.save().then((savedUser) => {
 
-                            savedUser.setRoles(role, {save: false});
+                            savedUser.setRole(role);
                             res.status(200).send({ data: 'Success', errors: [] });
                             
                         }).catch(err => {
@@ -77,32 +81,32 @@ module.exports = {
 
         try {
 
-            const user = await User.findOne({ where: { username: reqUser.username } });
-            const role = await Role.findOne({ where: { id: user.dataValues.id }, include: [User]});
-            const roleName = role.dataValues.role;
+            User.findOne({ 
+                where: { username: reqUser.username },
+                include: [{ model: Role, as: 'role', required: true }] }).then(user => {
 
-            encryption.comparePasswords(reqUser.password, user.password).then(verified => {
+                encryption.comparePasswords(reqUser.password, user.password).then(verified => {
 
-                if (verified) {
+                    if (verified) {
 
-                    const userDetails = {
-                        userId: user.dataValues.id,
-                        fullName: user.dataValues.first_name + ' ' + user.dataValues.last_name,
-                        role: roleName
-                    };
-
-                    req.logIn(user, function(err) {
-
-                        if (err) { return next(err); }
-
-                        req.session.user = user.dataValues;
-                        res.status(200).send({ data: userDetails, errors: [] });
-                    });
-                } else {
-                    res.status(200).send({ errors: ['Invalid username or password!'] });
-                }
+                        const userDetails = {
+                            userId: user.id,
+                            fullName: user.first_name + ' ' + user.last_name,
+                            role: user.role.role
+                        };
+    
+                        req.logIn(user, function(err) {
+                            console.log(err)
+                            if (err) { return next(err); }
+    
+                            req.session.user = user.dataValues;
+                            res.status(200).send({ data: userDetails, errors: [] });
+                        });
+                    } else {
+                        res.status(200).send({ errors: ['Invalid username or password!'] });
+                    }
+                });
             });
-
 
         } catch (err) {
 
@@ -111,24 +115,44 @@ module.exports = {
         }
     },
     userLogout: (req, res) => {
+        console.log('userLogout')
+        req.session.destroy(() => {
 
-        // req.logout();
-        res.clearCookie('user_sid');
-        req.session.user = undefined;
-        res.status(200).send({ data: 'Logout success', errors: [] });
+            req.logout();
+            console.log('destroy')
+            res.status(200).send({ data: 'Logout success', errors: [] });
+        });
     },
     getAllUsers: (req, res) => {
+        console.log('getAllUsers - REQUEST')
+        const roleFilter = req.body;
 
         User.findAll({ 
             raw: true,
             attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked', Sequelize.literal('role')],
             include: [{
-                model: Role
+                model: Role,
+                as: 'role',
+                where: roleFilter
             }]
         }).then(users => {
 
             res.status(200).send({ data: users, errors: [] });
         });
+        // User.findAll({
+        //     raw: true,
+        //     attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked' ],
+        //     include: [{
+        //         model: Role,
+        //         as: 'R',
+        //         where: { id: R.id }
+        //     }]
+        // }).then(users => {
+        //     res.status(200).send({ data: users, errors: [] });
+        // }).catch(err => {
+        //     console.log('getAllUsers - ERR')
+        //     console.log(err)
+        // });
     },
     getUserById: (req, res) => {
 
@@ -138,7 +162,8 @@ module.exports = {
             raw: true,
             attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked', Sequelize.literal('role')],
             include: [{
-                model: Role
+                model: Role,
+                as: 'role'
             }]
         }).then(user => {
 
@@ -147,14 +172,26 @@ module.exports = {
     },
     editUser: (req, res) => {
 
-        // TODO: update role !
         const userUpdate = {
             first_name: req.body.firstName,
             last_name: req.body.lastName,
-            email: req.body.email
+            email: req.body.email,
+            roleId: req.body.roleId
         };
 
         User.update(userUpdate, { where: { id: req.body.id }}).then(rows => {
+
+            res.status(200).send({ errors: [] });
+        });
+        
+    },
+    lockUnlockUser: (req, res) => {
+
+        const userUpdate = {
+            account_non_locked: req.body.nonLocked
+        };
+
+        User.update(userUpdate, { where: { id: req.body.id } }).then(rows => {
 
             res.status(200).send({ errors: [] });
         });

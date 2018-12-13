@@ -6,7 +6,8 @@ export class UserEditModel {
         public firstName: string,
         public lastName: string,
         public email: string,
-        public role: string,
+        public roleId: number,
+        public roleName: string,
         public accountLocked: boolean
     ) {}
 }

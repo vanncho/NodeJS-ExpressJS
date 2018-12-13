@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { HttpClientService } from './http-client.service';
@@ -29,16 +29,16 @@ export class UserService {
 
     updateUser(user): Observable<Object> {
 
-        return this.httpClientService.post('/api/edit', user, this.authUtil.headersBasic);
+        return this.httpClientService.post('/api/edit', user, this.authUtil.headersBasic());
     }
 
-    disableEnableUser(userId): Observable<Object> {
+    disableEnableUser(userData): Observable<Object> {
 
-        return this.httpClientService.post('/api/lockUnlock', userId, this.authUtil.headersBasic);
+        return this.httpClientService.post('/api/lockUnlock', JSON.stringify(userData), this.authUtil.headersBasic());
     }
 
     searchUsersWithUsernameLike(username): Observable<Object> {
 
-        return this.httpClientService.post('/api/searchUsers', username, this.authUtil.headersBasic);
+        return this.httpClientService.post('/api/searchUsers', username, this.authUtil.headersBasic());
     }
 }

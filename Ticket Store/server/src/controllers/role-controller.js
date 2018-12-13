@@ -28,9 +28,10 @@ module.exports = {
 
         Role.findAll({
             raw: true,
-            attributes: ['role']
+            attributes: ['id', 'role']
+            
         }).then(roles => {
-            console.log(roles);
+
             res.status(200).send({ data: roles, errors: [] });
         });
     }

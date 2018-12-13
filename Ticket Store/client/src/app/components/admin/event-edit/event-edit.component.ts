@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 import { EventService } from '../../../core/services/event.service';
 import { EventEditModel } from '../../../core/models/binding/event-edit.model';
@@ -26,9 +26,11 @@ export class EventEditComponent implements OnInit, OnDestroy {
               private categoryService: CategoryService,
               private route: ActivatedRoute,
               private router: Router,
-              private toastr: ToastsManager, vcr: ViewContainerRef) {
+              private toastr: ToastrService,
+              // vcr: ViewContainerRef
+              ) {
     this.event = new EventEditModel(0, '', '', '', '', '', '', '', 0);
-    this.toastr.setRootViewContainerRef(vcr);
+    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {

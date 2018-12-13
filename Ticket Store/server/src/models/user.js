@@ -43,11 +43,16 @@ module.exports = (sequelize, DataTypes) => {
         }
     },
     {
-        timestamps: false
+        timestamps: false,
+        // paranoid: false,
+        // underscored: true,
+        // freezeTableName: true,
+        // tableName: 'purchase_orders'
     });
 
     User.associate = function(models) {
-        models.User.belongsToMany(models.Role, {through: 'users_roles', timestamps: false});
+        // models.User.belongsToMany(models.Role, {through: 'users_roles', timestamps: false});
+        models.User.belongsTo(models.Role, { foreignKey: 'roleId', as: 'role' })
     };
 
     return User;

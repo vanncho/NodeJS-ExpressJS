@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewContainerRef, trigger, transition, style, animate, keyframes } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastsManager, ToastOptions } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { RegisterModel } from '../../../core/models/binding/register.model';
@@ -32,12 +33,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public registerSuccess: boolean;
 
   constructor(private authentication: AuthenticationService,
-              private toastr: ToastsManager, vcr: ViewContainerRef,
+              private toastr: ToastrService,
+              // vcr: ViewContainerRef,
               private router: Router,
-              private toasterOptions: ToastOptions) {
+              // private toasterOptions: ToastOptions
+              ) {
     this.model = new RegisterModel('', '', '', '', '', '');
-    this.toastr.setRootViewContainerRef(vcr);
-    this.toasterOptions.dismiss = 'click';
+    // this.toastr.setRootViewContainerRef(vcr);
+    // this.toasterOptions.dismiss = 'click';
   }
 
   ngOnInit(): void {

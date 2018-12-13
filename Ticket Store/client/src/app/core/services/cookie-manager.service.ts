@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
+import { HeaderService } from './header.service';
 
 const authtoken = 'authtoken';
 const fullName = 'fullName';
@@ -10,29 +11,31 @@ const showAdminPanel = 'sap';
 @Injectable()
 export class CookieManagerService {
 
-  constructor(private _cookieService: CookieService) { }
+  constructor(private _cookieService: CookieService,
+              private headerService: HeaderService) { }
 
   saveLoginData(data): void {
 
     // this._cookieService.put(authtoken, data.token);
-    this._cookieService.put(fullName, data.fullName);
-    this._cookieService.put(userrole, data.role);
-    this._cookieService.put(userid, data.userId);
-    this._cookieService.put(showAdminPanel, 'false');
+    this.headerService.loggedUserName.next(data.fullName);
+    this._cookieService.set(fullName, data.fullName);
+    this._cookieService.set(userrole, data.role);
+    this._cookieService.set(userid, data.userId);
+    this._cookieService.set(showAdminPanel, 'false');
   }
 
   removeLoginData(): void {
 
     // this._cookieService.remove(authtoken);
-    this._cookieService.remove(fullName);
-    this._cookieService.remove(userrole);
-    this._cookieService.remove(userid);
-    this._cookieService.remove(showAdminPanel);
+    this._cookieService.delete(fullName);
+    this._cookieService.delete(userrole);
+    this._cookieService.delete(userid);
+    this._cookieService.delete(showAdminPanel);
   }
 
   add(key, value): void {
 
-    this._cookieService.put(key, value);
+    this._cookieService.set(key, value);
   }
 
   get(key): string {

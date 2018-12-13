@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ISubscription } from 'rxjs/Subscription';
+
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { CookieManagerService } from '../../../core/services/cookie-manager.service';
-import { AppComponent } from '../../../app.component';
+import { HeaderService } from '../../../core/services/header.service';
 
 import { UserType } from '../../../core/enumerations/user-type.enum';
 
@@ -10,25 +12,31 @@ import { UserType } from '../../../core/enumerations/user-type.enum';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   public admin: boolean;
   public username: string;
+  private loggedUserNameISubscription: ISubscription;
 
   constructor(private authenticationService: AuthenticationService,
               private cookieService: CookieManagerService,
-              private app: AppComponent) {
+              private headerService: HeaderService) {
   }
 
   ngOnInit(): void {
 
-    this.username = this.cookieService.get('fullName');
+    this.loggedUserNameISubscription = this.headerService.loggedUserName.subscribe((userFullname) => {
+      this.username = userFullname;
+    });
+
     this.isAdmin();
-    console.log('HeaderComponent');
-    console.log(this.username);
   }
 
-  private showHideNavigation() {
+  private logout(): void {
+    this.authenticationService.logout();
+  }
+
+  private showHideNavigation(): boolean {
 
     return this.authenticationService.isLoggedIn();
   }
@@ -46,8 +54,17 @@ export class HeaderComponent implements OnInit {
     return this.admin;
   }
 
-  private getAdminPannel(): void {
+  private getAdminPanel(): void {
 
-    this.app.setMenuTo(UserType.ADMIN);
+    this.headerService.menuSwitch.next(UserType.ADMIN);
+  }
+
+  ngOnDestroy(): void {
+
+    if (this.loggedUserNameISubscription) {
+
+      this.loggedUserNameISubscription.unsubscribe();
+    }
   }
 }
+

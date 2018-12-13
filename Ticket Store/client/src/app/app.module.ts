@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { AuthenticationModule } from './components/authentication/authentication.module';
 import { SharedModule } from './components/shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { ToastModule } from 'ng2-toastr/ng2-toastr';
+import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 
 // Components
@@ -23,13 +23,14 @@ import { HomeUserComponent } from './components/user/home-user/home-user.compone
 import { AuthGuard } from './core/guards/auth/auth.guard';
 import { AdminGuard } from './core/guards/admin/admin.guard';
 import { HttpClientService } from './core/services/http-client.service';
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie-service';
 import { CookieManagerService } from './core/services/cookie-manager.service';
 import { UserService } from './core/services/user.service';
 import { RoleService } from './core/services/role.service';
 import { CategoryService } from './core/services/category.service';
 import { EventService } from './core/services/event.service';
 import { TicketService } from './core/services/ticket.service';
+import { HeaderService } from './core/services/header.service';
 
 // Utils
 import { AuthenticationUtility } from './core/utils/authentication.util';
@@ -46,7 +47,7 @@ import { AuthenticationUtility } from './core/utils/authentication.util';
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
-    ToastModule.forRoot()
+    ToastrModule.forRoot()
   ],
   exports: [RouterModule],
   providers: [
@@ -60,7 +61,8 @@ import { AuthenticationUtility } from './core/utils/authentication.util';
     RoleService,
     CategoryService,
     EventService,
-    TicketService
+    TicketService,
+    HeaderService
   ],
   bootstrap: [AppComponent]
 })

@@ -36,11 +36,11 @@ export class AuthenticationUtility {
     const headersObject = {};
 
     headersObject['Content-Type'] = 'application/json';
-    const token = this.cookieService.get('authtoken');
+    // const token = this.cookieService.get('authtoken');
 
-    if (token) {
-      headersObject['Authorization'] = 'Bearer ' + token;
-    }
+    // if (token) {
+    //   headersObject['Authorization'] = 'Bearer ' + token;
+    // }
 
     return new HttpHeaders(headersObject);
 

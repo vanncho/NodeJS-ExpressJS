@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     });
 
-    Role.associate = function (models) {
-        models.Role.belongsToMany(models.User, { through: 'users_roles', timestamps: false });
-    };
+    // Role.associate = function (models) {
+    //     models.Role.hasOne(models.User, { timestamps: false });
+    // };
 
     return Role;
 };

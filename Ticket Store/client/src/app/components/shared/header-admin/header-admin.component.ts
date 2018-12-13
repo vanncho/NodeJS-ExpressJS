@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { CookieManagerService } from '../../../core/services/cookie-manager.service';
-import { AppComponent } from '../../../app.component';
+import { HeaderService } from '../../../core/services/header.service';
 
 import { UserType } from '../../../core/enumerations/user-type.enum';
 
@@ -17,7 +17,7 @@ export class HeaderAdminComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService,
               private cookieService: CookieManagerService,
-              private app: AppComponent) { }
+              private headerService: HeaderService) { }
 
   ngOnInit() {
     this.username = this.cookieService.get('fullName');
@@ -43,6 +43,6 @@ export class HeaderAdminComponent implements OnInit {
 
   showUserMenu() {
 
-    this.app.setMenuTo(UserType.USER);
+    this.headerService.menuSwitch.next(UserType.USER);
   }
 }

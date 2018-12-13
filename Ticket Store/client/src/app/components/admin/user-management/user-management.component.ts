@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { CookieManagerService } from '../../../core/services/cookie-manager.service';
 
 import { UserEditModel } from '../../../core/models/binding/user-edit.model';
 
@@ -26,11 +27,12 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
               private authentication: AuthenticationService,
-              private toastr: ToastsManager,
+              private toastr: ToastrService,
               private router: Router,
-              vcr: ViewContainerRef) {
-    this.users = [];
-    this.toastr.setRootViewContainerRef(vcr);
+              // vcr: ViewContainerRef,
+              private cookie: CookieManagerService) {
+    // this.users = [];
+    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -43,41 +45,51 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.subscriptionGetAllUsers = this.userService.getAllUsers().subscribe((users: any) => {
 
       this.users = Object.values(users.data);
+console.log(this.users)
+      }, error => {
+
+        if (error.status === 401) {
+
+          // this.cookie.removeLoginData();
+          // this.router.navigate(['/login']);
+        }
+    });
+  }
+
+  private getAllUsersByRole(role): void {
+
+    this.subscriptionGetAllUsersByRole = this.userService.getAllUsersByRole(role).subscribe((users: any) => {
+
+      this.users = Object.values(users.data);
 
       }, error => {
 
         if (error.status === 401) {
 
-          this.authentication.logout().subscribe(() => {
-
-            this.router.navigate(['/login']);
-          });
+          this.router.navigate(['/login']);
         }
       });
   }
 
-  private getAllUsersByRole(role): void {
+  private disableEnableUser(event, userId, nonLocked): void {
 
-    this.subscriptionGetAllUsersByRole = this.userService.getAllUsersByRole(role).subscribe((users) => {
-
-      this.users = Object.values(users);
-
-      }, (error) => {
-
-      });
-  }
-
-  private disableEnableUser(event): void {
-
-    const userId = Number(event.target.id);
     const classes = event.target.classList;
 
-    this.subscriptionDisableEnableUser = this.userService.disableEnableUser(userId).subscribe(() => {
+    const userData = {
+      id: userId,
+      nonLocked: nonLocked
+    };
+
+    this.subscriptionDisableEnableUser = this.userService.disableEnableUser(userData).subscribe(() => {
 
       this.changeButton(event, classes);
 
-    }, (error) => {
+      }, error => {
 
+        if (error.status === 401) {
+
+          this.router.navigate(['/login']);
+        }
     });
   }
 

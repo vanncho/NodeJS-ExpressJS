@@ -25,7 +25,7 @@ module.exports = () => {
             include:[
                 {
                     model: Role,
-                    through: { attributes: ['role'] }
+                    as: 'role'
                 }]
         }).then(user => {
             if (!user) return done(null, false);

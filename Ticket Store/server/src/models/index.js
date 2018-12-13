@@ -18,7 +18,7 @@ const sequelize = new Sequelize(env.DB_NAME, env.DB_USER, env.DB_PASS, {
 const models = {
     User: sequelize.import('./user'),
     Role: sequelize.import('./role'),
-    UserRole: sequelize.import('./user-role')
+    // UserRole: sequelize.import('./user-role')
 };
 
 Object.keys(models).forEach((modelName) => {

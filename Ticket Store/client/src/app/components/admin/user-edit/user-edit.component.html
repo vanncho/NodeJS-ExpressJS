@@ -38,7 +38,7 @@
                 <div class="form-group row required">
                     <label for="role">Change Role To:</label>
                     <select [compareWith]="compareRoles" class="form-control" [(ngModel)]="currentUserRole" [ngModelOptions]="{standalone: true}">
-                        <option *ngFor="let role of user.roles" [ngValue]="role.role">{{role.role}}</option>
+                        <option *ngFor="let role of user.roles" [ngValue]="{id: role.id, name: role.role}">{{role.role}}</option>
                     </select>
                 </div>
                 <br>

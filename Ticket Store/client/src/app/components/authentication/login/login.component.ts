@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef, trigger, transition, style, animate, keyframes } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewContainerRef, ChangeDetectorRef } from '@angular/core';
+import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { LoginModel } from '../../../core/models/binding/login.model';
@@ -34,10 +35,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private authentication: AuthenticationService,
               private cookieService: CookieManagerService,
-              private toastr: ToastsManager, vcr: ViewContainerRef,
-              private router: Router) {
+              private toastr: ToastrService,
+              // vcr: ViewContainerRef,
+              private router: Router,
+              private cdRef: ChangeDetectorRef) {
     this.model = new LoginModel('', '');
-    this.toastr.setRootViewContainerRef(vcr);
+    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
@@ -58,29 +61,29 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.model.password
     );
 
-    this.subscription = this.authentication.login(loginModel).subscribe((data: any) => {
+    this.authentication.login(loginModel);
+//     this.subscription = this.authentication.login(loginModel).subscribe((data: any) => {
 
-      console.log(data);
-      if (data.errors.length === 0) {
+//       if (data.errors.length === 0) {
 
-        this.cookieService.saveLoginData(data.data);
-        this.loginFail = false;
-        this.toastr.success('You have login successfully.');
-        setTimeout(() => {
-            this.router.navigate(['/user/home']);
-        }, 900);
+//         this.cookieService.saveLoginData(data.data);
+//         this.loginFail = false;
 
-      } else {
+//         this.router.navigate(['/user/home']).then((e) => {
+// console.log(e)
+//           this.toastr.success('You have login successfully.');
+//         });
+//       } else {
 
-        for (const e of data.errors) {
-          this.toastr.error(e);
-        }
-      }
-    });
+//         for (const e of data.errors) {
+//           this.toastr.error(e);
+//         }
+//       }
+//     });
   }
 
   ngOnDestroy(): void {
-
+    this.cdRef.detach();
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

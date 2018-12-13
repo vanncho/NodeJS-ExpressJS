@@ -16,7 +16,8 @@ import { adminComponents } from './index';
         CommonModule,
         RouterModule.forChild([ // Lazy loading !
             {path: 'home', canActivate: [AdminGuard], component: adminComponents[0]},
-            {path: 'users', canActivate: [AdminGuard], component: adminComponents[1]},
+            // {path: 'users', canActivate: [AdminGuard], component: adminComponents[1]},
+            {path: 'users', component: adminComponents[1]},
             {path: 'users/edit/:id', canActivate: [AdminGuard], component: adminComponents[2]},
             {path: 'categories', canActivate: [AdminGuard], component: adminComponents[3]},
             {path: 'categories/add', canActivate: [AdminGuard], component: adminComponents[4]},

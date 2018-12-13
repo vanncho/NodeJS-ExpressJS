@@ -1,3 +1,7 @@
 #show-user-names>a {
     color: white;
 }
+
+.logout-link {
+    cursor: pointer;
+}

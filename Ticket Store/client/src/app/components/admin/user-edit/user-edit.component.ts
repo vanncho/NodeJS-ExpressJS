@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { AppComponent } from '../../../app.component';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '../../../core/services/user.service';
 import { RoleService } from '../../../core/services/role.service';
@@ -27,18 +26,19 @@ export class UserEditComponent implements OnInit, OnDestroy {
   private subscriptionUpdateUser: ISubscription;
   private subscriptionLogoutUser: ISubscription;
   private user: UserEditViewModel;
-  private currentUserRole: string;
+  // private currentUserRole: string;
+  private currentUserRole: { id: number, name: string };
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
               private roleService: RoleService,
-              private toastr: ToastsManager, vcr: ViewContainerRef,
-              private authentication: AuthenticationService,
+              private toastr: ToastrService,
+              // vcr: ViewContainerRef,
+              private authenticationService: AuthenticationService,
               private cookieService: CookieManagerService,
-              private router: Router,
-              private app: AppComponent) {
+              private router: Router) {
     this.user = new UserEditViewModel(0, '', '', '', '', '', []);
-    this.toastr.setRootViewContainerRef(vcr);
+    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -49,9 +49,11 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     const userId = this.route.params['value'].id;
     this.subscriptionGetUserById = this.userService.getUserById(userId).subscribe((userToEdit: any) => {
-
+      console.log('userToEdit');
+      console.log(userToEdit);
       this.subscriptionGetAllRoles = this.roleService.getAllRoles().subscribe((rolesData: any) => {
-
+console.log('....roles...')
+console.log(rolesData)
         this.user = new UserEditViewModel(
           userToEdit['data']['id'],
           userToEdit['data']['username'],
@@ -62,7 +64,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
           Object.values(rolesData.data)
         );
 
-        this.currentUserRole = userToEdit['data']['role'].toUpperCase();
+        this.currentUserRole = {
+          id: userToEdit['data']['id'],
+          name: userToEdit['data']['role'].toUpperCase()
+        };
 
       }, (error) => {
 
@@ -79,29 +84,32 @@ export class UserEditComponent implements OnInit, OnDestroy {
       this.user['firstName'],
       this.user['lastName'],
       this.user['email'],
-      this.currentUserRole,
+      // this.user['roleId']
+      this.currentUserRole.id,
+      this.currentUserRole.name,
       this.user['accountLocked']
     );
-
+console.log(updateUser);
     this.subscriptionUpdateUser = this.userService.updateUser(updateUser).subscribe(() => {
 
       const loggedInUserId = Number(this.cookieService.get('userid'));
 
-      if (this.user['id'] === loggedInUserId && this.currentUserRole === 'USER') {
+      if (this.user['id'] === loggedInUserId && this.currentUserRole.name === 'USER') {
 
-        this.subscriptionLogoutUser = this.authentication.logout().subscribe(() => {
+        // this.subscriptionLogoutUser = this.authentication.logout().subscribe(() => {
 
-          this.app.setMenuTo(UserType.USER);
-          this.cookieService.removeLoginData();
+        //   this.app.setMenuTo(UserType.USER);
+        //   this.cookieService.removeLoginData();
 
-          this.toastr.success('You have logout successfully.');
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 900);
+        //   this.toastr.success('You have logout successfully.');
+        //   setTimeout(() => {
+        //     this.router.navigate(['/login']);
+        //   }, 900);
 
-        }, err => {
-          this.toastr.error(err.error.description);
-        });
+        // }, err => {
+        //   this.toastr.error(err.error.description);
+        // });
+        this.authenticationService.logout();
 
       } else {
         this.toastr.success('Successfully edited.', 'User: ' + this.user['username']);
@@ -117,9 +125,9 @@ export class UserEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private compareRoles(o1: string, o2: string): boolean {
+  private compareRoles(o1: { id: number, name: string }, o2: { id: number, name: string }): boolean {
 
-    if (o1 === o2) {
+    if (o1 && o2 && o1.name === o2.name) {
       return true;
     }
 

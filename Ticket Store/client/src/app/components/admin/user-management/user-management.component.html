@@ -6,8 +6,8 @@
             <form action="#/users" method="post">
                 <div class="form-group" id="selectUsers">
                     <a class="btn btn-default" (click)="getAllUsers()">ALL</a>
-                    <a class="btn btn-default" (click)="getAllUsersByRole('user')">USER</a>
-                    <a class="btn btn-default" (click)="getAllUsersByRole('admin')">ADMIN</a>
+                    <a class="btn btn-default" (click)="getAllUsersByRole('USER')">USER</a>
+                    <a class="btn btn-default" (click)="getAllUsersByRole('ADMIN')">ADMIN</a>
                 </div>
                 <div id="searchInput">
                     <span id="searchForm">
@@ -38,9 +38,9 @@
                         <td>{{user.role}}</td>
                         <td>
                             <a class="btn btn-default" [routerLink]="['edit/', user.id]">Edit</a>
-                            <a class="btn btn-danger" *ngIf="!user.accountLocked; else elseBlock" (click)="disableEnableUser($event)" id="{{user.id}}">Disable</a>
+                            <a class="btn btn-danger" *ngIf="user.account_non_locked; else elseBlock" (click)="disableEnableUser($event, user.id, false)">Disable</a>
                             <ng-template #elseBlock>
-                                <a class="btn btn-success" (click)="disableEnableUser($event)" id="{{user.id}}">Enable</a>
+                                <a class="btn btn-success" (click)="disableEnableUser($event, user.id, true)">Enable</a>
                             </ng-template>
                         </td>
                     </tr>

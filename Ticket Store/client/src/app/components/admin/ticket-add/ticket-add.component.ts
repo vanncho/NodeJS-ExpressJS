@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, trigger, transition, style, animate, keyframes } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
