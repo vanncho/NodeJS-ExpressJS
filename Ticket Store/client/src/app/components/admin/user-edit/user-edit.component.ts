@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -33,12 +33,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private roleService: RoleService,
               private toastr: ToastrService,
-              // vcr: ViewContainerRef,
               private authenticationService: AuthenticationService,
               private cookieService: CookieManagerService,
               private router: Router) {
     this.user = new UserEditViewModel(0, '', '', '', '', '', []);
-    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -36,11 +36,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private authentication: AuthenticationService,
               private cookieService: CookieManagerService,
               private toastr: ToastrService,
-              // vcr: ViewContainerRef,
               private router: Router,
               private cdRef: ChangeDetectorRef) {
     this.model = new LoginModel('', '');
-    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ISubscription } from 'rxjs/Subscription';
@@ -27,12 +27,10 @@ export class AuthenticationService implements OnDestroy {
               private httpClientService: HttpClientService,
               private headerService: HeaderService,
               private toastr: ToastrService,
-              // vcr: ViewContainerRef,
               private router: Router) {
     this.loginStr = '/login';
     this.logoutStr = '/_logout';
     this.isLogged = false;
-    // this.toastr.setRootViewContainerRef(vcr);
   }
 
 //   login(loginModel: LoginModel): Observable<Object> {
