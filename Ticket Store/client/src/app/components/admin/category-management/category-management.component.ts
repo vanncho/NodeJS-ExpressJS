@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -23,8 +22,7 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
-              private toastr: ToastrService,
-              private router: Router) {
+              private toastr: ToastrService) {
     this.searchedCategory = '';
   }
 
@@ -49,7 +47,6 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   private deleteCategory(categoryId) {
 
-    console.log(categoryId);
     this.subscriptionDeleteCategory = this.categoryService.deleteCategory(categoryId).subscribe(() => {
 
       let index = 0;
@@ -72,21 +69,29 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
       this.toastr.success('Deleted successfully.', categoryName);
 
-    }, (error) => {
+    }, error => {
 
-      this.toastr.error(error.error);
-    });
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
+  });
   }
 
   private getCategoryByName(): void {
 
     if (this.searchedCategory.length > 0) {
 
-      this.subscriptionSearchCategory = this.categoryService.searchCategoryWithNameLike(this.searchedCategory).subscribe((data) => {
+      this.subscriptionSearchCategory = this.categoryService.searchCategoryWithNameLike(this.searchedCategory)
+                                                            .subscribe((categories: any) => {
 
-        this.categories = Object.values(data);
-      }, (error) => {
+        this.categories = Object.values(categories.data);
+      }, error => {
 
+        if (error.status === 401) {
+
+          this.authenticationService.logout();
+        }
       });
     }
 

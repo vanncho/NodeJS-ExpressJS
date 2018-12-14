@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/view/category.model';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
 @Component({
   selector: 'app-category-edit',
@@ -17,6 +18,7 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
   private category: Category;
 
   constructor(private categoryService: CategoryService,
+              private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
               private router: Router) {
     this.category = new Category(0, '');
@@ -30,12 +32,16 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
 
     const categoryId = this.route.params['value'].id;
 
-    this.subscriptionGetCategory = this.categoryService.getCategoryById(categoryId).subscribe((data) => {
+    this.subscriptionGetCategory = this.categoryService.getCategoryById(categoryId).subscribe((category: any) => {
 
-      this.category = new Category(Number(data['id']), data['name']);
+      this.category = new Category(Number(category.data['id']), category.data['name']);
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
 
   }
@@ -46,8 +52,12 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
 
       this.router.navigate(['admin/categories']);
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 

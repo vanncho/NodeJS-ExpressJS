@@ -30,3 +30,7 @@ table.table-striped.table-hover {
 form {
     display: inline;
 }
+
+.warning > td > button {
+    margin-left: 10px;
+}

@@ -18,7 +18,7 @@ export class CategoryService {
 
     addCategory(name): Observable<Object> {
 
-        return this.httpClientService.post('/api/addCategory', JSON.stringify({name: name}), this.authUtil.headersBasic());
+        return this.httpClientService.post('/api/addCategory', JSON.stringify({ name: name }), this.authUtil.headersBasic());
     }
 
     getCategoryById(categoryId): Observable<Object> {
@@ -38,6 +38,6 @@ export class CategoryService {
 
     searchCategoryWithNameLike(name): Observable<Object> {
 
-        return this.httpClientService.post('/api/searchCategory', name, this.authUtil.headersBasic);
+        return this.httpClientService.post('/api/searchCategory', JSON.stringify({ categoryName: name }), this.authUtil.headersBasic());
     }
 }

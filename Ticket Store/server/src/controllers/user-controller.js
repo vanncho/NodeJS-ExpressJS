@@ -3,7 +3,6 @@ const log4js = require('log4js');
 
 const User = require('../models/').User;
 const Role = require('../models/').Role;
-// const UserRole = require('../models/').UserRole;
 
 const adminId = require('../config/roles').adminRoleId;
 const userId = require('../config/roles').userRoleId;
@@ -36,9 +35,6 @@ module.exports = {
                     account_non_locked: req.body.account_non_locked,
                     credentials_non_expired: req.body.credentials_non_expired
                 });
-                // }, {
-                //     include: [{ model: Role, as: 'role'}]
-                // });
     
                 User.count().then((count) => {
 
@@ -66,6 +62,9 @@ module.exports = {
               
                         });
                     });
+                }).catch(err => {
+
+                    logger.error(err);
                 });
             });
 
@@ -96,7 +95,7 @@ module.exports = {
                         };
     
                         req.logIn(user, function(err) {
-                            console.log(err)
+
                             if (err) { return next(err); }
     
                             req.session.user = user.dataValues;
@@ -105,26 +104,27 @@ module.exports = {
                     } else {
                         res.status(200).send({ errors: ['Invalid username or password!'] });
                     }
+                }).catch(err => {
+
+                    logger.error(err);
                 });
             });
 
         } catch (err) {
 
-            console.log('--- LOGIN ERRRR ---');
-            console.log(err);
+            logger.log(err);
         }
     },
     userLogout: (req, res) => {
-        console.log('userLogout')
+
         req.session.destroy(() => {
 
             req.logout();
-            console.log('destroy')
             res.status(200).send({ data: 'Logout success', errors: [] });
         });
     },
     getAllUsers: (req, res) => {
-        console.log('getAllUsers - REQUEST')
+
         const roleFilter = req.body;
 
         User.findAll({ 
@@ -138,13 +138,16 @@ module.exports = {
         }).then(users => {
 
             res.status(200).send({ data: users, errors: [] });
+        }).catch(err => {
+
+            logger.error(err);
         });
 
     },
     getUserById: (req, res) => {
 
-        
         const userId = req.params.id;
+
         User.findByPk(userId, {
             raw: true,
             attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked', Sequelize.literal('role')],
@@ -155,6 +158,9 @@ module.exports = {
         }).then(user => {
 
             res.status(200).send({ data: user, errors: [] });
+        }).catch(err => {
+
+            logger.error(err);
         });
     },
     editUser: (req, res) => {
@@ -169,6 +175,9 @@ module.exports = {
         User.update(userUpdate, { where: { id: req.body.id }}).then(rows => {
 
             res.status(200).send({ errors: [] });
+        }).catch(err => {
+
+            logger.error(err);
         });
         
     },
@@ -182,6 +191,9 @@ module.exports = {
         User.update(userUpdate, { where: { id: req.body.id } }).then(rows => {
 
             res.status(200).send({ errors: [] });
+        }).catch(err => {
+
+            logger.error(err);
         });
     }
 };
