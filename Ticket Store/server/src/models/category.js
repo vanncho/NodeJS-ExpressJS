@@ -1,19 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
 
-    let Role = sequelize.define('roles', {
+    const Category = sequelize.define('category', {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.BIGINT,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
-        role: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-    }, {
-        timestamps: false
+        }
+    },
+    {
+        timestamps: false,
     });
 
-    return Role;
+    return Category;
 };

@@ -14,7 +14,7 @@ import { UserType } from '../../../core/enumerations/user-type.enum';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  public admin: boolean;
+  // public admin: boolean;
   public username: string;
   private loggedUserNameISubscription: ISubscription;
 
@@ -25,8 +25,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.loggedUserNameISubscription = this.headerService.loggedUserName.subscribe((userFullname) => {
-      this.username = userFullname;
+    this.loggedUserNameISubscription = this.headerService.loggedUserName.subscribe((userFullName) => {
+      this.username = userFullName;
     });
 
     this.isAdmin();
@@ -43,15 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private isAdmin(): boolean {
 
-    const role = this.cookieService.get('userrole');
-
-    if (role === 'ADMIN') {
-      this.admin = true;
-    } else {
-      this.admin = false;
-    }
-
-    return this.admin;
+    return this.authenticationService.getIsAdmin();
   }
 
   private getAdminPanel(): void {

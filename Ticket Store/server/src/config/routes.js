@@ -16,4 +16,13 @@ module.exports = (app, sessionChecker) => {
 
     // ADMIN - ROLE
     app.get('/api/allRoles', sessionChecker, controllers.roleController.getRoles);
+
+    // ADMIN - CATEGORY
+    app.post('/api/addCategory', sessionChecker, controllers.categoryController.addCategory);
+    app.get('/api/allCategories', sessionChecker, controllers.categoryController.getCategories);
+    app.get('/api/getCategory/:id', sessionChecker, controllers.categoryController.getCategoryById);
+    app.post('/api/editCategory', sessionChecker, controllers.categoryController.editCategory);
+    app.delete('/api/deleteCategory/:id', sessionChecker, controllers.categoryController.deleteCategory);
+    app.post('/api/searchCategory', sessionChecker, controllers.categoryController.searchCategory);
+
 }

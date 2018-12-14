@@ -39,7 +39,7 @@ export class CookieManagerService {
   }
 
   get(key): string {
-    // console.log(this._cookieService.get('user_sid'))
+
     return this._cookieService.get(key);
   }
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { CategoryService } from '../../../core/services/category.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
 
 @Component({
@@ -16,6 +18,8 @@ export class CategoryAddComponent implements OnInit, OnDestroy {
   private categoryName: string;
 
   constructor(private categoryService: CategoryService,
+              private authenticationService: AuthenticationService,
+              private toastr: ToastrService,
               private router: Router) { }
 
   ngOnInit() {
@@ -23,12 +27,27 @@ export class CategoryAddComponent implements OnInit, OnDestroy {
 
   private addCategory(): void {
 
-    this.subscriptionCategoryAdd = this.categoryService.addCategory(this.categoryName).subscribe(() => {
+    this.subscriptionCategoryAdd = this.categoryService.addCategory(this.categoryName).subscribe((data: any) => {
 
-      this.router.navigate(['admin/categories']);
+      if (data.errors.length === 0) {
 
-    }, (error) => {
+        this.router.navigate(['/admin/categories']).then(() => {
+          this.toastr.success('Category added successfully.');
+        });
 
+      } else {
+
+        for (const e of data.errors) {
+          this.toastr.error(e);
+        }
+      }
+
+    }, error => {
+
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 

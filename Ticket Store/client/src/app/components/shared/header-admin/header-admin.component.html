@@ -12,7 +12,7 @@
             </ul>
             <ul class=" nav navbar-nav navbar-right ">
                 <li *ngIf="showHideNavigation() ">
-                    <a class="nav-link " [routerLink]="[ '/logout'] ">Logout</a>
+                    <a class="nav-link logout-link" (click)="logout()">Logout</a>
                 </li>
                 <li id="show-user-names " *ngIf="showHideNavigation() ">
                     <a>Welcome, {{username}}!</a>

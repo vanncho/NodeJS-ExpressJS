@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { ISubscription } from 'rxjs/Subscription';
 
 import { RegisterModel } from '../../../core/models/binding/register.model';
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -23,24 +20,13 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 ])
 ]
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit {
 
   private rForm: FormGroup;
-  private post: any;
-  private subscription: ISubscription;
   public model: RegisterModel;
-  public registeredUser: string;
-  public registerSuccess: boolean;
 
-  constructor(private authentication: AuthenticationService,
-              private toastr: ToastrService,
-              // vcr: ViewContainerRef,
-              private router: Router,
-              // private toasterOptions: ToastOptions
-              ) {
+  constructor(private authentication: AuthenticationService) {
     this.model = new RegisterModel('', '', '', '', '', '');
-    // this.toastr.setRootViewContainerRef(vcr);
-    // this.toasterOptions.dismiss = 'click';
   }
 
   ngOnInit(): void {
@@ -71,31 +57,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.model.password
     );
 
-    this.subscription = this.authentication.register(registerModel).subscribe((data: any) => {
-
-      if (data.errors.length === 0) {
-
-        this.successfulRegister(data);
-        this.toastr.success('Registration successfully.');
-        this.router.navigate(['/login']);
-      } else {
-
-        for (const e of data.errors) {
-          this.toastr.error(e);
-        }
-      }
-    });
+    this.authentication.register(registerModel);
   }
 
-  private successfulRegister(data): void {
-    this.registerSuccess = true;
-    this.registeredUser = data['username'];
-  }
-
-  ngOnDestroy(): void {
-
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
 }

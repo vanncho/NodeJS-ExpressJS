@@ -23,7 +23,11 @@ export class HeaderAdminComponent implements OnInit {
     this.username = this.cookieService.get('fullName');
   }
 
-  showHideNavigation() {
+  logout(): void {
+    this.authenticationService.logout();
+  }
+
+  showHideNavigation(): boolean {
 
     return this.authenticationService.isLoggedIn();
   }

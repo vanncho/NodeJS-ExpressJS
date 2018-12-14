@@ -139,20 +139,7 @@ module.exports = {
 
             res.status(200).send({ data: users, errors: [] });
         });
-        // User.findAll({
-        //     raw: true,
-        //     attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked' ],
-        //     include: [{
-        //         model: Role,
-        //         as: 'R',
-        //         where: { id: R.id }
-        //     }]
-        // }).then(users => {
-        //     res.status(200).send({ data: users, errors: [] });
-        // }).catch(err => {
-        //     console.log('getAllUsers - ERR')
-        //     console.log(err)
-        // });
+
     },
     getUserById: (req, res) => {
 
@@ -186,6 +173,7 @@ module.exports = {
         
     },
     lockUnlockUser: (req, res) => {
+// TODO: disable locked user actions!
 
         const userUpdate = {
             account_non_locked: req.body.nonLocked

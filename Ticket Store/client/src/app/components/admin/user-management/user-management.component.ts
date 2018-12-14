@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { ToastrService } from 'ngx-toastr';
@@ -26,13 +26,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   private searchedUsername: string;
 
   constructor(private userService: UserService,
-              private authentication: AuthenticationService,
+              private authenticationService: AuthenticationService,
               private toastr: ToastrService,
               private router: Router,
-              // vcr: ViewContainerRef,
               private cookie: CookieManagerService) {
     // this.users = [];
-    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -45,13 +43,12 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.subscriptionGetAllUsers = this.userService.getAllUsers().subscribe((users: any) => {
 
       this.users = Object.values(users.data);
-console.log(this.users)
+
       }, error => {
 
         if (error.status === 401) {
 
-          // this.cookie.removeLoginData();
-          // this.router.navigate(['/login']);
+          this.authenticationService.logout();
         }
     });
   }
@@ -66,7 +63,7 @@ console.log(this.users)
 
         if (error.status === 401) {
 
-          this.router.navigate(['/login']);
+          this.authenticationService.logout();
         }
       });
   }
@@ -88,7 +85,7 @@ console.log(this.users)
 
         if (error.status === 401) {
 
-          this.router.navigate(['/login']);
+          this.authenticationService.logout();
         }
     });
   }
@@ -100,8 +97,13 @@ console.log(this.users)
       this.subscriptionSearchUsers = this.userService.searchUsersWithUsernameLike(this.searchedUsername).subscribe((usersFromDb) => {
 
         this.users = Object.values(usersFromDb);
-      }, (error) => {
 
+      }, error => {
+
+        if (error.status === 401) {
+
+          this.authenticationService.logout();
+        }
       });
     }
   }

@@ -3,8 +3,10 @@ import { ISubscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+import { AuthenticationService } from '../../../core/services/authentication.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/view/category.model';
+
 
 @Component({
   selector: 'app-category-management',
@@ -20,8 +22,9 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
   private searchedCategory: string;
 
   constructor(private categoryService: CategoryService,
-              private router: Router,
-              private toastr: ToastrService) {
+              private authenticationService: AuthenticationService,
+              private toastr: ToastrService,
+              private router: Router) {
     this.searchedCategory = '';
   }
 
@@ -31,12 +34,16 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   private loadAllCategories(): void {
 
-    this.subscriptionAllCategories = this.categoryService.getAllCategories().subscribe((data) => {
+    this.subscriptionAllCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
 
-      this.categories = Object.values(data);
+      this.categories = Object.values(categories.data);
 
-    }, (error) => {
+    }, error => {
 
+        if (error.status === 401) {
+
+          this.authenticationService.logout();
+        }
     });
   }
 
