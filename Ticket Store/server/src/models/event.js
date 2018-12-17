@@ -12,11 +12,15 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false
         },
         location: {
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        time: {
+            type: DataTypes.TIME,
             allowNull: false
         },
         title: {

@@ -28,7 +28,7 @@ export class EventService {
 
     getEventById(eventId): Observable<Object> {
 
-        return this.httpClientService.get('/api/getEvent/' + eventId, this.authUtil.headersBasic);
+        return this.httpClientService.get('/api/getEvent/' + eventId, this.authUtil.headersBasic());
     }
 
     editEvent(event): Observable<Object> {
@@ -38,6 +38,6 @@ export class EventService {
 
     searchEventWithTitleLike(title): Observable<Object> {
 
-        return this.httpClientService.post('/api/searchEvent', title, this.authUtil.headersBasic);
+        return this.httpClientService.post('/api/searchEvent', JSON.stringify({ eventTitle: title }), this.authUtil.headersBasic());
     }
 }

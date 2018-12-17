@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 
+import { AuthenticationService } from '../../../core/services/authentication.service';
 import { EventService } from '../../../core/services/event.service';
 import { EventListModel } from '../../../core/models/view/event-list.model';
 import { TicketService } from '../../../core/services/ticket.service';
+
 
 @Component({
   selector: 'app-event-management',
@@ -20,7 +22,8 @@ export class EventManagementComponent implements OnInit, OnDestroy {
   private searchedEvent: string;
 
   constructor(private eventService: EventService,
-              private ticketService: TicketService) { }
+              private ticketService: TicketService,
+              private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.loadAllEvents();
@@ -28,10 +31,16 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   private loadAllEvents(): void {
 
-    this.subscriptionGetAllEvents = this.eventService.getAllEvents().subscribe((data) => {
+    this.subscriptionGetAllEvents = this.eventService.getAllEvents().subscribe((events: any) => {
 
-      this.events = Object.values(data);
+      this.events = Object.values(events.data);
 
+    }, error => {
+
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 
@@ -71,8 +80,12 @@ export class EventManagementComponent implements OnInit, OnDestroy {
         }
       }
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 
@@ -100,8 +113,12 @@ export class EventManagementComponent implements OnInit, OnDestroy {
         }
       }
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 
@@ -109,11 +126,15 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
     if (this.searchedEvent.length > 0) {
 
-      this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((data) => {
+      this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((events: any) => {
 
-        this.events = Object.values(data);
-      }, (error) => {
+        this.events = Object.values(events.data);
+      }, error => {
 
+        if (error.status === 401) {
+
+          this.authenticationService.logout();
+        }
       });
     }
 

@@ -75,7 +75,7 @@ module.exports = {
 
         const categoryId = req.params.id;
 
-        Category.destroy({ where: { id: categoryId } }).then((ed) => {
+        Category.destroy({ where: { id: categoryId } }).then(() => {
 
             res.status(200).send({ data: 'Success', errors: [] });
         }).catch(err => {

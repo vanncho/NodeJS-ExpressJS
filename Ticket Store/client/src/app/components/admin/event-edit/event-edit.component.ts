@@ -1,12 +1,14 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+import { AuthenticationService } from '../../../core/services/authentication.service';
 import { EventService } from '../../../core/services/event.service';
-import { EventEditModel } from '../../../core/models/binding/event-edit.model';
-
 import { CategoryService } from '../../../core/services/category.service';
+import { DateUtility } from '../../../core/utils/date.util';
+
+import { EventEditModel } from '../../../core/models/binding/event-edit.model';
 import { Category } from '../../../core/models/view/category.model';
 
 @Component({
@@ -24,13 +26,12 @@ export class EventEditComponent implements OnInit, OnDestroy {
 
   constructor(private eventService: EventService,
               private categoryService: CategoryService,
+              private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastrService,
-              // vcr: ViewContainerRef
-              ) {
+              private dateUtil: DateUtility) {
     this.event = new EventEditModel(0, '', '', '', '', '', '', '', 0);
-    // this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
@@ -43,22 +44,26 @@ export class EventEditComponent implements OnInit, OnDestroy {
 
     const eventId = this.route.params['value'].id;
 
-    this.subscriptionGetEvent = this.eventService.getEventById(eventId).subscribe((data) => {
+    this.subscriptionGetEvent = this.eventService.getEventById(eventId).subscribe((event: any) => {
 
       this.event = new EventEditModel(
-        data['id'],
-        data['title'],
-        data['url'],
-        data['location'],
-        data['date'],
-        data['time'],
-        data['town'],
-        data['description'],
-        data['categoryId']
+        event['data']['id'],
+        event['data']['title'],
+        event['data']['url'],
+        event['data']['location'],
+        this.dateUtil.formatDateToYYYYMMdd(event['data']['date']),
+        event['data']['time'],
+        event['data']['town'],
+        event['data']['description'],
+        event['data']['categoryId']
       );
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 
@@ -66,24 +71,31 @@ export class EventEditComponent implements OnInit, OnDestroy {
 
     this.subscriptionEditEvent = this.eventService.editEvent(this.event).subscribe(() => {
 
-      this.toastr.success('Successfully edited.', this.event['title']);
-      setTimeout(() => {
-        this.router.navigate(['admin/events']);
-      }, 900);
+      this.router.navigate(['admin/events']).then(() => {
+        this.toastr.success('Successfully edited.', this.event['title']);
+      });
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 
   private loadCategories(): void {
 
-    this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((data) => {
+    this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
 
-      this.categories = Object.values(data);
+      this.categories = Object.values(categories.data);
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 

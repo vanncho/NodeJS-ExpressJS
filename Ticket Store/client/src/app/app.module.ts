@@ -34,6 +34,7 @@ import { HeaderService } from './core/services/header.service';
 
 // Utils
 import { AuthenticationUtility } from './core/utils/authentication.util';
+import { DateUtility } from './core/utils/date.util';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { AuthenticationUtility } from './core/utils/authentication.util';
     CategoryService,
     EventService,
     TicketService,
-    HeaderService
+    HeaderService,
+    DateUtility
   ],
   bootstrap: [AppComponent]
 })

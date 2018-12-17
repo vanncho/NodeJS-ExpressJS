@@ -39,3 +39,7 @@
     padding-top: 5px;
     padding-left: 5px;
 }
+
+.warning > td > a {
+    margin-right: 10px;
+}

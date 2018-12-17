@@ -25,4 +25,13 @@ module.exports = (app, sessionChecker) => {
     app.delete('/api/deleteCategory/:id', sessionChecker, controllers.categoryController.deleteCategory);
     app.post('/api/searchCategory', sessionChecker, controllers.categoryController.searchCategory);
 
+    // ADMIN - EVENT
+    app.get('/api/allEvents', sessionChecker, controllers.eventController.getAllEvents);
+    app.post('/api/addEvent', sessionChecker, controllers.eventController.addEvent);
+    app.delete('/api/deleteEvent/:id', sessionChecker, controllers.eventController.deleteEvent);
+    app.get('/api/getEvent/:id', sessionChecker, controllers.eventController.getEventById);
+    app.post('/api/editEvent', sessionChecker, controllers.eventController.editEvent);
+    app.post('/api/searchEvent', sessionChecker, controllers.eventController.searchEvent);
+
+    // ADMIN - TICKET
 }

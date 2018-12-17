@@ -7,6 +7,7 @@ import { EventAddModel } from '../../../core/models/binding/event-add.model';
 
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/view/category.model';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
 @Component({
   selector: 'app-event-add',
@@ -22,6 +23,7 @@ export class EventAddComponent implements OnInit, OnDestroy {
 
   constructor(private eventService: EventService,
               private categoryService: CategoryService,
+              private authenticationService: AuthenticationService,
               private router: Router) {
     this.event = new EventAddModel('', '', '', '', '', '', '', 0);
    }
@@ -36,19 +38,27 @@ export class EventAddComponent implements OnInit, OnDestroy {
 
       this.router.navigate(['admin/events']);
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 
   private loadCategories(): void {
 
-    this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((data) => {
+    this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
 
-      this.categories = Object.values(data);
+      this.categories = Object.values(categories.data);
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 
