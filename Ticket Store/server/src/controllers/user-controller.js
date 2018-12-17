@@ -74,7 +74,7 @@ module.exports = {
         }
             
     },
-    userLogin: async (req, res) => {
+    userLogin: async (req, res, next) => {
 
         const reqUser = req.body;
 
@@ -96,7 +96,11 @@ module.exports = {
     
                         req.logIn(user, function(err) {
 
-                            if (err) { return next(err); }
+                            if (err) { 
+                                // return next(err);
+                                console.log('login err')
+                                console.log(err)
+                            }
     
                             req.session.user = user.dataValues;
                             res.status(200).send({ data: userDetails, errors: [] });
@@ -106,7 +110,8 @@ module.exports = {
                     }
                 }).catch(err => {
 
-                    logger.error(err);
+                    // logger.error(err);
+                    console.log(err)
                 });
             });
 
@@ -195,7 +200,26 @@ module.exports = {
 
             logger.error(err);
         });
+    },
+    searchUsers: (req, res) => {
+
+        const username = (req.body.username).toLowerCase();
+
+        if (username !== '') {
+
+            User.findAll({ 
+                where: { 
+                    name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('username')), `LIKE`, `%${username}%`)
+                }} ).then(users => {
+
+                res.status(200).send({ data: users, errors: [] });
+            }).catch(err => {
+
+                logger.error(err);
+            });
+        }
     }
+
 };
 
 const validateUserInputs = function(reqUser) {

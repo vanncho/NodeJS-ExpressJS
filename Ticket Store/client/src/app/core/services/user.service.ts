@@ -39,6 +39,6 @@ export class UserService {
 
     searchUsersWithUsernameLike(username): Observable<Object> {
 
-        return this.httpClientService.post('/api/searchUsers', username, this.authUtil.headersBasic());
+        return this.httpClientService.post('/api/searchUsers', JSON.stringify({ username: username }), this.authUtil.headersBasic());
     }
 }

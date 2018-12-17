@@ -62,6 +62,8 @@ export class AuthenticationService {
         }
       }
 
+    }, error => {
+      this.toastr.error(error.error);
     });
   }
 

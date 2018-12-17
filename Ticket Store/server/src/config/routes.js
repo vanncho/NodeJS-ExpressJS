@@ -1,10 +1,10 @@
 const controllers = require('../controllers/index');
-
+const passport = require('passport');
 module.exports = (app, sessionChecker) => {
 
     // Authentication
     app.post('/api/register', controllers.userController.userRegister);
-    app.post('/api/login', controllers.userController.userLogin);
+    app.post('/api/login', passport.authenticate('local'), controllers.userController.userLogin);
     app.get('/api/logout', controllers.userController.userLogout);
 
     // ADMIN - USER
@@ -13,6 +13,7 @@ module.exports = (app, sessionChecker) => {
     app.get('/api/edit/:id', sessionChecker, controllers.userController.getUserById);
     app.post('/api/edit', sessionChecker, controllers.userController.editUser);
     app.post('/api/lockUnlock', sessionChecker, controllers.userController.lockUnlockUser);
+    app.post('/api/searchUsers', sessionChecker, controllers.userController.searchUsers);
 
     // ADMIN - ROLE
     app.get('/api/allRoles', sessionChecker, controllers.roleController.getRoles);

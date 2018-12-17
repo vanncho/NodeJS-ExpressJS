@@ -94,9 +94,9 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
     if (this.searchedUsername.length > 0) {
 
-      this.subscriptionSearchUsers = this.userService.searchUsersWithUsernameLike(this.searchedUsername).subscribe((usersFromDb) => {
+      this.subscriptionSearchUsers = this.userService.searchUsersWithUsernameLike(this.searchedUsername).subscribe((users: any) => {
 
-        this.users = Object.values(usersFromDb);
+        this.users = Object.values(users.data);
 
       }, error => {
 

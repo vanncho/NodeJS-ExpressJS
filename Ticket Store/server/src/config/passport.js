@@ -1,15 +1,20 @@
-const passport = require('passport');
 const LocalPassport = require('passport-local');
+
 const User = require('../models/').User;
 const Role = require('../models').Role;
 
-module.exports = () => {
+const encryption = require('../utils/encryption');
 
-    passport.use(new LocalPassport((username, password, done) => {
+module.exports = (passport) => {
+
+    passport.use(new LocalPassport((username, pass, done) => {
 
         User.findOne({ where: { username: username } }).then(user => {
+
             if (!user) return done(null, false);
-            if (!user.authenticate(password)) return done(null, false);
+            if (false === user.dataValues.account_non_locked) return done(null, false);
+            if (false === encryption.comparePasswordsAsync(pass, user.dataValues.password)) return done(null, false);
+
             return done(null, user);
         });
     }));

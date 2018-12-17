@@ -66,7 +66,7 @@ app.use((req, res, next) => {
 });
 
 require('./src/config/routes')(app, sessionChecker);
-require('./src/config/passport')();
+require('./src/config/passport')(passport);
 
 models.sequelize.sync({}).then(() => {
 
