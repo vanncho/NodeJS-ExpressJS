@@ -16,9 +16,14 @@ export class TicketService {
         return this.httpClientService.post('/api/addTicket', JSON.stringify(ticket), this.authUtil.headersBasic());
     }
 
+    getAllTickets(eventId): Observable<Object> {
+
+        return this.httpClientService.get('/api/getAllTickets/' + eventId, this.authUtil.headersBasic());
+    }
+
     getTicketById(ticketId): Observable<Object> {
 
-        return this.httpClientService.get('/api/getTicket/' + ticketId, this.authUtil.headersBasic);
+        return this.httpClientService.get('/api/getTicket/' + ticketId, this.authUtil.headersBasic());
     }
 
     editTicket(ticket): Observable<Object> {

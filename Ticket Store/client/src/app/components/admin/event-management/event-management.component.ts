@@ -3,8 +3,10 @@ import { ISubscription } from 'rxjs/Subscription';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { EventService } from '../../../core/services/event.service';
-import { EventListModel } from '../../../core/models/view/event-list.model';
 import { TicketService } from '../../../core/services/ticket.service';
+
+import { EventListModel } from '../../../core/models/view/event-list.model';
+import { TicketListModel } from '../../../core/models/view/ticket-list.model';
 
 
 @Component({
@@ -18,7 +20,9 @@ export class EventManagementComponent implements OnInit, OnDestroy {
   private subscriptionDeleteEvent: ISubscription;
   private subscriptionDeleteTicket: ISubscription;
   private subscriptionSearchEvent: ISubscription;
+  private subscriptionGetTicketsForEvent: ISubscription;
   private events: Array<EventListModel>;
+  private tickets: Array<TicketListModel>;
   private searchedEvent: string;
 
   constructor(private eventService: EventService,
@@ -46,17 +50,19 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   private getTicketsForEvent(event, eventId): void {
 
-    const classes = event.target.parentElement.parentElement.nextSibling.nextSibling.classList;
+    const classes = event.target.parentElement.parentElement.nextSibling.classList;
 
-    this.changeButton(classes);
+    this.changeButton(classes, eventId);
   }
 
-  private changeButton(classes): void {
+  private changeButton(classes, eventId): void {
 
     if (classes.contains('hiddenRow')) {
 
       classes.remove('hiddenRow');
       classes.add('showedRow');
+
+      this.getAllTicketsForTheEvent(eventId);
 
     } else {
 
@@ -64,6 +70,21 @@ export class EventManagementComponent implements OnInit, OnDestroy {
       classes.add('hiddenRow');
 
     }
+  }
+
+  private getAllTicketsForTheEvent(eventId: number): any {
+
+    this.subscriptionGetTicketsForEvent = this.ticketService.getAllTickets(eventId).subscribe((tickets: any) => {
+
+      this.tickets = Object.values(tickets.data);
+
+    }, error => {
+
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
+    });
   }
 
   private deleteEvent(eventId) {
@@ -93,25 +114,7 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
     this.subscriptionDeleteTicket = this.ticketService.deleteTicket(ticketId).subscribe(() => {
 
-      let breakOuter = false;
-
-      for (const event of this.events) {
-
-        for (const ticket of event.tickets) {
-
-          if (ticket.id === ticketId) {
-
-            const indexOfTicket = event.tickets.indexOf(ticketId);
-            event.tickets.splice(indexOfTicket, 1);
-            breakOuter = true;
-            break;
-          }
-        }
-
-        if (breakOuter) {
-          break;
-        }
-      }
+      this.getAllTicketsForTheEvent(eventId);
 
     }, error => {
 
@@ -156,6 +159,10 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
     if (this.subscriptionSearchEvent) {
       this.subscriptionSearchEvent.unsubscribe();
+    }
+
+    if (this.subscriptionGetTicketsForEvent) {
+      this.subscriptionGetTicketsForEvent.unsubscribe();
     }
   }
 }

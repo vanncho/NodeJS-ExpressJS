@@ -4,8 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 
+import { AuthenticationService } from '../../../core/services/authentication.service';
 import { TicketService } from '../../../core/services/ticket.service';
+
 import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model';
+
 
 @Component({
   selector: 'app-ticket-edit',
@@ -33,7 +36,8 @@ export class TicketEditComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              private ticketService: TicketService) {
+              private ticketService: TicketService,
+              private authenticationService: AuthenticationService) {
     this.ticket = new TicketEditModel(0, 0, 0, '');
   }
 
@@ -47,14 +51,23 @@ export class TicketEditComponent implements OnInit, OnDestroy {
 
     const ticketId = this.route.params['value'].id;
 
-    this.ticketService.getTicketById(ticketId).subscribe((data) => {
+    this.ticketService.getTicketById(ticketId).subscribe((ticket: any) => {
 
-      this.ticket = new TicketEditModel(data['id'], data['ticketsCount'], data['price'], data['priceCategory']);
+      this.ticket = new TicketEditModel(ticket['data']['id'],
+                                        ticket['data']['count'],
+                                        ticket['data']['price'],
+                                        ticket['data']['priceCategory']);
 
-      this.validateForm(data['price'], data['ticketsCount'], data['priceCategory']);
+      this.validateForm(ticket['data']['price'],
+                        ticket['data']['count'],
+                        ticket['data']['priceCategory']);
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
     });
   }
 

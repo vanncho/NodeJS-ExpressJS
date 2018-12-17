@@ -53,11 +53,11 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngFor="let ticket of event.tickets">
+                                <tbody *ngFor="let ticket of tickets">
                                     <tr>
                                         <td>{{ticket.priceCategory}}</td>
                                         <td>{{ticket.price}}</td>
-                                        <td>{{ticket.ticketsCount}}</td>
+                                        <td>{{ticket.count}}</td>
                                         <td>
                                             <a class="btn btn-default" [routerLink]="['/admin/events/edit/ticket/', ticket.id]">Edit</a>
                                             <button class="btn btn-default" (click)="deleteTicket(ticket.id, event.id)">Delete</button>

@@ -34,4 +34,9 @@ module.exports = (app, sessionChecker) => {
     app.post('/api/searchEvent', sessionChecker, controllers.eventController.searchEvent);
 
     // ADMIN - TICKET
+    app.post('/api/addTicket', sessionChecker, controllers.ticketController.addTicket);
+    app.get('/api/getAllTickets/:id', sessionChecker, controllers.ticketController.getAllTickets);
+    app.get('/api/getTicket/:id', sessionChecker, controllers.ticketController.getTicketById);
+    app.post('/api/editTicket', sessionChecker, controllers.ticketController.editTicket);
+    app.delete('/api/deleteTicket/:id', sessionChecker, controllers.ticketController.deleteTicket);
 }

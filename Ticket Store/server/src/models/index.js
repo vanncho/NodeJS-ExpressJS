@@ -19,7 +19,8 @@ const models = {
     User: sequelize.import('./user'),
     Role: sequelize.import('./role'),
     Category: sequelize.import('./category'),
-    Event: sequelize.import('./event')
+    Event: sequelize.import('./event'),
+    Ticket: sequelize.import('./ticket')
 };
 
 Object.keys(models).forEach((modelName) => {
