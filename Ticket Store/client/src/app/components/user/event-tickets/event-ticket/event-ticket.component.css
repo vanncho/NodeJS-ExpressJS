@@ -1,0 +1,7 @@
+.ticket-data, .ticket-amount {
+    color:black;
+}
+
+.ticket-data {
+    padding-left: 5px;
+}

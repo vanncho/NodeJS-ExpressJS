@@ -14,3 +14,7 @@
 header>nav>div>ul>li>a {
     color: black;
 }
+
+.logout-link {
+    cursor: pointer;
+}

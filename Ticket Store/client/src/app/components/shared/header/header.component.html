@@ -7,15 +7,23 @@
             <ul class="nav navbar-nav">
                 <li><a [routerLink]="['/user/home']">Home</a></li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="">Events
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button">Events
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a [routerLink]="['/events']">All Events</a></li>
+                        <li>
+                            <a [routerLink]="['user/events']">All Events</a>
+                        </li>
+                        <li *ngFor="let category of categories">
+                            <a routerLink="user/events/category/{{category.id}}">{{category.name}}</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
                     <a href="#/search"><span class="glyphicon glyphicon-search"></span> Search</a>
+                </li>
+                <li *ngIf="isAdmin()">
+                    <a [routerLink]="['/admin/home']" (click)="getAdminPanel()">Admin Panel</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -24,9 +32,6 @@
                 </li>
                 <li *ngIf="!showHideNavigation()">
                     <a [routerLink]="['/login']"><span class="glyphicon glyphicon-log-in"></span> Login</a>
-                </li>
-                <li *ngIf="isAdmin()">
-                    <a [routerLink]="['/admin/home']" (click)="getAdminPanel()">Admin Panel</a>
                 </li>
                 <li *ngIf="showHideNavigation()">
                     <a class="nav-link logout-link" (click)="logout()">Logout</a>

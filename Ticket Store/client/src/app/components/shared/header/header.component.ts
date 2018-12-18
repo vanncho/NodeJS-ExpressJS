@@ -2,10 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import { CookieManagerService } from '../../../core/services/cookie-manager.service';
 import { HeaderService } from '../../../core/services/header.service';
+import { CategoryService } from '../../../core/services/category.service';
 
 import { UserType } from '../../../core/enumerations/user-type.enum';
+import { Category } from '../../../core/models/view/category.model';
+
 
 @Component({
   selector: 'app-header',
@@ -17,9 +19,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // public admin: boolean;
   public username: string;
   private loggedUserNameISubscription: ISubscription;
+  private categoriesISubscription: ISubscription;
+  private categories: Array<Category>;
 
   constructor(private authenticationService: AuthenticationService,
-              private cookieService: CookieManagerService,
+              private categoryService: CategoryService,
               private headerService: HeaderService) {
   }
 
@@ -27,6 +31,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.loggedUserNameISubscription = this.headerService.loggedUserName.subscribe((userFullName) => {
       this.username = userFullName;
+    });
+
+    this.categoriesISubscription = this.categoryService.getAllCategories().subscribe((categories: any) => {
+      this.categories = Object.values(categories.data);
     });
 
     this.isAdmin();
@@ -56,6 +64,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.loggedUserNameISubscription) {
 
       this.loggedUserNameISubscription.unsubscribe();
+    }
+
+    if (this.categoriesISubscription) {
+
+      this.categoriesISubscription.unsubscribe();
     }
   }
 }

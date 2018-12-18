@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
 // import { HeaderComponent } from './components/shared/header/header.component';
 // import { HeaderAdminComponent } from './components/shared/header-admin/header-admin.component';
 // import { NotFoundComponent } from './components/shared/not-found/not-found.component';
-import { HomeUserComponent } from './components/user/home-user/home-user.component';
+// import { HomeUserComponent } from './components/user/home-user/home-user.component';
 
 // Services & Guards
 import { AuthGuard } from './core/guards/auth/auth.guard';
@@ -39,8 +39,7 @@ import { DateUtility } from './core/utils/date.util';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeUserComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,29 @@
+<div class="container-fluid">
+    <h1 class="my-4">Events
+        <small>All Events</small>
+    </h1>
+
+    <div class="row">
+      <div class="col-sm-4" *ngFor="let event of events">
+          <div class="event">
+              <div class="event-side">
+                  <div class="dotted-line-separator"><span class="line"></span></div>
+                  <div class="event-icon"><span class="fa fa-users"></span></div>
+                  <div class="event-date">{{event.date | eventDateFormatter}}</div>
+                  <div class="event-time">{{event.time | eventTimeFormatter}}</div>
+                  <div class="cut-out"></div>
+              </div>
+              <div class="event-body">
+                  <div class="event-image"><img class="image" src="{{event.url}}"></div>
+                  <div class="event-location">{{event.town}}</div>
+                  <div class="event-title">
+                    <h5>
+                      <a routerLink="/user/events/{{event.id}}" style="text-decoration: none">{{event.title}}</a>
+                    </h5>
+                  </div>
+                  <div class="event-details">{{event.category.name}}</div>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
