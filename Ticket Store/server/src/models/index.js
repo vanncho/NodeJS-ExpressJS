@@ -20,7 +20,8 @@ const models = {
     Role: sequelize.import('./role'),
     Category: sequelize.import('./category'),
     Event: sequelize.import('./event'),
-    Ticket: sequelize.import('./ticket')
+    Ticket: sequelize.import('./ticket'),
+    Cart: sequelize.import('./cart')
 };
 
 Object.keys(models).forEach((modelName) => {

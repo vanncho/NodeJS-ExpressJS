@@ -35,7 +35,17 @@ module.exports = {
     },
     getAllEvents: (req, res) => {
 
-        Event.findAll({ raw: true }).then(events => {
+        // Event.findAll({ raw: true }).then(events => {
+
+        //     res.status(200).send({ data: events, errors: [] });
+        // }).catch(err => {
+
+        //     logger.error(err);
+        // });
+
+        Event.findAll({ 
+            include: [{ model: Category, as: 'category', required: true }] 
+        }).then(events => {
 
             res.status(200).send({ data: events, errors: [] });
         }).catch(err => {
