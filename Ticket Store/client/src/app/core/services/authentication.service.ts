@@ -5,6 +5,7 @@ import { HttpClientService } from './http-client.service';
 import { ToastrService } from 'ngx-toastr';
 import { CookieManagerService } from '../../core/services/cookie-manager.service';
 import { HeaderService } from './header.service';
+import { CartService } from './cart.service';
 
 import { RegisterModel } from '../models/binding/register.model';
 import { LoginModel } from '../models/binding/login.model';
@@ -20,6 +21,7 @@ export class AuthenticationService {
               private cookieService: CookieManagerService,
               private httpClientService: HttpClientService,
               private headerService: HeaderService,
+              private cartService: CartService,
               private toastr: ToastrService,
               private router: Router) { }
 
@@ -49,10 +51,15 @@ export class AuthenticationService {
 
       if (data.errors.length === 0) {
 
-        this.cookieService.saveLoginData(data.data);
+        this.cartService.getCartItems().subscribe((cartItems: any) => {
 
-        this.router.navigate(['/user/home']).then(() => {
-          this.toastr.success('You have login successfully.');
+          this.headerService.cartItems.next(cartItems.data.count);
+          this.cookieService.saveLoginData(data.data);
+
+          this.router.navigate(['/user/home']).then(() => {
+            this.toastr.success('You have login successfully.');
+          });
+
         });
 
       } else {
@@ -82,8 +89,7 @@ export class AuthenticationService {
 
   isLoggedIn(): boolean {
 
-    // return this.cookieService.get('authtoken') !== undefined;
-    return this.cookieService.get('userid') !== '';
+    return this.cookieService.get('userid') !== '' && this.cookieService.get('userrole') !== '';
   }
 
   getIsAdmin(): boolean {
@@ -91,6 +97,13 @@ export class AuthenticationService {
     const role = this.cookieService.get('userrole');
 
     return role === 'ADMIN' ? true : false;
+  }
+
+  getIsUser(): boolean {
+
+    const role = this.cookieService.get('userrole');
+
+    return role === 'USER' ? true : false;
   }
 
 }

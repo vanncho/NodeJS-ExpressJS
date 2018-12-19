@@ -11,8 +11,23 @@ export class CartService {
         private httpClientService: HttpClientService) {
     }
 
-    addToCart(cartObj): Observable<Object> {
+    addToCart(cartObj: object): Observable<Object> {
 
         return this.httpClientService.post('/api/cart', JSON.stringify(cartObj), this.authUtil.headersBasic());
+    }
+
+    getAll(): Observable<Object> {
+
+        return this.httpClientService.get('/api/cart', this.authUtil.headersBasic());
+    }
+
+    getCartItems(): Observable<Object> {
+
+        return this.httpClientService.get('/api/cartItems', this.authUtil.headersBasic());
+    }
+
+    removeFromCart(cartId: number): Observable<Object> {
+
+        return this.httpClientService.delete('/api/removeFromCart/' + cartId, this.authUtil.headersBasic());
     }
 }

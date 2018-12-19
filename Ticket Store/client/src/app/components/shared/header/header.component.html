@@ -27,6 +27,15 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="isUser()">
+                    <a routerLink="/user/cart" class="userMenuItem">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <span id="cart-badge" class="badge badge-danger">{{cartItems}}</span>
+                    </a>
+                </li>
+                <li *ngIf="isUser()">
+                    <a routerLink="/user/my/tickets" class="userMenuItem">My Tickets</a>
+                </li>
                 <li *ngIf="!showHideNavigation()">
                     <a [routerLink]="['/register']"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
                 </li>

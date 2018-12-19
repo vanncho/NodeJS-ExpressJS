@@ -9,6 +9,7 @@ export class HeaderService {
 
   public loggedUserName: Subject<string> = new Subject();
   public menuSwitch: Subject<UserType> = new Subject();
+  public cartItems: Subject<number> = new Subject();
 
   constructor() { }
 

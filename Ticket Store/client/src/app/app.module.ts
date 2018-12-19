@@ -31,6 +31,7 @@ import { CategoryService } from './core/services/category.service';
 import { EventService } from './core/services/event.service';
 import { TicketService } from './core/services/ticket.service';
 import { HeaderService } from './core/services/header.service';
+import { CartService } from './core/services/cart.service';
 
 // Utils
 import { AuthenticationUtility } from './core/utils/authentication.util';
@@ -63,6 +64,7 @@ import { DateUtility } from './core/utils/date.util';
     EventService,
     TicketService,
     HeaderService,
+    CartService,
     DateUtility
   ],
   bootstrap: [AppComponent]

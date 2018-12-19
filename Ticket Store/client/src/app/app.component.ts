@@ -26,10 +26,10 @@ export class AppComponent implements OnInit {
     this.headerService.menuSwitch.subscribe((userType: UserType) => {
 console.log('menu switch')
       if (userType === UserType.ADMIN) {
-        this.cookieService.add(showAdminPanel, 'true');
+        this.cookieService.add('showAdminPanel', 'true');
         this.adminMenu = true;
       } else {
-        this.cookieService.add(showAdminPanel, 'false');
+        this.cookieService.add('showAdminPanel', 'false');
         this.adminMenu = false;
       }
 

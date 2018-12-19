@@ -5,6 +5,8 @@ import { ISubscription } from 'rxjs/Subscription';
 import { TicketService } from '../../../../core/services/ticket.service';
 import { CartService } from '../../../../core/services/cart.service';
 
+import { TicketEditModel } from '../../../../core/models/binding/ticket-edit.model';
+
 @Component({
   selector: 'app-event-ticket',
   templateUrl: './event-ticket.component.html',
@@ -26,41 +28,45 @@ export class EventTicketComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.selectedTicket = {};
     this.eventId = this.route.params['value']['id'];
 
     this.getTicketsForEventsISubscription = this.ticketService.getAllTickets(this.eventId).subscribe((tickets: any) => {
 
-      console.log(tickets.data);
       this.tickets = Object.values(tickets.data);
     });
   }
 
-  orderTickets() {
-console.log(this.selectedTicket);
-console.log(this.ticketsAmount);
-
-      const n = Number(this.ticketsAmount);
-      console.log(isNaN(n));
-  }
-
   addTicketsToCart() {
 
-    const cartObj = {
-      eventId: this.eventId,
-      ticketId: this.selectedTicket.id,
-      count: this.ticketsAmount
-    };
+    const ticketCount = Number(this.ticketsAmount);
+    const ticketProps = (Object.keys(this.selectedTicket)).length;
 
-    this.addToCartISubscription = this.cartService.addToCart(cartObj).subscribe(data => {
+    if (ticketProps > 0 && (isNaN(ticketCount) === false)) {
 
-      console.log(data);
-    }, error => {
+      const cartObj = {
+        eventId: this.eventId,
+        ticketId: this.selectedTicket.id,
+        count: this.ticketsAmount
+      };
 
-      if (error.status === 401) {
+      this.addToCartISubscription = this.cartService.addToCart(cartObj).subscribe(() => {
 
-        this.router.navigate(['/login']);
-      }
-    });
+        const ticket = new TicketEditModel(this.selectedTicket.id, this.selectedTicket.count - ticketCount, null, null);
+
+        this.ticketService.editTicket(ticket).subscribe(() => {
+
+          this.router.navigate([`/user/events/${this.eventId}`]);
+        });
+
+      }, error => {
+
+        if (error.status === 401) {
+
+          this.router.navigate(['/login']);
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {

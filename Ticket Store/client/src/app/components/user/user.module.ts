@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { userComponents } from './index';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { CartService } from '../../core/services/cart.service';
 
 import { EventTimeFormatterPipe } from '../../core/pipes/event-time-formatter.pipe';
 import { EventDateFormatterPipe } from '../../core/pipes/event-date-formatter.pipe';
 
+// Guards
+import { AuthGuard } from '../../core/guards/auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,9 @@ import { EventDateFormatterPipe } from '../../core/pipes/event-date-formatter.pi
       { path: 'home', component: userComponents[0] },
       { path: 'events', component: userComponents[1] },
       { path: 'events/:id', component: userComponents[2] },
-      { path: 'events/tickets/:id', component: userComponents[3] }
+      { path: 'events/tickets/:id', component: userComponents[3] },
+      { path: 'my/tickets', canActivate: [AuthGuard], component: userComponents[4] },
+      { path: 'cart', canActivate: [AuthGuard], component: userComponents[5] }
     ]),
     FormsModule
   ],
@@ -30,8 +33,7 @@ import { EventDateFormatterPipe } from '../../core/pipes/event-date-formatter.pi
     ...userComponents
   ],
   providers: [
-    AuthenticationService,
-    CartService
+    AuthenticationService
     ]
 })
 

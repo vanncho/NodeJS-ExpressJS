@@ -16,11 +16,11 @@ import { Category } from '../../../core/models/view/category.model';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  // public admin: boolean;
   public username: string;
   private loggedUserNameISubscription: ISubscription;
   private categoriesISubscription: ISubscription;
   private categories: Array<Category>;
+  private cartItems: number;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
@@ -35,6 +35,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.categoriesISubscription = this.categoryService.getAllCategories().subscribe((categories: any) => {
       this.categories = Object.values(categories.data);
+    });
+
+    this.headerService.cartItems.subscribe((cartItems: number) => {
+
+      this.cartItems = cartItems;
     });
 
     this.isAdmin();
@@ -52,6 +57,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private isAdmin(): boolean {
 
     return this.authenticationService.getIsAdmin();
+  }
+
+  private isUser(): boolean {
+
+    return this.authenticationService.getIsUser();
   }
 
   private getAdminPanel(): void {
