@@ -125,6 +125,7 @@ module.exports = {
         req.session.destroy(() => {
 
             req.logout();
+            res.clearCookie('SID');
             res.status(200).send({ data: 'Logout success', errors: [] });
         });
     },

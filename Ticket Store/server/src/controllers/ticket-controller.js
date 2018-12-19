@@ -1,5 +1,13 @@
 const Ticket = require('../models/').Ticket;
 
+const log4js = require('log4js');
+log4js.configure({
+    appenders: { 'ticket-controller': { type: 'file', filename: 'errors.log' } },
+    categories: { default: { appenders: ['ticket-controller'], level: 'ALL' } },
+});
+
+const logger = log4js.getLogger('ticket-controller');
+
 module.exports = {
 
     addTicket: (req, res) => {
@@ -43,10 +51,14 @@ module.exports = {
     editTicket: (req, res) => {
 
         const ticket = {
-            count: req.body.ticketsCount,
-            price: req.body.price,
-            priceCategory: req.body.priceCategory
+            count: req.body.ticketsCount
         };
+
+        if (req.body.price && req.body.priceCategory) {
+
+            ticket['price'] = req.body.price;
+            ticket['priceCategory'] = req.body.priceCategory;
+        }
 
         Ticket.update(ticket, { where: { id: req.body.id } }).then(rows => {
 

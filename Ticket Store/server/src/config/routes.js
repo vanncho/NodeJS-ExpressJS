@@ -50,6 +50,8 @@ module.exports = (app, sessionChecker) => {
     app.get('/api/getAllTickets/:id', controllers.ticketController.getAllTickets);
 
     // USER - CART
-    app.get('/api/cart/:id', controllers.cartController.getCart);
+    app.get('/api/cart', sessionChecker, controllers.cartController.getCart);
+    app.get('/api/cartItems', sessionChecker, controllers.cartController.getCartItemsCount);
     app.post('/api/cart', sessionChecker, controllers.cartController.addToCart);
+    app.delete('/api/removeFromCart/:id', sessionChecker, controllers.cartController.deleteFromCart);
 }
