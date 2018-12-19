@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
     this.setMenuOnReRender();
     this.headerService.menuSwitch.subscribe((userType: UserType) => {
-console.log('menu switch')
+
       if (userType === UserType.ADMIN) {
         this.cookieService.add('showAdminPanel', 'true');
         this.adminMenu = true;

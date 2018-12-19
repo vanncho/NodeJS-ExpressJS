@@ -52,7 +52,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private loadUserCart(): any {
 
     this.getCartItemsISubscription = this.cartService.getAll().subscribe((cart: any) => {
-      console.log(cart)
+
       this.cart = [];
       this.totalSum = 0;
       let currCartItem: CartList;

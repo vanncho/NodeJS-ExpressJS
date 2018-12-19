@@ -31,7 +31,6 @@ export class CookieManagerService {
     this._cookieService.delete('sap');
     this._cookieService.delete('userid');
     this._cookieService.delete('showAdminPanel');
-    console.log('REM')
   }
 
   add(key: string, value: string): void {

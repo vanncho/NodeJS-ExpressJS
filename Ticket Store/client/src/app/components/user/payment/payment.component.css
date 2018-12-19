@@ -1,0 +1,21 @@
+.credit-card-box .display-tr {
+    display: table-row;
+}
+
+.card-type a {
+    text-decoration: none;
+}
+
+.card-type img {
+    margin-left: 5px;
+}
+
+h1.panel-title {
+    padding-left: 15px;
+}
+
+.btn-block {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+}

@@ -4,6 +4,7 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
 import { EventTicketComponent } from './event-tickets/event-ticket/event-ticket.component';
 import { TicketsUserComponent } from './tickets-user/tickets-user.component';
 import { CartComponent } from './cart/cart.component';
+import { PaymentComponent } from './payment/payment.component';
 
 export const userComponents = [
     HomeUserComponent,
@@ -11,5 +12,6 @@ export const userComponents = [
     EventDetailComponent,
     EventTicketComponent,
     TicketsUserComponent,
-    CartComponent
+    CartComponent,
+    PaymentComponent
 ];

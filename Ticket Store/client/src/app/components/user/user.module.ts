@@ -11,6 +11,7 @@ import { EventDateFormatterPipe } from '../../core/pipes/event-date-formatter.pi
 // Guards
 import { AuthGuard } from '../../core/guards/auth/auth.guard';
 
+
 @NgModule({
   declarations: [
     ...userComponents,
@@ -25,7 +26,8 @@ import { AuthGuard } from '../../core/guards/auth/auth.guard';
       { path: 'events/:id', component: userComponents[2] },
       { path: 'events/tickets/:id', component: userComponents[3] },
       { path: 'my/tickets', canActivate: [AuthGuard], component: userComponents[4] },
-      { path: 'cart', canActivate: [AuthGuard], component: userComponents[5] }
+      { path: 'cart', canActivate: [AuthGuard], component: userComponents[5] },
+      { path: 'cart/payment', canActivate: [AuthGuard], component: userComponents[6] }
     ]),
     FormsModule
   ],
