@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
   }
 
   private showHideAdminMenu(): boolean {
+
     return this.adminMenu;
   }
 
