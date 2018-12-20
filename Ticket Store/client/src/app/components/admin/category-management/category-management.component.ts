@@ -80,21 +80,17 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   private getCategoryByName(): void {
 
-    if (this.searchedCategory.length > 0) {
+    this.subscriptionSearchCategory = this.categoryService.searchCategoryWithNameLike(this.searchedCategory)
+                                                          .subscribe((categories: any) => {
 
-      this.subscriptionSearchCategory = this.categoryService.searchCategoryWithNameLike(this.searchedCategory)
-                                                            .subscribe((categories: any) => {
+      this.categories = Object.values(categories.data);
+    }, error => {
 
-        this.categories = Object.values(categories.data);
-      }, error => {
+      if (error.status === 401) {
 
-        if (error.status === 401) {
-
-          this.authenticationService.logout();
-        }
-      });
-    }
-
+        this.authenticationService.logout();
+      }
+    });
   }
 
   ngOnDestroy(): void {

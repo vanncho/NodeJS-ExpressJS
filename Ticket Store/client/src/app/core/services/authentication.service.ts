@@ -89,7 +89,7 @@ export class AuthenticationService {
 
   isLoggedIn(): boolean {
 
-    return this.cookieService.get('userid') !== '' && this.cookieService.get('userrole') !== '';
+    return this.cookieService.get('userid') !== null && this.cookieService.get('userrole') !== null;
   }
 
   getIsAdmin(): boolean {

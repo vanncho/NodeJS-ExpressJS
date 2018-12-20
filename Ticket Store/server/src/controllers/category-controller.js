@@ -87,18 +87,15 @@ module.exports = {
 
         const categoryName = (req.body.categoryName).toLowerCase();
 
-        if (categoryName !== '') {
+        Category.findAll({ 
+            where: { 
+                name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), `LIKE`, `%${categoryName}%`)
+            }} ).then(categories => {
 
-            Category.findAll({ 
-                where: { 
-                    name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), `LIKE`, `%${categoryName}%`)
-                }} ).then(categories => {
+            res.status(200).send({ data: categories, errors: [] });
+        }).catch(err => {
 
-                res.status(200).send({ data: categories, errors: [] });
-            }).catch(err => {
-
-                logger.error(err);
-            });
-        }
+            logger.error(err);
+        });
     }
 };

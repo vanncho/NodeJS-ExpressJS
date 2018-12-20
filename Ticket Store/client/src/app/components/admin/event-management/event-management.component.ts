@@ -127,19 +127,16 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   private getEventByTitle(): void {
 
-    if (this.searchedEvent.length > 0) {
+    this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((events: any) => {
 
-      this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((events: any) => {
+      this.events = Object.values(events.data);
+    }, error => {
 
-        this.events = Object.values(events.data);
-      }, error => {
+      if (error.status === 401) {
 
-        if (error.status === 401) {
-
-          this.authenticationService.logout();
-        }
-      });
-    }
+        this.authenticationService.logout();
+      }
+    });
 
   }
 

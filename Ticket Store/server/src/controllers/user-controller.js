@@ -188,7 +188,6 @@ module.exports = {
         
     },
     lockUnlockUser: (req, res) => {
-// TODO: disable locked user actions!
 
         const userUpdate = {
             account_non_locked: req.body.nonLocked
@@ -206,19 +205,16 @@ module.exports = {
 
         const username = (req.body.username).toLowerCase();
 
-        if (username !== '') {
+        User.findAll({ 
+            where: { 
+                name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('username')), `LIKE`, `%${username}%`)
+            }} ).then(users => {
 
-            User.findAll({ 
-                where: { 
-                    name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('username')), `LIKE`, `%${username}%`)
-                }} ).then(users => {
+            res.status(200).send({ data: users, errors: [] });
+        }).catch(err => {
 
-                res.status(200).send({ data: users, errors: [] });
-            }).catch(err => {
-
-                logger.error(err);
-            });
-        }
+            logger.error(err);
+        });
     }
 
 };

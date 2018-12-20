@@ -101,18 +101,16 @@ module.exports = {
 
         const eventTitle = (req.body.eventTitle).toLowerCase();
 
-        if (eventTitle !== '') {
+        Event.findAll({ 
+            where: { 
+                name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('title')), `LIKE`, `%${eventTitle}%`)
+            }} ).then(events => {
 
-            Event.findAll({ 
-                where: { 
-                    name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('title')), `LIKE`, `%${eventTitle}%`)
-                }} ).then(events => {
+            res.status(200).send({ data: events, errors: [] });
+        }).catch(err => {
 
-                res.status(200).send({ data: events, errors: [] });
-            }).catch(err => {
+            logger.error(err);
+        });
 
-                logger.error(err);
-            });
-        }
     }
 };
