@@ -6,9 +6,6 @@
                     <div class="row display-tr">
                         <div class="pull-left">
                             <div class="display-td">
-                                <div class="card-type">
-                                    <h1 class="panel-title">PAYMENT OF 340 €</h1>
-                                </div>
                             </div>
                         </div>
                         <div class="pull-right">
@@ -29,7 +26,7 @@
                             <div class="col-xs-12">
                                 <div class="form-group required">
                                     <label class="form-control-label" for="cardNumber">CARD NUMBER</label>
-                                    <input type="tel" id="cardNumber" name="cardNumber" placeholder="Valid Card Number" class="form-control" autocomplete="cc-number" required="required" autofocus="">
+                                    <input type="tel" id="cardNumber" name="cardNumber" placeholder="Valid Card Number" class="form-control" autocomplete="cc-number" required="required" autofocus="" disabled="disabled">
                                 </div>
                             </div>
                         </div>
@@ -37,13 +34,13 @@
                             <div class="col-xs-7 col-md-7">
                                 <div class="form-group required">
                                     <label class="form-control-label" for="cardExpiry">EXPIRATION</label>
-                                    <input type="tel" id="cardExpiry" name="cardExpiry" placeholder="MM / YY" class="form-control" autocomplete="cc-exp" required="required">
+                                    <input type="tel" id="cardExpiry" name="cardExpiry" placeholder="MM / YY" class="form-control" autocomplete="cc-exp" required="required" disabled="disabled">
                                 </div>
                             </div>
                             <div class="col-xs-5 col-md-5 pull-right">
                                 <div class="form-group required">
                                     <label class="form-control-label" for="cardCVC">CV CODE</label>
-                                    <input type="tel" id="cardCVC" name="cardCVC" placeholder="CVC" class="form-control" autocomplete="cc-csc" required="required">
+                                    <input type="tel" id="cardCVC" name="cardCVC" placeholder="CVC" class="form-control" autocomplete="cc-csc" required="required" disabled="disabled">
                                 </div>
                             </div>
                         </div>
@@ -51,13 +48,13 @@
                             <div class="col-xs-12">
                                 <div class="form-group required">
                                     <label class="form-control-label" for="couponCode">COUPON CODE</label>
-                                    <input type="text" id="couponCode" name="couponCode" class="form-control" required="required">
+                                    <input type="text" id="couponCode" name="couponCode" class="form-control" required="required" disabled="disabled">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <button class="btn btn-success btn-lg btn-block">Buy</button>
+                            <button class="btn btn-success btn-lg btn-block" (click)="buy()">Buy</button>
                             <br>
                             <a routerLink="/user/cart" class="btn btn-default btn-lg btn-block">Cancel</a>
                         </div>
