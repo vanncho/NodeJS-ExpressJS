@@ -16,14 +16,14 @@ import { TicketListModel } from '../../../core/models/view/ticket-list.model';
 })
 export class EventManagementComponent implements OnInit, OnDestroy {
 
+  public searchedEvent: string;
+  public events: Array<EventListModel>;
   private subscriptionGetAllEvents: ISubscription;
   private subscriptionDeleteEvent: ISubscription;
   private subscriptionDeleteTicket: ISubscription;
   private subscriptionSearchEvent: ISubscription;
   private subscriptionGetTicketsForEvent: ISubscription;
-  private events: Array<EventListModel>;
   private tickets: Array<TicketListModel>;
-  private searchedEvent: string;
 
   constructor(private eventService: EventService,
               private ticketService: TicketService,
@@ -31,6 +31,21 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadAllEvents();
+  }
+
+  getEventByTitle(): void {
+
+    this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((events: any) => {
+
+      this.events = Object.values(events.data);
+    }, error => {
+
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      }
+    });
+
   }
 
   private loadAllEvents(): void {
@@ -123,21 +138,6 @@ export class EventManagementComponent implements OnInit, OnDestroy {
         this.authenticationService.logout();
       }
     });
-  }
-
-  private getEventByTitle(): void {
-
-    this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((events: any) => {
-
-      this.events = Object.values(events.data);
-    }, error => {
-
-      if (error.status === 401) {
-
-        this.authenticationService.logout();
-      }
-    });
-
   }
 
   ngOnDestroy(): void {

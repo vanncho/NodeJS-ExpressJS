@@ -16,10 +16,10 @@ import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model'
 })
 export class CartComponent implements OnInit, OnDestroy {
 
+  public cart: Array<CartList>;
+  public totalSum: number;
   private getCartItemsISubscription: ISubscription;
   private removeCartItemISubscription: ISubscription;
-  private cart: Array<CartList>;
-  private totalSum: number;
 
   constructor(private cartService: CartService,
               private headerService: HeaderService,

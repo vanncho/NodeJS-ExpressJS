@@ -14,8 +14,8 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class CategoryAddComponent implements OnInit, OnDestroy {
 
+  public categoryName: string;
   private subscriptionCategoryAdd: ISubscription;
-  private categoryName: string;
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
@@ -25,7 +25,7 @@ export class CategoryAddComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  private addCategory(): void {
+  addCategory(): void {
 
     this.subscriptionCategoryAdd = this.categoryService.addCategory(this.categoryName).subscribe((data: any) => {
 

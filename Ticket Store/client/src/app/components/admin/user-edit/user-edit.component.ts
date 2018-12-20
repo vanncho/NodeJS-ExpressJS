@@ -21,13 +21,12 @@ import { UserType } from '../../../core/enumerations/user-type.enum';
 })
 export class UserEditComponent implements OnInit, OnDestroy {
 
+  public user: UserEditViewModel;
+  public currentUserRole: { id: number, name: string };
   private subscriptionGetUserById: ISubscription;
   private subscriptionGetAllRoles: ISubscription;
   private subscriptionUpdateUser: ISubscription;
   private subscriptionLogoutUser: ISubscription;
-  private user: UserEditViewModel;
-  // private currentUserRole: string;
-  private currentUserRole: { id: number, name: string };
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
@@ -43,15 +42,13 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.loadDataForView();
   }
 
-  private loadDataForView() {
+  loadDataForView() {
 
     const userId = this.route.params['value'].id;
     this.subscriptionGetUserById = this.userService.getUserById(userId).subscribe((userToEdit: any) => {
-      console.log('userToEdit');
-      console.log(userToEdit);
+
       this.subscriptionGetAllRoles = this.roleService.getAllRoles().subscribe((rolesData: any) => {
-console.log('....roles...')
-console.log(rolesData)
+
         this.user = new UserEditViewModel(
           userToEdit['data']['id'],
           userToEdit['data']['username'],
@@ -74,7 +71,7 @@ console.log(rolesData)
 
   }
 
-  private updateUser() {
+  updateUser() {
 
     const updateUser = new UserEditModel(
       this.user['id'],
@@ -87,7 +84,7 @@ console.log(rolesData)
       this.currentUserRole.name,
       this.user['accountLocked']
     );
-console.log(updateUser);
+
     this.subscriptionUpdateUser = this.userService.updateUser(updateUser).subscribe(() => {
 
       const loggedInUserId = Number(this.cookieService.get('userid'));
@@ -123,7 +120,7 @@ console.log(updateUser);
     });
   }
 
-  private compareRoles(o1: { id: number, name: string }, o2: { id: number, name: string }): boolean {
+  compareRoles(o1: { id: number, name: string }, o2: { id: number, name: string }): boolean {
 
     if (o1 && o2 && o1.name === o2.name) {
       return true;

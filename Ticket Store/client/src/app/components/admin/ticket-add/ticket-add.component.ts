@@ -24,8 +24,8 @@ import { TicketAddModel } from '../../../core/models/binding/ticket-add.model';
 })
 export class TicketAddComponent implements OnInit, OnDestroy {
 
+  public rForm: FormGroup;
   private subscriptionAddTicket: ISubscription;
-  private rForm: FormGroup;
   private post: any;
   private ticket: TicketAddModel;
 
@@ -42,7 +42,7 @@ export class TicketAddComponent implements OnInit, OnDestroy {
     this.fillDataToModel();
   }
 
-  private addTicket(): void {
+  addTicket(): void {
 
     const eventId = this.route.params['value'].id;
     this.ticket['eventId'] = eventId;

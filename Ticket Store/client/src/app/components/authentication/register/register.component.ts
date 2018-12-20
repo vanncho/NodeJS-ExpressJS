@@ -22,7 +22,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class RegisterComponent implements OnInit {
 
-  private rForm: FormGroup;
+  public rForm: FormGroup;
   public model: RegisterModel;
 
   constructor(private authentication: AuthenticationService) {
@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  private register(): void {
+  register(): void {
 
     this.model['firstName'] = this.rForm.controls['firstName'].value;
     this.model['lastName'] = this.rForm.controls['lastName'].value;

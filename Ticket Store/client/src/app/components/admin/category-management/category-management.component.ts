@@ -14,11 +14,11 @@ import { Category } from '../../../core/models/view/category.model';
 })
 export class CategoryManagementComponent implements OnInit, OnDestroy {
 
+  public categories: Array<Category>;
+  public searchedCategory: string;
   private subscriptionAllCategories: ISubscription;
   private subscriptionDeleteCategory: ISubscription;
   private subscriptionSearchCategory: ISubscription;
-  private categories: Array<Category>;
-  private searchedCategory: string;
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
@@ -78,7 +78,7 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
   });
   }
 
-  private getCategoryByName(): void {
+  getCategoryByName(): void {
 
     this.subscriptionSearchCategory = this.categoryService.searchCategoryWithNameLike(this.searchedCategory)
                                                           .subscribe((categories: any) => {

@@ -1,4 +1,4 @@
-import { EvenTimeFormatterPipe } from './event-time-formatter.pipe';
+import { EventTimeFormatterPipe } from './event-time-formatter.pipe';
 
 describe('EventTimeFormatterPipe', () => {
   it('create an instance', () => {

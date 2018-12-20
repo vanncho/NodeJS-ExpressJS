@@ -1,13 +1,13 @@
 export class EventAddModel {
 
     constructor(
-        private title: string,
-        private url: string,
-        private location: string,
-        private date: string,
-        private time: string,
-        private town: string,
-        private description: string,
-        private categoryId: number
+        public title: string,
+        public url: string,
+        public location: string,
+        public date: string,
+        public time: string,
+        public town: string,
+        public description: string,
+        public categoryId: number
     ) {}
 }

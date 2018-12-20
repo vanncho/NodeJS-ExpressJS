@@ -17,10 +17,10 @@ import { Category } from '../../../core/models/view/category.model';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   public username: string;
+  public categories: Array<Category>;
+  public cartItems: number;
   private loggedUserNameISubscription: ISubscription;
   private categoriesISubscription: ISubscription;
-  private categories: Array<Category>;
-  private cartItems: number;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
@@ -45,26 +45,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isAdmin();
   }
 
-  private logout(): void {
+  logout(): void {
     this.authenticationService.logout();
   }
 
-  private showHideNavigation(): boolean {
+  showHideNavigation(): boolean {
 
     return this.authenticationService.isLoggedIn();
   }
 
-  private isAdmin(): boolean {
+  isAdmin(): boolean {
 
     return this.authenticationService.getIsAdmin();
   }
 
-  private isUser(): boolean {
+  isUser(): boolean {
 
     return this.authenticationService.getIsUser();
   }
 
-  private getAdminPanel(): void {
+  getAdminPanel(): void {
 
     this.headerService.menuSwitch.next(UserType.ADMIN);
   }

@@ -22,7 +22,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class LoginComponent implements OnInit {
 
-  private lForm: FormGroup;
+  public lForm: FormGroup;
   public model: LoginModel;
 
   constructor(private authentication: AuthenticationService) {

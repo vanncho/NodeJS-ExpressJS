@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
-import { ToastrService } from 'ngx-toastr';
 
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-import { CookieManagerService } from '../../../core/services/cookie-manager.service';
 
 import { UserEditModel } from '../../../core/models/binding/user-edit.model';
 
@@ -17,19 +14,16 @@ import { UserEditModel } from '../../../core/models/binding/user-edit.model';
 })
 export class UserManagementComponent implements OnInit, OnDestroy {
 
+  public user: UserEditModel;
+  public users: Array<UserEditModel>;
+  public searchedUsername: string;
   private subscriptionGetAllUsers: ISubscription;
   private subscriptionGetAllUsersByRole: ISubscription;
   private subscriptionDisableEnableUser: ISubscription;
   private subscriptionSearchUsers: ISubscription;
-  private user: UserEditModel;
-  private users: Array<UserEditModel>;
-  private searchedUsername: string;
 
   constructor(private userService: UserService,
-              private authenticationService: AuthenticationService,
-              private toastr: ToastrService,
-              private router: Router,
-              private cookie: CookieManagerService) {
+              private authenticationService: AuthenticationService) {
     // this.users = [];
   }
 
@@ -38,22 +32,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.getAllUsers();
   }
 
-  private getAllUsers(): void {
-
-    this.subscriptionGetAllUsers = this.userService.getAllUsers().subscribe((users: any) => {
-
-      this.users = Object.values(users.data);
-
-      }, error => {
-
-        if (error.status === 401) {
-
-          this.authenticationService.logout();
-        }
-    });
-  }
-
-  private getAllUsersByRole(role): void {
+  getAllUsersByRole(role): void {
 
     this.subscriptionGetAllUsersByRole = this.userService.getAllUsersByRole(role).subscribe((users: any) => {
 
@@ -68,7 +47,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       });
   }
 
-  private disableEnableUser(event, userId, nonLocked): void {
+  disableEnableUser(event, userId, nonLocked): void {
 
     const classes = event.target.classList;
 
@@ -90,7 +69,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getUsersByUsername(): void {
+  getUsersByUsername(): void {
 
     this.subscriptionSearchUsers = this.userService.searchUsersWithUsernameLike(this.searchedUsername).subscribe((users: any) => {
 
@@ -105,7 +84,22 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  private changeButton(event, classes) {
+  getAllUsers(): void {
+
+    this.subscriptionGetAllUsers = this.userService.getAllUsers().subscribe((users: any) => {
+
+      this.users = Object.values(users.data);
+
+      }, error => {
+
+        if (error.status === 401) {
+
+          this.authenticationService.logout();
+        }
+    });
+  }
+
+  changeButton(event, classes) {
 
     if (classes.contains('btn-danger')) {
 

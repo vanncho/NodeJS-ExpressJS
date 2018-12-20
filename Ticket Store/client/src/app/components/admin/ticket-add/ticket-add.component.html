@@ -5,7 +5,7 @@
                 <h2 class="display-3">Add Ticket</h2>
             </div>
             <br>
-            <div *ngIf="!price; else forminfo">
+            <div>
                 <form [formGroup]="rForm" (ngSubmit)="addTicket()">
 
                     <div class="form-group row required">

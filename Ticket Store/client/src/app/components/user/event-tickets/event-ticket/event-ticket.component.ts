@@ -14,12 +14,13 @@ import { TicketEditModel } from '../../../../core/models/binding/ticket-edit.mod
 })
 export class EventTicketComponent implements OnInit, OnDestroy {
 
+  public tickets: Array<any>;
+  public ticketsAmount: string;
   private getTicketsForEventsISubscription: ISubscription;
   private addToCartISubscription: ISubscription;
   private eventId: number;
-  private tickets: Array<any>;
   private selectedTicket: any;
-  private ticketsAmount: string;
+
 
   constructor(private route: ActivatedRoute,
               private router: Router,

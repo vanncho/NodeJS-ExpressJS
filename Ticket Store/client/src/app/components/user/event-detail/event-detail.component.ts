@@ -11,7 +11,7 @@ import { EventService } from '../../../core/services/event.service';
 })
 export class EventDetailComponent implements OnInit, OnDestroy {
 
-  private event: any;
+  public event: any;
   private getEventISubscription: ISubscription;
 
   constructor(private route: ActivatedRoute,

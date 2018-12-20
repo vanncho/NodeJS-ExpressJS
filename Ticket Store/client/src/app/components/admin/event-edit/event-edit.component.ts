@@ -18,11 +18,11 @@ import { Category } from '../../../core/models/view/category.model';
 })
 export class EventEditComponent implements OnInit, OnDestroy {
 
+  public event: EventEditModel;
+  public categories: Array<Category>;
   private subscriptionGetEvent: ISubscription;
   private subscriptionLoadCategories: ISubscription;
   private subscriptionEditEvent: ISubscription;
-  private event: EventEditModel;
-  private categories: Array<Category>;
 
   constructor(private eventService: EventService,
               private categoryService: CategoryService,
@@ -40,7 +40,7 @@ export class EventEditComponent implements OnInit, OnDestroy {
     this.loadCategories();
   }
 
-  private getEventById(): void {
+  getEventById(): void {
 
     const eventId = this.route.params['value'].id;
 
@@ -67,7 +67,7 @@ export class EventEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private editEvent() {
+  editEvent() {
 
     this.subscriptionEditEvent = this.eventService.editEvent(this.event).subscribe(() => {
 
@@ -84,7 +84,7 @@ export class EventEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadCategories(): void {
+  loadCategories(): void {
 
     this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
 
@@ -99,7 +99,7 @@ export class EventEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private compareCategory(o1: number, o2: number): boolean {
+  compareCategory(o1: number, o2: number): boolean {
 
     if (o1 === o2) {
       return true;

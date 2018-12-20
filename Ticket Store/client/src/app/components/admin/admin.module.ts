@@ -34,7 +34,8 @@ import { adminComponents } from './index';
         ...adminComponents
     ],
     providers: [
-        AuthenticationService
+        AuthenticationService,
+        AdminGuard
     ]
 })
 

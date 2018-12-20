@@ -16,10 +16,10 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class EventAddComponent implements OnInit, OnDestroy {
 
+  public event: EventAddModel;
+  public categories: Array<Category>;
   private subscriptionLoadCategories: ISubscription;
   private subscriptionAddEvent: ISubscription;
-  private event: EventAddModel;
-  private categories: Array<Category>;
 
   constructor(private eventService: EventService,
               private categoryService: CategoryService,
@@ -32,7 +32,7 @@ export class EventAddComponent implements OnInit, OnDestroy {
     this.loadCategories();
   }
 
-  private addEvent(): void {
+  addEvent(): void {
 
     this.subscriptionAddEvent = this.eventService.addEvent(this.event).subscribe(() => {
 
@@ -47,7 +47,7 @@ export class EventAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadCategories(): void {
+  loadCategories(): void {
 
     this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
 

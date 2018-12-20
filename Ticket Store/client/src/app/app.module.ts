@@ -20,8 +20,8 @@ import { AppComponent } from './app.component';
 // import { HomeUserComponent } from './components/user/home-user/home-user.component';
 
 // Services & Guards
-import { AuthGuard } from './core/guards/auth/auth.guard';
-import { AdminGuard } from './core/guards/admin/admin.guard';
+// import { AuthGuard } from './core/guards/auth/auth.guard';
+// import { AdminGuard } from './core/guards/admin/admin.guard';
 import { HttpClientService } from './core/services/http-client.service';
 import { CookieManagerService } from './core/services/cookie-manager.service';
 import { UserService } from './core/services/user.service';
@@ -51,8 +51,8 @@ import { DateUtility } from './core/utils/date.util';
   ],
   exports: [RouterModule],
   providers: [
-    AuthGuard,
-    AdminGuard,
+    // AuthGuard,
+    // AdminGuard,
     AuthenticationUtility,
     HttpClientService,
     CookieManagerService,

@@ -27,10 +27,10 @@ import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model'
 })
 export class TicketEditComponent implements OnInit, OnDestroy {
 
+  public post: any;
+  public rForm: FormGroup;
   private subscriptionGetTicketById: ISubscription;
   private subscriptionEditTicket: ISubscription;
-  private rForm: FormGroup;
-  private post: any;
   private ticket: TicketEditModel;
 
   constructor(private formBuilder: FormBuilder,
@@ -47,7 +47,7 @@ export class TicketEditComponent implements OnInit, OnDestroy {
     this.validateForm(this.ticket.price, this.ticket.ticketsCount, this.ticket.priceCategory);
   }
 
-  private getTicketById() {
+  getTicketById() {
 
     const ticketId = this.route.params['value'].id;
 
@@ -71,7 +71,7 @@ export class TicketEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private editTicket(): void {
+  editTicket(): void {
 
     this.ticket['price'] = this.rForm.controls['price'].value;
     this.ticket['ticketsCount'] = this.rForm.controls['ticketsCount'].value;
@@ -86,7 +86,7 @@ export class TicketEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private validateForm(price, ticketsCount, priceCategory): void {
+  validateForm(price, ticketsCount, priceCategory): void {
 
     this.rForm = this.formBuilder.group({
       'price': [price, Validators.compose([Validators.required, Validators.min(1)])],
@@ -95,7 +95,7 @@ export class TicketEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  private fillDataToModel(): void {
+  fillDataToModel(): void {
 
     this.rForm.valueChanges.subscribe((data) => {
 

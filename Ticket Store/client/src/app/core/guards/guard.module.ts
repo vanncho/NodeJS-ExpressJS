@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { guardsModules } from './index';
+import { GuardsModules } from './index';
 import { CommonModule } from '@angular/common';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -7,16 +7,17 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 
 @NgModule({
   declarations: [
-    ...guardsModules
+    // ...GuardsModules
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    ...guardsModules
+    // ...GuardsModules
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    ...GuardsModules
   ]
 })
 

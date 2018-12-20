@@ -13,9 +13,9 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class CategoryEditComponent implements OnInit, OnDestroy {
 
+  public category: Category;
   private subscriptionGetCategory: ISubscription;
   private subscriptionEditCategory: ISubscription;
-  private category: Category;
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
@@ -46,7 +46,7 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
 
   }
 
-  private editCategory() {
+  editCategory() {
 
     this.subscriptionEditCategory = this.categoryService.editCategory(this.category).subscribe(() => {
 
