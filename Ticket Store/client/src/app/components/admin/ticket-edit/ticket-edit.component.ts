@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { TicketService } from '../../../core/services/ticket.service';
@@ -29,8 +29,8 @@ export class TicketEditComponent implements OnInit, OnDestroy {
 
   public post: any;
   public rForm: FormGroup;
-  private subscriptionGetTicketById: ISubscription;
-  private subscriptionEditTicket: ISubscription;
+  private subscriptionGetTicketById: Subscription;
+  private subscriptionEditTicket: Subscription;
   private ticket: TicketEditModel;
 
   constructor(private formBuilder: FormBuilder,

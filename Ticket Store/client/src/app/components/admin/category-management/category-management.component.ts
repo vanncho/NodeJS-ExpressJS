@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -16,9 +16,9 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   public categories: Array<Category>;
   public searchedCategory: string;
-  private subscriptionAllCategories: ISubscription;
-  private subscriptionDeleteCategory: ISubscription;
-  private subscriptionSearchCategory: ISubscription;
+  private subscriptionAllCategories: Subscription;
+  private subscriptionDeleteCategory: Subscription;
+  private subscriptionSearchCategory: Subscription;
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
@@ -30,7 +30,7 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
     this.loadAllCategories();
   }
 
-  private loadAllCategories(): void {
+  loadAllCategories(): void {
 
     this.subscriptionAllCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
 
@@ -45,29 +45,34 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  private deleteCategory(categoryId) {
+  deleteCategory(categoryId) {
 
-    this.subscriptionDeleteCategory = this.categoryService.deleteCategory(categoryId).subscribe(() => {
+    this.subscriptionDeleteCategory = this.categoryService.deleteCategory(categoryId * 10).subscribe((success: any) => {
 
-      let index = 0;
-      let count = 0;
-      let categoryName = '';
+      if (success.data === 'Success') {
 
-      for (const category of this.categories) {
+        let index = 0;
+        let count = 0;
+        let categoryName = '';
 
-        if (category.id === Number(categoryId)) {
+        for (const category of this.categories) {
 
-          index = count;
-          categoryName = category['name'];
-          break;
+          if (category.id === Number(categoryId)) {
+
+            index = count;
+            categoryName = category['name'];
+            break;
+          }
+
+          count++;
         }
 
-        count++;
+        this.categories.splice(index, 1);
+        this.toastr.success('Deleted successfully.', categoryName);
+      } else {
+
+        this.toastr.error(success.errors[0]);
       }
-
-      this.categories.splice(index, 1);
-
-      this.toastr.success('Deleted successfully.', categoryName);
 
     }, error => {
 
@@ -75,6 +80,8 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
         this.authenticationService.logout();
       }
+
+      this.toastr.error(error.error);
   });
   }
 

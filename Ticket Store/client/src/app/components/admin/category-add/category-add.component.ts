@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,7 +15,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 export class CategoryAddComponent implements OnInit, OnDestroy {
 
   public categoryName: string;
-  private subscriptionCategoryAdd: ISubscription;
+  private subscriptionCategoryAdd: Subscription;
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { EventService } from '../../../core/services/event.service';
@@ -18,11 +18,11 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   public searchedEvent: string;
   public events: Array<EventListModel>;
-  private subscriptionGetAllEvents: ISubscription;
-  private subscriptionDeleteEvent: ISubscription;
-  private subscriptionDeleteTicket: ISubscription;
-  private subscriptionSearchEvent: ISubscription;
-  private subscriptionGetTicketsForEvent: ISubscription;
+  private subscriptionGetAllEvents: Subscription;
+  private subscriptionDeleteEvent: Subscription;
+  private subscriptionDeleteTicket: Subscription;
+  private subscriptionSearchEvent: Subscription;
+  private subscriptionGetTicketsForEvent: Subscription;
   private tickets: Array<TicketListModel>;
 
   constructor(private eventService: EventService,

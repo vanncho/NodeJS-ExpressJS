@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -20,9 +20,9 @@ export class EventEditComponent implements OnInit, OnDestroy {
 
   public event: EventEditModel;
   public categories: Array<Category>;
-  private subscriptionGetEvent: ISubscription;
-  private subscriptionLoadCategories: ISubscription;
-  private subscriptionEditEvent: ISubscription;
+  private subscriptionGetEvent: Subscription;
+  private subscriptionLoadCategories: Subscription;
+  private subscriptionEditEvent: Subscription;
 
   constructor(private eventService: EventService,
               private categoryService: CategoryService,

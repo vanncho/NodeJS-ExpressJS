@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { CategoryService } from '../../../core/services/category.service';
@@ -14,8 +14,8 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 export class CategoryEditComponent implements OnInit, OnDestroy {
 
   public category: Category;
-  private subscriptionGetCategory: ISubscription;
-  private subscriptionEditCategory: ISubscription;
+  private subscriptionGetCategory: Subscription;
+  private subscriptionEditCategory: Subscription;
 
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,

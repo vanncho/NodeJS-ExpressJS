@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -23,10 +23,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   public user: UserEditViewModel;
   public currentUserRole: { id: number, name: string };
-  private subscriptionGetUserById: ISubscription;
-  private subscriptionGetAllRoles: ISubscription;
-  private subscriptionUpdateUser: ISubscription;
-  private subscriptionLogoutUser: ISubscription;
+  private subscriptionGetUserById: Subscription;
+  private subscriptionGetAllRoles: Subscription;
+  private subscriptionUpdateUser: Subscription;
+  private subscriptionLogoutUser: Subscription;
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,

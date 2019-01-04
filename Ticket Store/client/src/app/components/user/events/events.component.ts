@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { EventService } from '../../../core/services/event.service';
 
@@ -11,7 +11,7 @@ import { EventService } from '../../../core/services/event.service';
 export class EventsComponent implements OnInit, OnDestroy {
 
   public events: Array<any> = [];
-  private getAllEventsISubscription: ISubscription;
+  private getAllEventsISubscription: Subscription;
 
   constructor(private eventService: EventService) { }
 

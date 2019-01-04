@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-
-import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class HttpClientService {
@@ -49,8 +47,8 @@ export class HttpClientService {
       );
   }
 
-  private handleError(err: any): Observable<Error> {
+  private handleError(err: any): Observable<never> {
 
-      return Observable.throw(err);
+      return throwError(new Error(err));
   }
 }

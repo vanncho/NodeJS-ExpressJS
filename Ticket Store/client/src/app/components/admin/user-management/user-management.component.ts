@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -17,10 +17,10 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   public user: UserEditModel;
   public users: Array<UserEditModel>;
   public searchedUsername: string;
-  private subscriptionGetAllUsers: ISubscription;
-  private subscriptionGetAllUsersByRole: ISubscription;
-  private subscriptionDisableEnableUser: ISubscription;
-  private subscriptionSearchUsers: ISubscription;
+  private subscriptionGetAllUsers: Subscription;
+  private subscriptionGetAllUsersByRole: Subscription;
+  private subscriptionDisableEnableUser: Subscription;
+  private subscriptionSearchUsers: Subscription;
 
   constructor(private userService: UserService,
               private authenticationService: AuthenticationService) {

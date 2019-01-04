@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { TicketService } from '../../../../core/services/ticket.service';
 import { CartService } from '../../../../core/services/cart.service';
@@ -16,8 +16,8 @@ export class EventTicketComponent implements OnInit, OnDestroy {
 
   public tickets: Array<any>;
   public ticketsAmount: string;
-  private getTicketsForEventsISubscription: ISubscription;
-  private addToCartISubscription: ISubscription;
+  private getTicketsForEventsISubscription: Subscription;
+  private addToCartISubscription: Subscription;
   private eventId: number;
   private selectedTicket: any;
 

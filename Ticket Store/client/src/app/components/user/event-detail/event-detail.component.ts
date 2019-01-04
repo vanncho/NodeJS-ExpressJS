@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { EventService } from '../../../core/services/event.service';
 
@@ -12,7 +12,7 @@ import { EventService } from '../../../core/services/event.service';
 export class EventDetailComponent implements OnInit, OnDestroy {
 
   public event: any;
-  private getEventISubscription: ISubscription;
+  private getEventISubscription: Subscription;
 
   constructor(private route: ActivatedRoute,
               private eventService: EventService) { }

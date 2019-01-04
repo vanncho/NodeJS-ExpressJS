@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { TicketService } from '../../../core/services/ticket.service';
 import { TicketAddModel } from '../../../core/models/binding/ticket-add.model';
@@ -25,7 +25,7 @@ import { TicketAddModel } from '../../../core/models/binding/ticket-add.model';
 export class TicketAddComponent implements OnInit, OnDestroy {
 
   public rForm: FormGroup;
-  private subscriptionAddTicket: ISubscription;
+  private subscriptionAddTicket: Subscription;
   private post: any;
   private ticket: TicketAddModel;
 

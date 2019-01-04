@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { CartService } from '../../../core/services/cart.service';
 import { HeaderService } from '../../../core/services/header.service';
@@ -18,8 +18,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   public cart: Array<CartList>;
   public totalSum: number;
-  private getCartItemsISubscription: ISubscription;
-  private removeCartItemISubscription: ISubscription;
+  private getCartItemsISubscription: Subscription;
+  private removeCartItemISubscription: Subscription;
 
   constructor(private cartService: CartService,
               private headerService: HeaderService,

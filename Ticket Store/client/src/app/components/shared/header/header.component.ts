@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { HeaderService } from '../../../core/services/header.service';
@@ -19,8 +19,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public username: string;
   public categories: Array<Category>;
   public cartItems: number;
-  private loggedUserNameISubscription: ISubscription;
-  private categoriesISubscription: ISubscription;
+  private loggedUserNameISubscription: Subscription;
+  private categoriesISubscription: Subscription;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
