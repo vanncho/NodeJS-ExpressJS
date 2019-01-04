@@ -72,9 +72,13 @@ module.exports = {
 
         const ticketId = req.params.id;
 
-        Ticket.destroy({ where: { id: ticketId } }).then(() => {
+        Ticket.destroy({ where: { id: ticketId } }).then((rows) => {
 
-            res.status(200).send({ data: 'Success', errors: [] });
+            if (rows > 0) {
+                res.status(200).send({ data: 'Success', errors: [] });
+            } else {
+                res.status(200).send({ data: 'Error', errors: ['Ticket with provided id does not exists!'] });
+            }
         }).catch(err => {
 
             logger.error(err);

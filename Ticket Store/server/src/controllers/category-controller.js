@@ -75,9 +75,19 @@ module.exports = {
 
         const categoryId = req.params.id;
 
-        Category.destroy({ where: { id: categoryId } }).then(() => {
+        Category.destroy({ where: { id: categoryId } }).then((rows) => {
 
-            res.status(200).send({ data: 'Success', errors: [] });
+            if (rows > 0) {
+                res.status(200).send({ data: 'Success', errors: [] });
+            } else {
+
+                // CHANGE ALL TO THIS
+
+
+                // res.status(200).send({ data: 'Error', errors: ['Category with provided id does not exists!'] });
+                res.status(400).send('Category with provided id does not exists!');
+            }
+            
         }).catch(err => {
 
             logger.error(err);

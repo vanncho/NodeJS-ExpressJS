@@ -57,9 +57,13 @@ module.exports = {
 
         const eventId = req.params.id;
 
-        Event.destroy({ where: { id: eventId } }).then(() => {
+        Event.destroy({ where: { id: eventId } }).then((rows) => {
 
-            res.status(200).send({ data: 'Success', errors: [] });
+            if (rows > 0) {
+                res.status(200).send({ data: 'Success', errors: [] });
+            } else {
+                res.status(200).send({ data: 'Error', errors: ['Event with provided id does not exists!'] });
+            }
         }).catch(err => {
 
             logger.error(err);
