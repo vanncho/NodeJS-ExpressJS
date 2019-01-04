@@ -134,16 +134,16 @@ module.exports = {
         const roleFilter = req.body;
 
         User.findAll({ 
-            raw: true,
-            attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked', Sequelize.literal('role')],
+            attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked'],
             include: [{
                 model: Role,
                 as: 'role',
+                attributes: ['id', 'role'],
                 where: roleFilter
             }]
         }).then(users => {
 
-            res.status(200).send({ data: users, errors: [] });
+            res.status(200).send(users);
         }).catch(err => {
 
             logger.error(err);
