@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-
+import { map } from 'rxjs/operators';
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 
 import { UserEditModel } from '../../../core/models/binding/user-edit.model';
-
+import { User } from '../../../core/models/view/user';
+import { Role } from '../../../core/models/view/role';
 
 @Component({
   selector: 'app-user-management',
@@ -15,7 +16,9 @@ import { UserEditModel } from '../../../core/models/binding/user-edit.model';
 export class UserManagementComponent implements OnInit, OnDestroy {
 
   public user: UserEditModel;
-  public users: Array<UserEditModel>;
+  // public users: Array<UserEditModel>;
+  public users: Array<User>;
+
   public searchedUsername: string;
   private subscriptionGetAllUsers: Subscription;
   private subscriptionGetAllUsersByRole: Subscription;
@@ -36,7 +39,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
     this.subscriptionGetAllUsersByRole = this.userService.getAllUsersByRole(role).subscribe((users: any) => {
 
-      this.users = Object.values(users.data);
+      this.users = users;
 
       }, error => {
 
@@ -86,9 +89,15 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
   getAllUsers(): void {
 
-    this.subscriptionGetAllUsers = this.userService.getAllUsers().subscribe((users: any) => {
+    this.subscriptionGetAllUsers = this.userService.getAllUsers()
+    .pipe(
+      map(
+        res => res.map(obj => new User().deserialize(obj))
+        )
+    )
+    .subscribe((users: Array<User>) => {
 
-      this.users = Object.values(users.data);
+      this.users = users;
 
       }, error => {
 

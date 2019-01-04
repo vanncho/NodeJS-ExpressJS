@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { HttpClientService } from './http-client.service';
+import { map } from 'rxjs/operators';
+// import { HttpClientService } from './http-client.service';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../models/view/user';
 import { AuthenticationUtility } from '../utils/authentication.util';
 
 @Injectable()
 export class UserService {
 
     constructor(private authUtil: AuthenticationUtility,
-                private httpClientService: HttpClientService) {
+                private httpClient: HttpClient) {
     }
 
-    getAllUsers(): Observable<Object> {
+    getAllUsers(): Observable<Array<User>> {
 
-        return this.httpClientService.get('/api/allUsers', this.authUtil.headersBasic());
+        // return this.httpClient
+        //                       .get<Array<User>>('/api/allUsers', this.authUtil.headersBasic())
+        //                       .map();
+        return this.httpClient.get<Array<User>>('/api/allUsers', this.authUtil.headersBasic());
     }
 
     getAllUsersByRole(role): Observable<Object> {
