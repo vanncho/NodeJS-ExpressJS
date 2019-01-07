@@ -35,7 +35,8 @@ import { AuthGuard } from '../../core/guards/auth/auth.guard';
     ...userComponents
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    AuthGuard
     ]
 })
 

@@ -5,9 +5,6 @@ import { LoginComponent } from './components/authentication/login/login.componen
 import { RegisterComponent } from './components/authentication/register/register.component';
 import { NotFoundComponent } from './components/shared/not-found/not-found.component';
 
-// Guards
-import { AuthGuard } from './core/guards/auth/auth.guard';
-
 const routes: Routes = [
 
   { path: '', redirectTo: 'user/home', pathMatch: 'full' },
