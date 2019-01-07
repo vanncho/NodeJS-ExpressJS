@@ -32,7 +32,7 @@ module.exports = {
             
         }).then(roles => {
 
-            res.status(200).send({ data: roles, errors: [] });
+            res.status(200).send(roles);
         });
     }
 }

@@ -110,8 +110,7 @@ module.exports = {
                     }
                 }).catch(err => {
 
-                    // logger.error(err);
-                    console.log(err)
+                    logger.error(err);
                 });
             });
 
@@ -155,15 +154,15 @@ module.exports = {
         const userId = req.params.id;
 
         User.findByPk(userId, {
-            raw: true,
-            attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked', Sequelize.literal('role')],
+            attributes: ['id', 'username', 'first_name', 'last_name', 'email', 'account_non_locked'],
             include: [{
                 model: Role,
-                as: 'role'
+                as: 'role',
+                attributes: ['id', 'role']
             }]
         }).then(user => {
 
-            res.status(200).send({ data: user, errors: [] });
+            res.status(200).send(user);
         }).catch(err => {
 
             logger.error(err);
@@ -195,7 +194,7 @@ module.exports = {
 
         User.update(userUpdate, { where: { id: req.body.id } }).then(rows => {
 
-            res.status(200).send({ errors: [] });
+                res.status(200).send({data: 'Success', errors: [] });
         }).catch(err => {
 
             logger.error(err);
@@ -208,9 +207,15 @@ module.exports = {
         User.findAll({ 
             where: { 
                 name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('username')), `LIKE`, `%${username}%`)
-            }} ).then(users => {
+            },
+            include: [{
+                model: Role,
+                as: 'role',
+                attributes: ['id', 'role']
+            }]
+        } ).then(users => {
 
-            res.status(200).send({ data: users, errors: [] });
+            res.status(200).send(users);
         }).catch(err => {
 
             logger.error(err);
