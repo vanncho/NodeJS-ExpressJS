@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { HttpClientService } from './http-client.service';
+import { HttpClient } from '@angular/common/http';
 import { AuthenticationUtility } from '../utils/authentication.util';
 
 import { Role } from '../models/view/role';
@@ -10,11 +10,11 @@ import { Role } from '../models/view/role';
 export class RoleService {
 
     constructor(private authUtil: AuthenticationUtility,
-                private httpClientService: HttpClientService) {
+                private httpClient: HttpClient) {
     }
 
     getAllRoles(): Observable<Array<Role>> {
 
-        return this.httpClientService.get<Array<Role>>('/api/allRoles', this.authUtil.headersBasic());
+        return this.httpClient.get<Array<Role>>('/api/allRoles', this.authUtil.headersBasic());
     }
 }

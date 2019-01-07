@@ -8,7 +8,6 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 
 import { UserEditModel } from '../../../core/models/binding/user-edit.model';
 import { User } from '../../../core/models/view/user';
-import { Role } from '../../../core/models/view/role';
 
 @Component({
   selector: 'app-user-management',
@@ -18,9 +17,7 @@ import { Role } from '../../../core/models/view/role';
 export class UserManagementComponent implements OnInit, OnDestroy {
 
   public user: UserEditModel;
-  // public users: Array<UserEditModel>;
   public users: Array<User>;
-
   public searchedUsername: string;
   public enableDisableBtnName = 'Disable';
   private subscriptionGetAllUsers: Subscription;
@@ -31,7 +28,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService,
               private authenticationService: AuthenticationService,
               private toast: ToastrService) {
-    // this.users = [];
   }
 
   ngOnInit() {
