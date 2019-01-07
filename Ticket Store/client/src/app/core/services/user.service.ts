@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-// import { HttpClientService } from './http-client.service';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/view/user';
 import { AuthenticationUtility } from '../utils/authentication.util';
@@ -15,34 +13,31 @@ export class UserService {
 
     getAllUsers(): Observable<Array<User>> {
 
-        // return this.httpClient
-        //                       .get<Array<User>>('/api/allUsers', this.authUtil.headersBasic())
-        //                       .map();
-        return this.httpClient.get<Array<User>>('/api/allUsers', this.authUtil.headersBasic());
+        return this.httpClient.get<Array<User>>('/api/allUsers');
     }
 
-    getAllUsersByRole(role): Observable<Object> {
+    getAllUsersByRole(role): Observable<Array<User>> {
 
-        return this.httpClientService.post('/api/allUsers', JSON.stringify({role: role}), this.authUtil.headersBasic());
+        return this.httpClient.post<Array<User>>('/api/allUsers', JSON.stringify({role: role}), this.authUtil.headersBasic());
     }
 
-    getUserById(userId): Observable<Object> {
+    getUserById(userId): Observable<User> {
 
-        return this.httpClientService.get('/api/edit/' + userId, this.authUtil.headersBasic());
+        return this.httpClient.get<User>('/api/edit/' + userId, this.authUtil.headersBasic());
     }
 
-    updateUser(user): Observable<Object> {
+    updateUser(user): Observable<void> {
 
-        return this.httpClientService.post('/api/edit', user, this.authUtil.headersBasic());
+        return this.httpClient.post<void>('/api/edit', user, this.authUtil.headersBasic());
     }
 
-    disableEnableUser(userData): Observable<Object> {
+    disableEnableUser(userData): Observable<string> {
 
-        return this.httpClientService.post('/api/lockUnlock', JSON.stringify(userData), this.authUtil.headersBasic());
+        return this.httpClient.post<string>('/api/lockUnlock', JSON.stringify(userData), this.authUtil.headersBasic());
     }
 
-    searchUsersWithUsernameLike(username): Observable<Object> {
+    searchUsersWithUsernameLike(username): Observable<Array<User>> {
 
-        return this.httpClientService.post('/api/searchUsers', JSON.stringify({ username: username }), this.authUtil.headersBasic());
+        return this.httpClient.post<Array<User>>('/api/searchUsers', JSON.stringify({ username: username }), this.authUtil.headersBasic());
     }
 }

@@ -1,14 +1,19 @@
-import { RoleViewModel } from './role-view.model';
+import { Role } from './role';
+import { Deserializable } from '../deserialize';
 
-export class UserEditViewModel {
+export class UserEditViewModel implements Deserializable {
 
-    constructor(
-        public id: number,
-        public username: string,
-        public firstName: string,
-        public lastName: string,
-        public email: string,
-        public role: string,
-        public roles: Array<RoleViewModel>
-    ) {}
+    id: number;
+    username: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    role: Role;
+    roles: Array<Role>;
+
+    deserialize(input: any): this {
+        Object.assign(this, input);
+        this.role = new Role().deserialize(input.role);
+        return this;
+    }
 }

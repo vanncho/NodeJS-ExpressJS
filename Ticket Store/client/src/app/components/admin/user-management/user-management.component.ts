@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 
@@ -20,13 +22,15 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   public users: Array<User>;
 
   public searchedUsername: string;
+  public enableDisableBtnName = 'Disable';
   private subscriptionGetAllUsers: Subscription;
   private subscriptionGetAllUsersByRole: Subscription;
   private subscriptionDisableEnableUser: Subscription;
   private subscriptionSearchUsers: Subscription;
 
   constructor(private userService: UserService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private toast: ToastrService) {
     // this.users = [];
   }
 
@@ -37,10 +41,15 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
   getAllUsersByRole(role): void {
 
-    this.subscriptionGetAllUsersByRole = this.userService.getAllUsersByRole(role).subscribe((users: any) => {
+    this.subscriptionGetAllUsersByRole = this.userService.getAllUsersByRole(role)
+      .pipe(
+        map(
+          res => res.map(userObj => new User().deserialize(userObj))
+        )
+      )
+      .subscribe((users: Array<User>) => {
 
-      this.users = users;
-
+        this.users = users;
       }, error => {
 
         if (error.status === 401) {
@@ -68,23 +77,29 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         if (error.status === 401) {
 
           this.authenticationService.logout();
+        } else {
+          this.toast.error(error.text);
         }
     });
   }
 
   getUsersByUsername(): void {
 
-    this.subscriptionSearchUsers = this.userService.searchUsersWithUsernameLike(this.searchedUsername).subscribe((users: any) => {
+    this.subscriptionSearchUsers = this.userService.searchUsersWithUsernameLike(this.searchedUsername)
+      .pipe(
+        map(res => res.map(userObj => new User().deserialize(userObj)))
+      )
+      .subscribe((users: Array<User>) => {
 
-      this.users = Object.values(users.data);
+        this.users = users;
 
-    }, error => {
+      }, error => {
 
-      if (error.status === 401) {
+        if (error.status === 401) {
 
-        this.authenticationService.logout();
-      }
-    });
+          this.authenticationService.logout();
+        }
+      });
   }
 
   getAllUsers(): void {
@@ -92,7 +107,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.subscriptionGetAllUsers = this.userService.getAllUsers()
     .pipe(
       map(
-        res => res.map(obj => new User().deserialize(obj))
+        res => res.map(userObj => new User().deserialize(userObj))
         )
     )
     .subscribe((users: Array<User>) => {

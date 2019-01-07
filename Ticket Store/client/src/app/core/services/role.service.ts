@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { HttpClientService } from './http-client.service';
 import { AuthenticationUtility } from '../utils/authentication.util';
 
+import { Role } from '../models/view/role';
+
 @Injectable()
 export class RoleService {
 
@@ -11,8 +13,8 @@ export class RoleService {
                 private httpClientService: HttpClientService) {
     }
 
-    getAllRoles(): Observable<Object> {
+    getAllRoles(): Observable<Array<Role>> {
 
-        return this.httpClientService.get('/api/allRoles', this.authUtil.headersBasic());
+        return this.httpClientService.get<Array<Role>>('/api/allRoles', this.authUtil.headersBasic());
     }
 }
