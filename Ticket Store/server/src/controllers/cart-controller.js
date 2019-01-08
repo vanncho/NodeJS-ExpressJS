@@ -16,11 +16,13 @@ module.exports = {
 
         Cart.findAll({ where: { userId: req.session.user.id },
                        attributes: ['id', 'ticketsCount'],
-                       include: [{ model: Event, as: 'event', attributes: ['id', 'date', 'time', 'url', 'title'], required: true },
-                                 { model: Ticket, as: 'ticket', attributes: ['id', 'price', 'count', 'priceCategory'], required: true }]
-                    }).then(cartsForUser => {
+                       include: [
+                           { model: Event, as: 'event', attributes: ['id', 'date', 'time', 'url', 'title'], required: true },
+                           { model: Ticket, as: 'ticket', attributes: ['id', 'price', 'count', 'priceCategory'], required: true }
+                        ]
+                    }).then(userCart => {
 
-            res.status(200).send({ data: cartsForUser, errors: [] });
+            res.status(200).send(userCart);
 
         }).catch(err => {
 
@@ -31,7 +33,7 @@ module.exports = {
 
         Cart.findAndCountAll({ where: { userId: req.session.user.id } }).then(cartItems => {
 
-            res.status(200).send({ data: cartItems, errors: [] });
+            res.status(200).send(cartItems.count + '');
         }).catch(err => {
 
             logger.error(err);
@@ -48,7 +50,7 @@ module.exports = {
 
         cart.save().then(() => {
 
-            res.status(200).send({ data: 'Success', errors: [] });
+            res.status(200).send('Success');
         }).catch(err => {
 
             logger.error(err);
@@ -62,9 +64,9 @@ module.exports = {
         Cart.destroy({ where: { id: cartId } }).then((rows) => {
 
             if (rows > 0) {
-                res.status(200).send({ data: 'Success', errors: [] });
+                res.status(200).send('Success');
             } else {
-                res.status(200).send({ data: 'Error', errors: ['Cart with provided id does not exists!'] });
+                res.status(400).send('Cart with provided id does not exists!');
             }
         }).catch(err => {
 
