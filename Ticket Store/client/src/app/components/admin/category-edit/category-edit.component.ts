@@ -20,9 +20,7 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
   constructor(private categoryService: CategoryService,
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
-              private router: Router) {
-    this.category = new Category(0, '');
-  }
+              private router: Router) { }
 
   ngOnInit() {
     this.getCategory();
@@ -32,15 +30,17 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
 
     const categoryId = this.route.params['value'].id;
 
-    this.subscriptionGetCategory = this.categoryService.getCategoryById(categoryId).subscribe((category: any) => {
+    this.subscriptionGetCategory = this.categoryService.getCategoryById(categoryId).subscribe((category: Category) => {
 
-      this.category = new Category(Number(category.data['id']), category.data['name']);
+      this.category = category;
 
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
 
@@ -57,6 +57,8 @@ export class CategoryEditComponent implements OnInit, OnDestroy {
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }

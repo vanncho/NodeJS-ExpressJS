@@ -8,7 +8,7 @@ import { EventService } from '../../../core/services/event.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { DateUtility } from '../../../core/utils/date.util';
 
-import { EventEditModel } from '../../../core/models/binding/event-edit.model';
+import { EventEdit } from '../../../core/models/binding/event-edit.model';
 import { Category } from '../../../core/models/view/category.model';
 
 @Component({
@@ -18,8 +18,8 @@ import { Category } from '../../../core/models/view/category.model';
 })
 export class EventEditComponent implements OnInit, OnDestroy {
 
-  public event: EventEditModel;
-  public categories: Array<Category>;
+  public event: EventEdit;
+  public categories: Category[];
   private subscriptionGetEvent: Subscription;
   private subscriptionLoadCategories: Subscription;
   private subscriptionEditEvent: Subscription;
@@ -30,9 +30,7 @@ export class EventEditComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastrService,
-              private dateUtil: DateUtility) {
-    this.event = new EventEditModel(0, '', '', '', '', '', '', '', 0);
-  }
+              private dateUtil: DateUtility) { }
 
   ngOnInit(): void {
 
@@ -44,25 +42,18 @@ export class EventEditComponent implements OnInit, OnDestroy {
 
     const eventId = this.route.params['value'].id;
 
-    this.subscriptionGetEvent = this.eventService.getEventById(eventId).subscribe((event: any) => {
+    this.subscriptionGetEvent = this.eventService.getEventById(eventId).subscribe((event: EventEdit) => {
 
-      this.event = new EventEditModel(
-        event['data']['id'],
-        event['data']['title'],
-        event['data']['url'],
-        event['data']['location'],
-        this.dateUtil.formatDateToYYYYMMdd(event['data']['date']),
-        event['data']['time'],
-        event['data']['town'],
-        event['data']['description'],
-        event['data']['categoryId']
-      );
+      this.event = event;
+      this.event.date = this.dateUtil.formatDateToYYYYMMdd(event.date);
 
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }
@@ -80,21 +71,25 @@ export class EventEditComponent implements OnInit, OnDestroy {
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }
 
   loadCategories(): void {
 
-    this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
+    this.subscriptionLoadCategories = this.categoryService.getAllCategories().subscribe((categories: Category[]) => {
 
-      this.categories = Object.values(categories.data);
+      this.categories = categories;
 
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }
@@ -116,6 +111,10 @@ export class EventEditComponent implements OnInit, OnDestroy {
 
     if (this.subscriptionLoadCategories) {
       this.subscriptionLoadCategories.unsubscribe();
+    }
+
+    if (this.subscriptionEditEvent) {
+      this.subscriptionEditEvent.unsubscribe();
     }
   }
 }

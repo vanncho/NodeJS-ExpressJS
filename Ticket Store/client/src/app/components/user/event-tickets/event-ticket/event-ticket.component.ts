@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { TicketService } from '../../../../core/services/ticket.service';
 import { CartService } from '../../../../core/services/cart.service';
 
-import { TicketEditModel } from '../../../../core/models/binding/ticket-edit.model';
+import { TicketEdit } from '../../../../core/models/binding/ticket-edit.model';
 
 @Component({
   selector: 'app-event-ticket',
@@ -14,7 +14,7 @@ import { TicketEditModel } from '../../../../core/models/binding/ticket-edit.mod
 })
 export class EventTicketComponent implements OnInit, OnDestroy {
 
-  public tickets: Array<any>;
+  public tickets: any[];
   public ticketsAmount: string;
   private getTicketsForEventsISubscription: Subscription;
   private addToCartISubscription: Subscription;
@@ -53,7 +53,7 @@ export class EventTicketComponent implements OnInit, OnDestroy {
 
       this.addToCartISubscription = this.cartService.addToCart(cartObj).subscribe(() => {
 
-        const ticket = new TicketEditModel(this.selectedTicket.id, this.selectedTicket.count - ticketCount, null, null);
+        const ticket = new TicketEdit(this.selectedTicket.id, this.selectedTicket.count - ticketCount, null, null);
 
         this.ticketService.editTicket(ticket).subscribe(() => {
 

@@ -64,7 +64,7 @@ module.exports = {
         Cart.destroy({ where: { id: cartId } }).then((rows) => {
 
             if (rows > 0) {
-                res.status(200).send('Success');
+                res.status(200).send();
             } else {
                 res.status(400).send('Cart with provided id does not exists!');
             }

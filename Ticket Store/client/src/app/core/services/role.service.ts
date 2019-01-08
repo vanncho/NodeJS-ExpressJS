@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationUtility } from '../utils/authentication.util';
 
-import { Role } from '../models/view/role';
+import { Role } from '../models/view/role.model';
 
 @Injectable()
 export class RoleService {
@@ -13,8 +13,8 @@ export class RoleService {
                 private httpClient: HttpClient) {
     }
 
-    getAllRoles(): Observable<Array<Role>> {
+    getAllRoles(): Observable<Role[]> {
 
-        return this.httpClient.get<Array<Role>>('/api/allRoles', this.authUtil.headersBasic());
+        return this.httpClient.get<Role[]>('/api/allRoles', this.authUtil.headersBasic());
     }
 }

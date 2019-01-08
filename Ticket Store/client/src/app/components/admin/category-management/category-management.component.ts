@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { CategoryService } from '../../../core/services/category.service';
+
 import { Category } from '../../../core/models/view/category.model';
 
 
@@ -14,7 +14,7 @@ import { Category } from '../../../core/models/view/category.model';
 })
 export class CategoryManagementComponent implements OnInit, OnDestroy {
 
-  public categories: Array<Category>;
+  public categories: Category[];
   public searchedCategory: string;
   private subscriptionAllCategories: Subscription;
   private subscriptionDeleteCategory: Subscription;
@@ -32,70 +32,67 @@ export class CategoryManagementComponent implements OnInit, OnDestroy {
 
   loadAllCategories(): void {
 
-    this.subscriptionAllCategories = this.categoryService.getAllCategories().subscribe((categories: any) => {
+    this.subscriptionAllCategories = this.categoryService.getAllCategories().subscribe((categories: Category[]) => {
 
-      this.categories = Object.values(categories.data);
+      this.categories = categories;
 
     }, error => {
 
         if (error.status === 401) {
 
           this.authenticationService.logout();
+        } else {
+          console.log(error);
         }
     });
   }
 
   deleteCategory(categoryId) {
 
-    this.subscriptionDeleteCategory = this.categoryService.deleteCategory(categoryId * 10).subscribe((success: any) => {
+    this.subscriptionDeleteCategory = this.categoryService.deleteCategory(categoryId).subscribe(() => {
 
-      if (success.data === 'Success') {
+      let index = 0;
+      let count = 0;
+      let categoryName = '';
 
-        let index = 0;
-        let count = 0;
-        let categoryName = '';
+      for (const category of this.categories) {
 
-        for (const category of this.categories) {
+        if (category.id === Number(categoryId)) {
 
-          if (category.id === Number(categoryId)) {
-
-            index = count;
-            categoryName = category['name'];
-            break;
-          }
-
-          count++;
+          index = count;
+          categoryName = category['name'];
+          break;
         }
 
-        this.categories.splice(index, 1);
-        this.toastr.success('Deleted successfully.', categoryName);
-      } else {
-
-        this.toastr.error(success.errors[0]);
+        count++;
       }
+
+      this.categories.splice(index, 1);
+      this.toastr.success('Deleted successfully.', categoryName);
 
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
-
-      this.toastr.error(error.error);
   });
   }
 
   getCategoryByName(): void {
 
-    this.subscriptionSearchCategory = this.categoryService.searchCategoryWithNameLike(this.searchedCategory)
-                                                          .subscribe((categories: any) => {
+    this.subscriptionSearchCategory = this.categoryService.searchCategoryWithNameLike(this.searchedCategory).subscribe((categories: Category[]) => {
 
-      this.categories = Object.values(categories.data);
+      this.categories = categories;
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }

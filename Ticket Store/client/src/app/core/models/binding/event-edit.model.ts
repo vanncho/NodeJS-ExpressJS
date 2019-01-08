@@ -1,14 +1,14 @@
-export class EventEditModel {
+import { Category } from '../view/category.model';
 
-    constructor(
-        public id: number,
-        public title: string,
-        public url: string,
-        public location: string,
-        public date: string,
-        public time: string,
-        public town: string,
-        public description: string,
-        public categoryId: number
-    ) {}
+export interface EventEdit {
+
+    id: number;
+    title: string;
+    url: string;
+    location: string;
+    date: string;
+    time: string;
+    town: string;
+    description: string;
+    category: Category;
 }

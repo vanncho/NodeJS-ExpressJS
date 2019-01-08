@@ -1,43 +1,45 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
-import { HttpClientService } from './http-client.service';
+import { EventList } from '../models/view/event-list.model';
+import { EventEdit } from '../models/binding/event-edit.model';
 import { AuthenticationUtility } from '../utils/authentication.util';
 
 @Injectable()
 export class EventService {
 
     constructor(private authUtil: AuthenticationUtility,
-                private httpClientService: HttpClientService) {
+                private httpClient: HttpClient) {
     }
 
-    getAllEvents(): Observable<Object> {
+    getAllEvents(): Observable<EventList[]> {
 
-        return this.httpClientService.get('/api/allEvents', this.authUtil.headersBasic());
+        return this.httpClient.get<EventList[]>('/api/allEvents');
     }
 
     addEvent(event): Observable<Object> {
 
-        return this.httpClientService.post('/api/addEvent', JSON.stringify(event), this.authUtil.headersBasic());
+        return this.httpClient.post<Object>('/api/addEvent', JSON.stringify(event), this.authUtil.headersBasic());
     }
 
     deleteEvent(eventId): Observable<Object> {
 
-        return this.httpClientService.delete('/api/deleteEvent/' + eventId, this.authUtil.headersBasic());
+        return this.httpClient.delete<Object>('/api/deleteEvent/' + eventId, this.authUtil.headersBasic());
     }
 
-    getEventById(eventId): Observable<Object> {
+    getEventById(eventId): Observable<EventEdit> {
 
-        return this.httpClientService.get('/api/getEvent/' + eventId, this.authUtil.headersBasic());
+        return this.httpClient.get<EventEdit>('/api/getEvent/' + eventId);
     }
 
     editEvent(event): Observable<Object> {
 
-        return this.httpClientService.post('/api/editEvent', JSON.stringify(event), this.authUtil.headersBasic());
+        return this.httpClient.post<Object>('/api/editEvent', JSON.stringify(event), this.authUtil.headersBasic());
     }
 
-    searchEventWithTitleLike(title): Observable<Object> {
+    searchEventWithTitleLike(title): Observable<EventList[]> {
 
-        return this.httpClientService.post('/api/searchEvent', JSON.stringify({ eventTitle: title }), this.authUtil.headersBasic());
+        return this.httpClient.post<EventList[]>('/api/searchEvent', JSON.stringify({ eventTitle: title }), this.authUtil.headersBasic());
     }
 }

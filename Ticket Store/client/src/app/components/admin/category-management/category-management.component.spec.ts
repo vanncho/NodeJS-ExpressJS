@@ -13,7 +13,7 @@ describe('CategoryManagementComponent', () => {
 
   let categoryManagementComponent: CategoryManagementComponent;
   let categoryService: CategoryService;
-  let categories: Array<Category>;
+  let categories: Category[];
   let categoryId: number;
 
   beforeEach(() => {

@@ -24,14 +24,14 @@ module.exports = {
 
             categorySave.save().then(() => {
 
-                res.status(200).send({ data: 'Success', errors: [] });
+                res.status(200).send();
             }).catch(err => {
 
                 logger.error(err);
             });
         } else {
 
-            res.status(200).send({ errors: ['Invalid category name!'] });
+            res.status(400).send('Invalid category name!');
         }
 
     },
@@ -39,7 +39,7 @@ module.exports = {
 
         Category.findAll({ raw: true }).then(categories => {
 
-            res.status(200).send({ data: categories, errors: [] });
+            res.status(200).send(categories);
         }).catch(err => {
 
             logger.error(err);
@@ -51,7 +51,7 @@ module.exports = {
 
         Category.findByPk(categoryId).then(category => {
 
-            res.status(200).send({ data: category, errors: [] });
+            res.status(200).send(category);
         }).catch(err => {
 
             logger.error(err);
@@ -65,7 +65,11 @@ module.exports = {
 
         Category.update(updateCategory, { where: { id: req.body.id} }).then(rows => {
 
-            res.status(200).send({ errors: [] });
+            if (rows > 0) {
+                res.status(200).send();
+            } else {
+                res.status(400).send('Category is not updated.');
+            }
         }).catch(err => {
 
             logger.error(err);
@@ -78,13 +82,8 @@ module.exports = {
         Category.destroy({ where: { id: categoryId } }).then((rows) => {
 
             if (rows > 0) {
-                res.status(200).send({ data: 'Success', errors: [] });
+                res.status(200).send();
             } else {
-
-                // CHANGE ALL TO THIS
-
-
-                // res.status(200).send({ data: 'Error', errors: ['Category with provided id does not exists!'] });
                 res.status(400).send('Category with provided id does not exists!');
             }
             
@@ -102,7 +101,7 @@ module.exports = {
                 name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('name')), `LIKE`, `%${categoryName}%`)
             }} ).then(categories => {
 
-            res.status(200).send({ data: categories, errors: [] });
+            res.status(200).send(categories);
         }).catch(err => {
 
             logger.error(err);

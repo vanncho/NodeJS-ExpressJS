@@ -5,8 +5,8 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { EventService } from '../../../core/services/event.service';
 import { TicketService } from '../../../core/services/ticket.service';
 
-import { EventListModel } from '../../../core/models/view/event-list.model';
-import { TicketListModel } from '../../../core/models/view/ticket-list.model';
+import { EventList } from '../../../core/models/view/event-list.model';
+import { TicketList } from '../../../core/models/view/ticket-list.model';
 
 
 @Component({
@@ -17,13 +17,13 @@ import { TicketListModel } from '../../../core/models/view/ticket-list.model';
 export class EventManagementComponent implements OnInit, OnDestroy {
 
   public searchedEvent: string;
-  public events: Array<EventListModel>;
+  public events: EventList[];
   private subscriptionGetAllEvents: Subscription;
   private subscriptionDeleteEvent: Subscription;
   private subscriptionDeleteTicket: Subscription;
   private subscriptionSearchEvent: Subscription;
   private subscriptionGetTicketsForEvent: Subscription;
-  private tickets: Array<TicketListModel>;
+  private tickets: TicketList[];
 
   constructor(private eventService: EventService,
               private ticketService: TicketService,
@@ -35,14 +35,16 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   getEventByTitle(): void {
 
-    this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((events: any) => {
+    this.subscriptionSearchEvent = this.eventService.searchEventWithTitleLike(this.searchedEvent).subscribe((events: EventList[]) => {
 
-      this.events = Object.values(events.data);
+      this.events = events;
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
 
@@ -50,15 +52,17 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   private loadAllEvents(): void {
 
-    this.subscriptionGetAllEvents = this.eventService.getAllEvents().subscribe((events: any) => {
+    this.subscriptionGetAllEvents = this.eventService.getAllEvents().subscribe((events: EventList[]) => {
 
-      this.events = Object.values(events.data);
+      this.events = events;
 
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }
@@ -89,15 +93,17 @@ export class EventManagementComponent implements OnInit, OnDestroy {
 
   private getAllTicketsForTheEvent(eventId: number): any {
 
-    this.subscriptionGetTicketsForEvent = this.ticketService.getAllTickets(eventId).subscribe((tickets: any) => {
+    this.subscriptionGetTicketsForEvent = this.ticketService.getAllTickets(eventId).subscribe((tickets: TicketList[]) => {
 
-      this.tickets = Object.values(tickets.data);
+      this.tickets = tickets;
 
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }
@@ -121,6 +127,8 @@ export class EventManagementComponent implements OnInit, OnDestroy {
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }
@@ -136,6 +144,8 @@ export class EventManagementComponent implements OnInit, OnDestroy {
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }

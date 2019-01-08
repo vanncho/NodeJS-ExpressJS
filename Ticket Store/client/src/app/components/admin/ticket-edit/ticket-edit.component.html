@@ -21,8 +21,8 @@
 
                 <div class="form-group row required">
                     <label class="form-control-label" for="ticketsCount">Tickets Count</label>
-                    <input formControlName="ticketsCount" class="form-control" type="number">
-                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['ticketsCount'].valid && rForm.controls['ticketsCount'].touched">Required! Ticket count must be greater than 0.</div>
+                    <input formControlName="count" class="form-control" type="number">
+                    <div class="alert" [@alertAnim] *ngIf="!rForm.controls['count'].valid && rForm.controls['count'].touched">Required! Ticket count must be greater than 0.</div>
                 </div>
 
                 <br>

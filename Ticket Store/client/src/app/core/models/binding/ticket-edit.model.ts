@@ -1,8 +1,8 @@
-export class TicketEditModel {
+export class TicketEdit {
 
     constructor(
         public id: number,
-        public ticketsCount: number,
+        public count: number,
         public price: number,
         public priceCategory: string
     ) {}

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -11,8 +10,8 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { CookieManagerService } from '../../../core/services/cookie-manager.service';
 
 import { UserEditModel } from '../../../core/models/binding/user-edit.model';
-import { UserEditViewModel } from '../../../core/models/view/user-edit-view.model';
-import { Role } from '../../../core/models/view/role';
+import { UserEditView } from '../../../core/models/view/user-edit-view.model';
+import { Role } from '../../../core/models/view/role.model';
 
 
 @Component({
@@ -22,9 +21,9 @@ import { Role } from '../../../core/models/view/role';
 })
 export class UserEditComponent implements OnInit, OnDestroy {
 
-  public user: UserEditViewModel;
+  public user: UserEditView;
   public role: Role;
-  public roles: Array<Role>;
+  public roles: Role[];
   private subscriptionGetUserById: Subscription;
   private subscriptionGetAllRoles: Subscription;
   private subscriptionUpdateUser: Subscription;
@@ -46,29 +45,23 @@ export class UserEditComponent implements OnInit, OnDestroy {
   loadDataForView() {
 
     const userId = this.route.params['value'].id;
-    this.subscriptionGetUserById = this.userService.getUserById(userId)
-    .pipe(
-      map(
-        user => new UserEditViewModel().deserialize(user)
-      )
-    )
-    .subscribe((foundUser: UserEditViewModel) => {
 
-      this.subscriptionGetAllRoles = this.roleService.getAllRoles()
-      .pipe(
-        map(
-          res => res.map(roleObj => new Role().deserialize(roleObj))
-        )
-      )
-      .subscribe((rolesData: Array<Role>) => {
+    this.subscriptionGetUserById = this.userService.getUserById(userId).subscribe((user: UserEditView) => {
 
-        this.user = foundUser;
-        this.role = foundUser.role;
+      this.subscriptionGetAllRoles = this.roleService.getAllRoles().subscribe((rolesData: Role[]) => {
+
+        this.user = user;
+        this.role = user.role;
         this.roles = rolesData;
-
-      }, error => {
-
       });
+    }, error => {
+
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      } else {
+        console.log(error);
+      }
     });
 
   }

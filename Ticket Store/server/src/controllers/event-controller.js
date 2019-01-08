@@ -27,7 +27,7 @@ module.exports = {
 
         event.save().then(() => {
 
-            res.status(200).send({ data: 'Success', errors: [] });
+            res.status(200).send();
         }).catch(err => {
 
             logger.error(err);
@@ -35,19 +35,17 @@ module.exports = {
     },
     getAllEvents: (req, res) => {
 
-        // Event.findAll({ raw: true }).then(events => {
-
-        //     res.status(200).send({ data: events, errors: [] });
-        // }).catch(err => {
-
-        //     logger.error(err);
-        // });
-
-        Event.findAll({ 
-            include: [{ model: Category, as: 'category', required: true }] 
+        Event.findAll({
+            attributes: ['id', 'description', 'location', 'title'],
+            include: [{ 
+                model: Category,
+                as: 'category',
+                required: true,
+                attributes: ['id', 'name']
+            }] 
         }).then(events => {
 
-            res.status(200).send({ data: events, errors: [] });
+            res.status(200).send(events);
         }).catch(err => {
 
             logger.error(err);
@@ -60,9 +58,9 @@ module.exports = {
         Event.destroy({ where: { id: eventId } }).then((rows) => {
 
             if (rows > 0) {
-                res.status(200).send({ data: 'Success', errors: [] });
+                res.status(200).send();
             } else {
-                res.status(200).send({ data: 'Error', errors: ['Event with provided id does not exists!'] });
+                res.status(400).send('Event with provided id does not exists!');
             }
         }).catch(err => {
 
@@ -71,9 +69,18 @@ module.exports = {
     },
     getEventById: (req, res) => {
 
-        Event.findByPk(req.params.id, { include: { model: Category, as: 'category', required: true }}).then(event => {
+        Event.findByPk(req.params.id,
+            {
+                attributes: ['id', 'date', 'description', 'location', 'time', 'title', 'town', 'url'],
+                include: { 
+                    model: Category,
+                    as: 'category',
+                    required: true,
+                    attributes: ['id', 'name']
+                }
+            }).then(event => {
 
-            res.status(200).send({ data: event, errors: [] });
+            res.status(200).send(event);
         }).catch(err => {
 
             logger.error(err);
@@ -94,7 +101,7 @@ module.exports = {
 
         Event.update(eventEdit, { where: { id: req.body.id } }).then(rows => {
 
-            res.status(200).send({ errors: [] });
+            res.status(200).send();
         }).catch(err => {
 
             logger.error(err);
@@ -105,12 +112,19 @@ module.exports = {
 
         const eventTitle = (req.body.eventTitle).toLowerCase();
 
-        Event.findAll({ 
+        Event.findAll({
+            attributes: ['id', 'description', 'location', 'title'],
+            include: [{ 
+                model: Category,
+                as: 'category',
+                required: true,
+                attributes: ['id', 'name']
+            }],
             where: { 
                 name: Sequelize.where(Sequelize.fn('lower', Sequelize.col('title')), `LIKE`, `%${eventTitle}%`)
             }} ).then(events => {
 
-            res.status(200).send({ data: events, errors: [] });
+            res.status(200).send(events);
         }).catch(err => {
 
             logger.error(err);

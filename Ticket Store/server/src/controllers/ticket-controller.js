@@ -32,7 +32,7 @@ module.exports = {
         
         Ticket.findAll({ where: { eventId: req.params.id } }).then(tickets => {
 
-            res.status(200).send({ data: tickets, errors: [] });
+            res.status(200).send(tickets);
         }).catch(err => {
 
             logger.error(err);
@@ -42,7 +42,7 @@ module.exports = {
 
         Ticket.findByPk(req.params.id).then(ticket => {
             
-            res.status(200).send({ data: ticket, errors: [] });
+            res.status(200).send(ticket);
         }).catch(err => {
 
             logger.error(err);
@@ -51,7 +51,7 @@ module.exports = {
     editTicket: (req, res) => {
 
         const ticket = {
-            count: req.body.ticketsCount
+            count: req.body.count
         };
 
         if (req.body.price && req.body.priceCategory) {
@@ -62,7 +62,11 @@ module.exports = {
 
         Ticket.update(ticket, { where: { id: req.body.id } }).then(rows => {
 
-            res.status(200).send({ errors: [] });
+            if (rows > 0) {
+                res.status(200).send();
+            } else {
+                res.status(400).send('Ticket is not updated.');
+            }
         }).catch(err => {
 
             logger.error(err);
@@ -75,9 +79,9 @@ module.exports = {
         Ticket.destroy({ where: { id: ticketId } }).then((rows) => {
 
             if (rows > 0) {
-                res.status(200).send({ data: 'Success', errors: [] });
+                res.status(200).send();
             } else {
-                res.status(200).send({ data: 'Error', errors: ['Ticket with provided id does not exists!'] });
+                res.status(200).send('Ticket with provided id does not exists!');
             }
         }).catch(err => {
 

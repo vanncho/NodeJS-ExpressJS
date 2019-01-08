@@ -17,7 +17,7 @@ import { Category } from '../../../core/models/view/category.model';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   public username: string;
-  public categories: Array<Category>;
+  public categories: Category[];
   public cartItems: number;
   private loggedUserNameISubscription: Subscription;
   private categoriesISubscription: Subscription;
@@ -34,8 +34,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.username = userFullName;
     });
 
-    this.categoriesISubscription = this.categoryService.getAllCategories().subscribe((categories: any) => {
-      this.categories = Object.values(categories.data);
+    this.categoriesISubscription = this.categoryService.getAllCategories().subscribe((categories: Category[]) => {
+
+      this.categories = categories;
     });
 
     this.cartItemsISubscription = this.headerService.cartItems.subscribe((cartItems: number) => {

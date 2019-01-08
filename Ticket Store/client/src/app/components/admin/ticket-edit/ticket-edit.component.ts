@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { TicketService } from '../../../core/services/ticket.service';
 
-import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model';
+import { TicketEdit } from '../../../core/models/binding/ticket-edit.model';
 
 
 @Component({
@@ -31,58 +31,66 @@ export class TicketEditComponent implements OnInit, OnDestroy {
   public rForm: FormGroup;
   private subscriptionGetTicketById: Subscription;
   private subscriptionEditTicket: Subscription;
-  private ticket: TicketEditModel;
+  private ticket: TicketEdit;
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
               private ticketService: TicketService,
               private authenticationService: AuthenticationService) {
-    this.ticket = new TicketEditModel(0, 0, 0, '');
+    this.ticket = new TicketEdit(0, 0, 0, '');
   }
 
   ngOnInit(): void {
 
     this.getTicketById();
-    this.validateForm(this.ticket.price, this.ticket.ticketsCount, this.ticket.priceCategory);
+    this.validateForm(this.ticket.price, this.ticket.count, this.ticket.priceCategory);
   }
 
   getTicketById() {
 
     const ticketId = this.route.params['value'].id;
 
-    this.ticketService.getTicketById(ticketId).subscribe((ticket: any) => {
+    this.ticketService.getTicketById(ticketId).subscribe((ticket: TicketEdit) => {
 
-      this.ticket = new TicketEditModel(ticket['data']['id'],
-                                        ticket['data']['count'],
-                                        ticket['data']['price'],
-                                        ticket['data']['priceCategory']);
+      this.ticket = new TicketEdit(ticket.id,
+                                        ticket.count,
+                                        ticket.price,
+                                        ticket.priceCategory);
 
-      this.validateForm(ticket['data']['price'],
-                        ticket['data']['count'],
-                        ticket['data']['priceCategory']);
+      this.validateForm(ticket.price,
+                        ticket.count,
+                        ticket.priceCategory);
 
     }, error => {
 
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        console.log(error);
       }
     });
   }
 
   editTicket(): void {
 
-    this.ticket['price'] = this.rForm.controls['price'].value;
-    this.ticket['ticketsCount'] = this.rForm.controls['ticketsCount'].value;
-    this.ticket['priceCategory'] = this.rForm.controls['priceCategory'].value;
+    this.ticket.price = this.rForm.controls['price'].value;
+    this.ticket.count = this.rForm.controls['count'].value;
+    this.ticket.priceCategory = this.rForm.controls['priceCategory'].value;
 
     this.subscriptionEditTicket = this.ticketService.editTicket(this.ticket).subscribe(() => {
 
       this.router.navigate(['admin/events']);
 
-    }, (error) => {
+    }, error => {
 
+      if (error.status === 401) {
+
+        this.authenticationService.logout();
+      } else {
+        console.log(error);
+      }
     });
   }
 
@@ -90,7 +98,7 @@ export class TicketEditComponent implements OnInit, OnDestroy {
 
     this.rForm = this.formBuilder.group({
       'price': [price, Validators.compose([Validators.required, Validators.min(1)])],
-      'ticketsCount': [ticketsCount, Validators.compose([Validators.required, Validators.min(1)])],
+      'count': [ticketsCount, Validators.compose([Validators.required, Validators.min(1)])],
       'priceCategory': [priceCategory, Validators.compose([Validators.required, Validators.minLength(3)])] // Regex => Validators.patern('')
     });
   }
@@ -99,9 +107,9 @@ export class TicketEditComponent implements OnInit, OnDestroy {
 
     this.rForm.valueChanges.subscribe((data) => {
 
-      this.ticket['price'] = data['price'];
-      this.ticket['ticketsCount'] = data['ticketsCount'];
-      this.ticket['priceCategory'] = data['priceCategory'];
+      this.ticket.price = data['price'];
+      this.ticket.count = data['count'];
+      this.ticket.priceCategory = data['priceCategory'];
     });
   }
 

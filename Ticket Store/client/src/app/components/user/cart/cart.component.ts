@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { ToastrService } from 'ngx-toastr';
 
 import { CartList } from '../../../core/models/view/cart-list.model';
-import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model';
+import { TicketEdit } from '../../../core/models/binding/ticket-edit.model';
 
 @Component({
   selector: 'app-cart',
@@ -18,7 +18,7 @@ import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model'
 })
 export class CartComponent implements OnInit, OnDestroy {
 
-  public cart: Array<CartList>;
+  public cart: CartList[];
   public totalSum = 0;
   private getCartItemsISubscription: Subscription;
   private removeCartItemISubscription: Subscription;
@@ -40,7 +40,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
       this.loadUserCart();
 
-      const ticket = new TicketEditModel(cartItem.ticket.id, cartItem.ticket.count + cartItem.ticketsCount, null, null);
+      const ticket = new TicketEdit(cartItem.ticket.id, cartItem.ticket.count + cartItem.ticketsCount, null, null);
       this.ticketService.editTicket(ticket).subscribe(() => {});
 
     }, error => {
@@ -60,13 +60,12 @@ export class CartComponent implements OnInit, OnDestroy {
       .pipe(
         map(
           res => res.map(cartObj => {
-
             this.totalSum += cartObj.ticket.price * cartObj.ticketsCount;
-            return new CartList().deserialize(cartObj);
+            return cartObj;
           })
         )
       )
-      .subscribe((cart: Array<CartList>) => {
+      .subscribe((cart: CartList[]) => {
 
         this.cart = cart;
         this.headerService.cartItems.next(cart.length);
@@ -76,9 +75,9 @@ export class CartComponent implements OnInit, OnDestroy {
         if (error.status === 401) {
 
           this.authenticationService.logout();
+        } else {
+          console.log(error);
         }
-
-        console.log(error);
       });
   }
 

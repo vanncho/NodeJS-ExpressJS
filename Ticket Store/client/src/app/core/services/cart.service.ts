@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { CartList } from '../models/view/cart-list.model';
-
 import { AuthenticationUtility } from '../utils/authentication.util';
 
 @Injectable()
@@ -13,14 +12,14 @@ export class CartService {
         private httpClient: HttpClient) {
     }
 
-    addToCart(cartObj: object): Observable<void> {
+    addToCart(cartObj: object): Observable<Object> {
 
-        return this.httpClient.post<void>('/api/cart', JSON.stringify(cartObj), this.authUtil.headersBasic());
+        return this.httpClient.post<Object>('/api/cart', JSON.stringify(cartObj), this.authUtil.headersBasic());
     }
 
-    getAll(): Observable<Array<CartList>> {
+    getAll(): Observable<CartList[]> {
 
-        return this.httpClient.get<Array<CartList>>('/api/cart');
+        return this.httpClient.get<CartList[]>('/api/cart');
     }
 
     getCartItems(): Observable<number> {
@@ -28,8 +27,8 @@ export class CartService {
         return this.httpClient.get<number>('/api/cartItems');
     }
 
-    removeFromCart(cartId: number): Observable<void> {
+    removeFromCart(cartId: number): Observable<Object> {
 
-        return this.httpClient.delete<void>('/api/removeFromCart/' + cartId, this.authUtil.headersBasic());
+        return this.httpClient.delete<Object>('/api/removeFromCart/' + cartId, this.authUtil.headersBasic());
     }
 }

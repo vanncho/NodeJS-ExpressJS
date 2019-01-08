@@ -17,7 +17,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 export class EventAddComponent implements OnInit, OnDestroy {
 
   public event: EventAddModel;
-  public categories: Array<Category>;
+  public categories: Category[];
   private subscriptionLoadCategories: Subscription;
   private subscriptionAddEvent: Subscription;
 

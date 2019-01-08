@@ -10,7 +10,7 @@ import { EventService } from '../../../core/services/event.service';
 })
 export class EventsComponent implements OnInit, OnDestroy {
 
-  public events: Array<any> = [];
+  public events: any[] = [];
   private getAllEventsISubscription: Subscription;
 
   constructor(private eventService: EventService) { }
