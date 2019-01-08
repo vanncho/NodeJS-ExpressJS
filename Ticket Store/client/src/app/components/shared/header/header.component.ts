@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public cartItems: number;
   private loggedUserNameISubscription: Subscription;
   private categoriesISubscription: Subscription;
+  private cartItemsISubscription: Subscription;
 
   constructor(private authenticationService: AuthenticationService,
               private categoryService: CategoryService,
@@ -37,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.categories = Object.values(categories.data);
     });
 
-    this.headerService.cartItems.subscribe((cartItems: number) => {
+    this.cartItemsISubscription = this.headerService.cartItems.subscribe((cartItems: number) => {
 
       this.cartItems = cartItems;
     });
@@ -79,6 +80,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.categoriesISubscription) {
 
       this.categoriesISubscription.unsubscribe();
+    }
+
+    if (this.cartItemsISubscription) {
+      this.cartItemsISubscription.unsubscribe();
     }
   }
 }

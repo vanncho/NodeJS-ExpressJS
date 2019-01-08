@@ -51,9 +51,9 @@ export class AuthenticationService {
 
       if (data.errors.length === 0) {
 
-        this.cartService.getCartItems().subscribe((cartItems: any) => {
+        this.cartService.getCartItems().subscribe((cartItems: number) => {
 
-          this.headerService.cartItems.next(cartItems.data.count);
+          this.headerService.cartItems.next(cartItems);
           this.cookieService.saveLoginData(data.data);
 
           this.router.navigate(['/user/home']).then(() => {

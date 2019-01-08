@@ -19,7 +19,7 @@ export class UserService {
 
     getAllUsersByRole(role): Observable<Array<User>> {
 
-        return this.httpClient.post<Array<User>>('/api/allUsers', JSON.stringify({role: role}), this.authUtil.headersBasic());
+        return this.httpClient.post<Array<User>>('/api/allUsers', JSON.stringify({role: role}));
     }
 
     getUserById(userId): Observable<User> {

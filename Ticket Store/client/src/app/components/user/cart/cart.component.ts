@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CartService } from '../../../core/services/cart.service';
 import { HeaderService } from '../../../core/services/header.service';
 import { TicketService } from '../../../core/services/ticket.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 
 import { CartList } from '../../../core/models/view/cart-list.model';
 import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model';
@@ -17,14 +19,15 @@ import { TicketEditModel } from '../../../core/models/binding/ticket-edit.model'
 export class CartComponent implements OnInit, OnDestroy {
 
   public cart: Array<CartList>;
-  public totalSum: number;
+  public totalSum = 0;
   private getCartItemsISubscription: Subscription;
   private removeCartItemISubscription: Subscription;
 
   constructor(private cartService: CartService,
               private headerService: HeaderService,
               private ticketService: TicketService,
-              private authenticationService: AuthenticationService) { }
+              private authenticationService: AuthenticationService,
+              private toast: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -33,7 +36,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   removeCartItem(cartItem: CartList): void {
 
-    this.removeCartItemISubscription = this.cartService.removeFromCart(cartItem.id).subscribe(() => {
+    this.removeCartItemISubscription = this.cartService.removeFromCart(cartItem.id * 2).subscribe(() => {
 
       this.loadUserCart();
 
@@ -45,33 +48,38 @@ export class CartComponent implements OnInit, OnDestroy {
       if (error.status === 401) {
 
         this.authenticationService.logout();
+      } else {
+        this.toast.error(error.error);
       }
     });
   }
 
   private loadUserCart(): any {
 
-    this.getCartItemsISubscription = this.cartService.getAll().subscribe((cart: any) => {
+    this.getCartItemsISubscription = this.cartService.getAll()
+      .pipe(
+        map(
+          res => res.map(cartObj => {
 
-      this.cart = [];
-      this.totalSum = 0;
-      let currCartItem: CartList;
-      this.headerService.cartItems.next(cart.data.length);
+            this.totalSum += cartObj.ticket.price * cartObj.ticketsCount;
+            return new CartList().deserialize(cartObj);
+          })
+        )
+      )
+      .subscribe((cart: Array<CartList>) => {
 
-      for (const cartItem of cart.data) {
+        this.cart = cart;
+        this.headerService.cartItems.next(cart.length);
 
-        currCartItem = new CartList(cartItem.id, cartItem.event, cartItem.ticket, cartItem.ticketsCount);
-        this.totalSum += cartItem.ticket.price * cartItem.ticketsCount;
-        this.cart.push(currCartItem);
+      }, error => {
 
-      }
-    }, error => {
+        if (error.status === 401) {
 
-      if (error.status === 401) {
+          this.authenticationService.logout();
+        }
 
-        this.authenticationService.logout();
-      }
-    });
+        console.log(error);
+      });
   }
 
   ngOnDestroy(): void {
